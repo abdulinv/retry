@@ -41,8 +41,8 @@ function RoadMap() {
         </Typography>
         <Grid2 container gap={2} justifyContent={"space-around"}>
           {RoadMaps.find((item) => item.stack === selectedStack)?.data.map(
-            (item) => (
-              <Grid2 size={3}>
+            (item,i) => (
+              <Grid2 size={3} key={i}>
                 <Card
                   elevation={10}
                   sx={{
@@ -63,13 +63,12 @@ function RoadMap() {
                     </Typography>
                     <List sx={{ marginLeft: "16px" }}>
                       {item.topics.map((topic) => (
-                        <ListItem sx={{ m: 0, p: 0 }}>
+                        <ListItem key={topic} sx={{ m: 0, p: 0 }}>
                           <ListItemText>
                             <Typography
                               variant="body2"
                               fontSize={15}
                               align="left"
-                              key={topic}
                             >
                               {topic}
                             </Typography>

@@ -107,8 +107,9 @@ import {
                     name="radio-buttons-group"
                   >
                     {test[Number(id) - 1].test[QuestionIndex].options?.map(
-                      (item) => (
+                      (item,i) => (
                         <FormControlLabel
+                          key={i}
                           value={item}
                           control={<Radio />}
                           label={

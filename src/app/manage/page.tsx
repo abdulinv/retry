@@ -7,8 +7,6 @@ import {
     CardContent,
     Typography,
     ListItemText,
-    Radio,
-    TextField,
     Checkbox,
     Grid2,
   } from "@mui/material";
@@ -40,9 +38,9 @@ import {
   
         <Box >
           <Grid2 container gap={2} rowGap={6} justifyContent={"space-evenly"}>
-            {daily.map((day) => {
+            {daily.map((day,i) => {
               return (
-                <Grid2 size={3}>
+                <Grid2 key={i} size={3}>
                   <Card>
                     <CardContent>
                       <Typography>Today is {day.day}</Typography>
