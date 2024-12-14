@@ -1,5 +1,5 @@
 import { Box, Grid2 } from "@mui/material";
-import {data} from "../../models/checklist/daily/daily";
+import {data, Tasks} from "../../models/checklist/daily/daily";
 import Header from "./Header";
 import DayCard from "./DayCard";
 
@@ -9,7 +9,7 @@ function CheckList() {
       <Header />
       <Box>
         <Grid2 container gap={2} rowGap={6} justifyContent={"space-evenly"}>
-          {data.Daily.map((day:any, i:number) => {
+          {data.Daily.map((day:Tasks, i:number) => {
             return (
               <Grid2 key={i} size={3}>
                 <DayCard day={day} />

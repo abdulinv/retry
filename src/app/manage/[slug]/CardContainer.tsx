@@ -3,7 +3,7 @@
 import React from "react";
 import { Grid2 } from "@mui/material";
 import DayCard from "../DayCard";
-import { data } from "../../../models/checklist/daily/daily";
+import { data, Tasks } from "../../../models/checklist/daily/daily";
 import { useParams } from "next/navigation";
 
 function CardContainer() {
@@ -15,7 +15,7 @@ function CardContainer() {
   else size = 6;
   return (
     <Grid2 container gap={2} rowGap={6} justifyContent={"space-evenly"}>
-      {data[slug].map((day: any, i: number) => {
+      {data[slug].map((day: Tasks, i: number) => {
         return (
           <Grid2 key={i} size={size}>
             <DayCard day={day} />

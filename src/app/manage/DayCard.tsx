@@ -28,28 +28,25 @@ import { useParams } from "next/navigation";
 function DayCard({ day }: Day) {
   const { slug } = useParams();
   console.log("from car", slug);
-  
-  let heading:string;
-  let cat:string
+
+  let heading: string;
+
   if (slug === "Daily") {
     heading = "Today is";
-    cat = "day"
-  }
-  else if (slug === "Weekly"){
+  } else if (slug === "Weekly") {
     heading = "The Week is";
-    cat = "week"
-  } 
-  else {
+  } else {
     heading = "The Month is";
-    cat = "month"
-    }
+  }
 
   return (
     <Card>
       <CardContent
         sx={{ maxHeight: "300px", minHeight: "300px", overflow: "scroll" }}
       >
-        <Typography>{heading} {day.title}</Typography>
+        <Typography>
+          {heading} {day.title}
+        </Typography>
         <List
           sx={{
             display: "flex",

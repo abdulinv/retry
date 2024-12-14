@@ -1,10 +1,8 @@
-import { Box, Grid2 } from "@mui/material";
-import { data } from "../../../models/checklist/daily/daily";
+import { Box} from "@mui/material";
 import Header from "../Header";
-import DayCard from "../DayCard";
 import CardContainer from "./CardContainer";
 
-function CheckList(params:any) {
+function CheckList() {
    
   return (
     <Box sx={{ marginTop: "80px", width: "100vw", p: "24px" }}>

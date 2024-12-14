@@ -14,7 +14,7 @@ function Header() {
       >
         {["Daily", "Weekly", "Monthly"].map((item) => {
           return (
-            <ListItem sx={{ width: "10%" }}>
+            <ListItem key={item} sx={{ width: "10%" }}>
               <ListItemButton>
                 <Link href={`/manage/${item}`}>{item}</Link>
               </ListItemButton>

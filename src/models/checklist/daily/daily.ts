@@ -4,7 +4,7 @@ interface Task{
     status:string
 }
 
-interface Tasks{
+export interface Tasks{
     id:number,
     title:string,
     tasks:Task[]
