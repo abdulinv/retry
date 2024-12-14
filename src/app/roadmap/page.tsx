@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   Card,
@@ -18,7 +18,12 @@ function RoadMap() {
   return (
     <Grid2
       container
-      sx={{ marginTop: "40px", width: "94vw", borderRadius: "12px" }}
+      sx={{
+        marginTop: "100px",
+        width: "94vw",
+        borderRadius: "12px",
+        p: "24px",
+      }}
     >
       <Grid2 sx={{ border: "1px solid grey", borderRadius: "12px" }} size={2}>
         <List>
@@ -41,7 +46,7 @@ function RoadMap() {
         </Typography>
         <Grid2 container gap={2} justifyContent={"space-around"}>
           {RoadMaps.find((item) => item.stack === selectedStack)?.data.map(
-            (item,i) => (
+            (item, i) => (
               <Grid2 size={3} key={i}>
                 <Card
                   elevation={10}
