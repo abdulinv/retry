@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   List,
   ListItem,
@@ -11,11 +11,13 @@ import {
   Checkbox,
   CardActionArea,
   Button,
+  TextField,
 } from "@mui/material";
 
 interface Day {
   day: {
-    id: number;
+    id?: number;
+    category?: string;
     title: string;
     tasks: {
       text: string;
@@ -25,7 +27,11 @@ interface Day {
 }
 
 import { useParams } from "next/navigation";
+import { updateTask } from "../../../lib/fetch";
+
 function DayCard({ day }: Day) {
+  const [showInput, setShowInput] = useState<string | null>(null);
+  const [value, setValue] = useState("");
   const { slug } = useParams();
   console.log("from car", slug);
 
@@ -56,7 +62,33 @@ function DayCard({ day }: Day) {
           {day.tasks.map((task, i) => {
             return (
               <ListItem key={i}>
-                <ListItemText>{task.text}</ListItemText>
+                <ListItemText
+                  onDoubleClick={() => {
+                    setShowInput(task.text);
+                    setValue(task.text);
+                  }}
+                >
+                  {showInput !== task.text && task.text}
+                  {showInput === task.text && (
+                    <TextField
+                      value={value}
+                      autoFocus
+                      size="small"
+                      fullWidth
+                      onChange={(e) => setValue(e.target.value)}
+                      onBlur={() => {
+                        const tasks = day.tasks.filter(
+                          (item) => item.text !== task.text
+                        );
+                        updateTask(`manage${slug}`, day.title, {
+                          ...day,
+                          tasks: [...tasks, { text: value, status: "done" }],
+                        });
+                        setShowInput(null);
+                      }}
+                    />
+                  )}
+                </ListItemText>
                 <Checkbox />
               </ListItem>
             );
@@ -64,7 +96,17 @@ function DayCard({ day }: Day) {
         </List>
       </CardContent>
       <CardActionArea>
-        <Button>+</Button>
+        <Button
+          onClick={() => {
+
+            updateTask(`manage${slug}`, day.title, {
+              ...day,
+              tasks: [...day.tasks, { text: "add here", status: "not done" }] ,
+            });
+          }}
+        >
+          +
+        </Button>
         <Button>-</Button>
       </CardActionArea>
     </Card>

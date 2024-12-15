@@ -5,10 +5,10 @@ import { getTasks } from "../../../../lib/fetch";
 
 async function CheckList() {
    const data =  await getTasks();
-   console.log(data);
+   console.log("or",data);
   return (
     <Box sx={{ marginTop: "80px", width: "100vw", p: "24px" }}>
-      <Header />
+      <Header /> 
       <CardContainer data={data}/>
     </Box>
   );
