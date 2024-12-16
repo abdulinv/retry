@@ -1,9 +1,10 @@
 "use server"
 
-import { collection, getDocs, updateDoc, doc} from "firebase/firestore";
+import { collection, getDocs, updateDoc, doc,addDoc} from "firebase/firestore";
 import { db } from "@/firebase/config";
 import { Tasks } from "@/models/checklist/daily/daily";
 import { revalidatePath } from "next/cache";
+import {  RoadMaps } from "@/app/roadmap/types";
 
 export async function getTasks() {
   const data: Tasks[] = [];
@@ -25,7 +26,7 @@ export async function getTasks() {
 export async function updateTask(
   collection: string,
   taskId: string,
-  updatedData:Tasks
+  updatedData:Tasks | RoadMaps
 ) {
   const taskRef = doc(db, collection, taskId);
   await updateDoc(taskRef, updatedData);
@@ -33,12 +34,22 @@ export async function updateTask(
   revalidatePath("manage/Daily")
 }
 
-// export async function addTask(collectionId:string,doc:any) {
-//   try {
-//     const docRef = await addDoc(collection(db, collectionId), doc);
-//     console.log("Document written with ID: ", docRef.id);
-//     revalidatePath("manage/Daily")
-//   } catch (e) {
-//     console.error("Error adding document: ", e);
-//   }
-// }
+export async function addDocument(collectionId:string,doc:RoadMaps) {
+  try {
+    const docRef = await addDoc(collection(db, collectionId), doc);
+    console.log("Document written with ID: ", docRef.id);
+    revalidatePath("manage/Daily")
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+}
+
+export async function getRoadMaps() {
+  const data: {id:string,doc:RoadMaps}[] = [];
+  const querySnapshot = await getDocs(collection(db, "rm-TypeScript"));
+  querySnapshot.forEach((doc) => {
+    console.log(`${doc.id} => `, doc.data());
+    data.push({id:doc.id,doc:doc.data() as RoadMaps});
+  });
+  return data;
+}

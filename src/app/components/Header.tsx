@@ -17,7 +17,7 @@ function Header() {
       <AppBar>
         <Toolbar>
           {/* <Box component={"img"} src="./public/vite.svg" /> */}
-          <Link href="/dashboard" color="inherit"  underline="none"><Typography variant="subtitle1">Dashboard</Typography></Link>
+          <Link href="/tests" color="inherit"  underline="none"><Typography variant="subtitle1">Tests</Typography></Link>
           
           <Box
             sx={{
@@ -27,15 +27,6 @@ function Header() {
               paddingLeft: 12,
             }}
           >
-            <Link href="/" color="inherit" underline="none">
-              Posts
-            </Link>
-            <Link href="/" color="inherit" underline="none">
-              Create New
-            </Link>
-            <Link href="/test" color="inherit" underline="none">
-              Practice
-            </Link>
             <Link href="/roadmap" color="inherit" underline="none">
               Road Map
             </Link>
