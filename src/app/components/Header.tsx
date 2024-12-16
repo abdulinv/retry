@@ -39,7 +39,7 @@ function Header() {
             <Link href="/roadmap" color="inherit" underline="none">
               Road Map
             </Link>
-            <Link href="/manage" color="inherit" underline="none">
+            <Link href="/manage/Daily" color="inherit" underline="none">
               Check list
             </Link>
           </Box>

@@ -21,7 +21,7 @@ interface Day {
     title: string;
     tasks: {
       text: string;
-      status: string;
+      status: boolean;
     }[];
   };
 }
@@ -82,14 +82,44 @@ function DayCard({ day }: Day) {
                         );
                         updateTask(`manage${slug}`, day.title, {
                           ...day,
-                          tasks: [...tasks, { text: value, status: "done" }],
+                          tasks: [
+                            ...tasks,
+                            { text: value, status: task.status },
+                          ],
                         });
                         setShowInput(null);
+                      }}
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          "& fieldset": {
+                            border: "none", // Remove the default border
+                          },
+                          "&:hover fieldset": {
+                            border: "none", // Prevent border on hover
+                          },
+                          "&.Mui-focused fieldset": {
+                            border: "none", // Prevent border on focus
+                          },
+                        },
                       }}
                     />
                   )}
                 </ListItemText>
-                <Checkbox />
+                <Checkbox
+                  checked={task.status}
+                  onClick={() => {
+                    const tasks = day.tasks.filter(
+                      (item) => item.text !== task.text
+                    );
+                    updateTask(`manage${slug}`, day.title, {
+                      ...day,
+                      tasks: [
+                        ...tasks,
+                        { text: task.text, status: !task.status },
+                      ],
+                    });
+                  }}
+                />
               </ListItem>
             );
           })}
@@ -98,10 +128,9 @@ function DayCard({ day }: Day) {
       <CardActionArea>
         <Button
           onClick={() => {
-
             updateTask(`manage${slug}`, day.title, {
               ...day,
-              tasks: [...day.tasks, { text: "add here", status: "not done" }] ,
+              tasks: [...day.tasks, { text: "add here", status: false }],
             });
           }}
         >
