@@ -11,7 +11,7 @@ import { db } from "@/firebase/config";
 import { Tasks } from "@/models/checklist/daily/daily";
 import { revalidatePath } from "next/cache";
 import { RoadMaps } from "@/app/roadmap/types";
-import { Question, QuestionDoc } from "@/app/test/[slug]/types";
+import { Question, QuestionDoc, TestListDoc, TestListItem } from "@/app/test/[slug]/types";
 
 export async function getTasks() {
   const data: Tasks[] = [];
@@ -33,7 +33,7 @@ export async function getTasks() {
 export async function updateTask(
   collection: string,
   taskId: string,
-  updatedData: Tasks | RoadMaps | Question
+  updatedData: Tasks | RoadMaps | Question | TestListItem
 ) {
   const taskRef = doc(db, collection, taskId);
   await updateDoc(taskRef, updatedData);
@@ -43,7 +43,7 @@ export async function updateTask(
 
 export async function addDocument(
   collectionId: string,
-  doc: RoadMaps | Question
+  doc: RoadMaps | Question | TestListItem
 ) {
   try {
     const docRef = await addDoc(collection(db, collectionId), doc);
@@ -86,6 +86,19 @@ export async function getTest(collectionName: string) {
   querySnapshot.forEach((doc) => {
     console.log(`${doc.id} => `, doc.data());
     data.push({ id: doc.id, doc: doc.data() as Question });
+  });
+
+  return data;
+}
+
+
+export async function getTestList(collectionName: string) {
+  const data:TestListDoc[] = [];
+  console.log("collection", collectionName);
+  const querySnapshot = await getDocs(collection(db, collectionName));
+  querySnapshot.forEach((doc) => {
+    console.log(`${doc.id} => `, doc.data());
+    data.push({ id: doc.id, doc: doc.data() as TestListItem });
   });
 
   return data;
