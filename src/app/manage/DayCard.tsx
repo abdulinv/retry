@@ -6,7 +6,6 @@ import {
   ListItem,
   Card,
   CardContent,
-  Typography,
   ListItemText,
   Checkbox,
   CardActionArea,
@@ -50,9 +49,9 @@ function DayCard({ day }: Day) {
       <CardContent
         sx={{ maxHeight: "300px", minHeight: "300px", overflow: "scroll" }}
       >
-        <Typography>
+        <Button fullWidth color="primary" variant="contained">
           {heading} {day.title}
-        </Typography>
+        </Button>
         <List
           sx={{
             display: "flex",

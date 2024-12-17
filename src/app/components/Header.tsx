@@ -17,12 +17,15 @@ function Header() {
       <AppBar>
         <Toolbar>
           {/* <Box component={"img"} src="./public/vite.svg" /> */}
-          <Link href="/tests" color="inherit"  underline="none"><Typography variant="subtitle1">Tests</Typography></Link>
+          <Link href="/tests" color="inherit"  underline="none">
+           <Typography sx={{marginLeft:5}} variant="subtitle1">Tests</Typography>
+          </Link>
           
           <Box
             sx={{
               flexGrow: 1,
               display: "flex",
+              justifyContent:"space-evenly",
               gap: 20,
               paddingLeft: 12,
             }}
@@ -32,6 +35,9 @@ function Header() {
             </Link>
             <Link href="/manage/Daily" color="inherit" underline="none">
               Check list
+            </Link>
+            <Link href="/JDAnalyser" color="inherit" underline="none">
+              JD Analyser
             </Link>
           </Box>
           <IconButton >

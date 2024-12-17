@@ -17,8 +17,8 @@ function CardContainer({ data }: CardContainerProps) {
   let size;
   if (slug === "Daily") {
     size = 4;
-  } else if (slug === "Weekly") size = 5;
-  else size = 6;
+  } else if (slug === "Weekly") size = 6;
+  else size = 10;
   return (
     <>
       <Grid2 container gap={2} rowGap={6} justifyContent={"space-evenly"}>
