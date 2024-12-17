@@ -21,8 +21,8 @@ function JobCard({ item, id }: { item: Jobs; id: string }) {
     <Card elevation={10}>
       <CardContent
         sx={{
-          maxHeight: "400px",
-          minHeight: "400px",
+          maxHeight: "420px",
+          minHeight: "420px",
           overflow: "auto",
         }}
       >
