@@ -11,6 +11,7 @@ import { db } from "@/firebase/config";
 import { Tasks } from "@/models/checklist/daily/daily";
 import { revalidatePath } from "next/cache";
 import { RoadMaps } from "@/app/roadmap/types";
+import { Question, QuestionDoc } from "@/app/test/[slug]/types";
 
 export async function getTasks() {
   const data: Tasks[] = [];
@@ -32,7 +33,7 @@ export async function getTasks() {
 export async function updateTask(
   collection: string,
   taskId: string,
-  updatedData: Tasks | RoadMaps
+  updatedData: Tasks | RoadMaps | Question
 ) {
   const taskRef = doc(db, collection, taskId);
   await updateDoc(taskRef, updatedData);
@@ -40,7 +41,10 @@ export async function updateTask(
   revalidatePath("manage/Daily");
 }
 
-export async function addDocument(collectionId: string, doc: RoadMaps) {
+export async function addDocument(
+  collectionId: string,
+  doc: RoadMaps | Question
+) {
   try {
     const docRef = await addDoc(collection(db, collectionId), doc);
     console.log("Document written with ID: ", docRef.id);
@@ -51,7 +55,7 @@ export async function addDocument(collectionId: string, doc: RoadMaps) {
 }
 
 export async function getRoadMaps() {
-  const rmCollection = ["rm-TypeScript","rm-React"];
+  const rmCollection = ["rm-TypeScript", "rm-React"];
   const data: { id: string; doc: RoadMaps }[] = [];
 
   for (const collectionName of rmCollection) {
@@ -74,3 +78,15 @@ export async function getRoadMaps() {
 //     console.error("Error adding document: ", e);
 //   }
 // }
+
+export async function getTest(collectionName: string) {
+  const data: QuestionDoc[] = [];
+  console.log("collection", collectionName);
+  const querySnapshot = await getDocs(collection(db, collectionName));
+  querySnapshot.forEach((doc) => {
+    console.log(`${doc.id} => `, doc.data());
+    data.push({ id: doc.id, doc: doc.data() as Question });
+  });
+
+  return data;
+}
