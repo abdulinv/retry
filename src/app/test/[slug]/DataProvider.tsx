@@ -48,7 +48,13 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
           }}
         >
           <Timer />
-          <Box sx={{display:"flex",justifyContent:"space-between", alignItems:"center"}}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
             <Button
               variant="contained"
               sx={{
@@ -58,15 +64,19 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
             >
               Next
             </Button>
-            <Button onClick={()=>{
-              const newDoc = {
-                qtext:"add question here",
-                options:["option1","option2","option3","option4"],
-                answer:"option3",
-                testName:data[0].doc.testName
-              };
-              addDocument(`test-${id}`,newDoc)
-            }}>+</Button>
+            <Button
+              onClick={() => {
+                const newDoc = {
+                  qtext: "add question here",
+                  options: ["option1", "option2", "option3", "option4"],
+                  answer: "option3",
+                  testName: data[0].doc.testName,
+                };
+                addDocument(`test-${id}`, newDoc);
+              }}
+            >
+              +
+            </Button>
           </Box>
         </Box>
 
@@ -94,9 +104,11 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
             <Paper
               elevation={10}
               sx={{
-                p: 2,
+                p: 5,
                 minWidth: "60vw",
-                minHeight: "52vh",
+                minHeight: "60vh",
+                maxHeight:"60vh",
+                overflow:"auto"
               }}
             >
               <pre
@@ -108,7 +120,10 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
                 }}
               >
                 {showInput !== "question" && (
-                  <code>{data[QuestionIndex].doc.qtext}</code>
+                  <code>
+                    {" "}
+                    <Typography fontWeight={500} letterSpacing={0.8} lineHeight={1.5} fontSize={18} variant="body1">{data[QuestionIndex].doc.qtext}</Typography>
+                  </code>
                 )}
                 {showInput === "question" && (
                   <TextField
@@ -146,7 +161,7 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
             </Typography>
             <Paper
               elevation={10}
-              sx={{ p: 1, minWidth: "30vw", minHeight: "52vh" }}
+              sx={{ p: 1, minWidth: "30vw", minHeight: "60vh" }}
             >
               <form style={{ padding: "12px" }}>
                 <RadioGroup
@@ -163,6 +178,8 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
                       label={
                         showInput !== item ? (
                           <Typography
+                            fontSize={16}
+                            variant="body1"
                             style={{
                               whiteSpace: "normal",
                               maxWidth: "300px",

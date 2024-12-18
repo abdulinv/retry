@@ -31,7 +31,7 @@ function Timer() {
 
   return (
     <Box>
-      <Typography variant="h4">
+      <Typography variant="h4" marginLeft={4}>
         Times Remaining {time.min} : {time.seconds}
       </Typography>
     </Box>
