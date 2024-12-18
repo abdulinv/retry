@@ -112,7 +112,10 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
               }}
             >
               <pre
-                onDoubleClick={() => setShowInput("question")}
+                onDoubleClick={() => {
+                  setShowInput("question")
+                  setValue(data[QuestionIndex].doc.qtext)
+                }}
                 style={{
                   textAlign: "left",
                   fontSize: "0.9rem",
