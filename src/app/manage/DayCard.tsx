@@ -46,12 +46,13 @@ function DayCard({ day }: Day) {
 
   return (
     <Card>
+      <Button fullWidth color="primary" variant="contained">
+          {heading} {day.title}
+        </Button>
       <CardContent
         sx={{ maxHeight: "300px", minHeight: "300px", overflow: "scroll" }}
       >
-        <Button fullWidth color="primary" variant="contained">
-          {heading} {day.title}
-        </Button>
+        
         <List
           sx={{
             display: "flex",

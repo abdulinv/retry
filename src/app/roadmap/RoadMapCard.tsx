@@ -20,20 +20,9 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
   return (
     <Card
       elevation={10}
-      sx={{
-        borderRadius: "16px",
-        maxHeight: "300px",
-        minHeight: "300px",
-      }}
+     
     >
-      <CardContent
-        sx={{
-          minHeight: "250px",
-          maxHeight: "250px",
-          overflow: "auto",
-        }}
-      >
-        {showInput !== item.title && (
+       {showInput !== item.title && (
           <Button
             fullWidth
             variant="contained"
@@ -82,6 +71,14 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
             }}
           />
         )}
+      <CardContent
+        sx={{
+          minHeight: "250px",
+          maxHeight: "250px",
+          overflow: "auto",
+        }}
+      >
+       
         <List sx={{ marginLeft: "16px" }}>
           {item.topics.map((topic) => (
             <ListItem key={topic} sx={{ m: 0, p: 0 }}>
@@ -140,6 +137,9 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
       </CardContent>
       <CardActionArea>
         <Button
+         fullWidth
+         color="success"
+         variant="text"
           onClick={() => {
             updateTask(`rm-${item.stack}`, id, {
               ...item,

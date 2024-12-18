@@ -19,13 +19,6 @@ function JobCard({ item, id }: { item: Jobs; id: string }) {
 
   return (
     <Card elevation={10}>
-      <CardContent
-        sx={{
-          maxHeight: "420px",
-          minHeight: "420px",
-          overflow: "auto",
-        }}
-      >
         {showInput !== item.designation && (
           <Button
             onDoubleClick={() => {
@@ -51,6 +44,14 @@ function JobCard({ item, id }: { item: Jobs; id: string }) {
             }}
           />
         )}
+      <CardContent
+        sx={{
+          maxHeight: "420px",
+          minHeight: "420px",
+          overflow: "auto",
+        }}
+      >
+        
 
         <List>
           {item.skills.map((skill) => {
