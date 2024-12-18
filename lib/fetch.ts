@@ -40,7 +40,15 @@ export async function updateTask(
   const taskRef = doc(db, collection, taskId);
   await updateDoc(taskRef, updatedData);
   console.log("Task updated!");
-  revalidatePath("manage/Daily");
+  if (collection.startsWith("rm")) revalidatePath("/roadmap");
+  if (collection.startsWith("manageDaily")) revalidatePath("/manage/Daily");
+  if (collection.startsWith("manageWeekly")) revalidatePath("/manage/Weekly");
+  if (collection.startsWith("manageMonthly")) revalidatePath("/manage/Monthly");
+  if (collection.startsWith("jobs")) revalidatePath("/JDAnalyser");
+  if (collection.startsWith("test")) {
+    revalidatePath("/test/");
+    revalidatePath("/tests");
+  }
 }
 
 export async function addDocument(
@@ -70,16 +78,6 @@ export async function getRoadMaps() {
 
   return data;
 }
-
-// export async function createNewStack(collectionId:string){
-//   try {
-//     const docRef = await addDoc(collection(db, collectionId), doc);
-//     console.log("Document written with ID: ", docRef.id);
-//     revalidatePath("manage/Daily")
-//   } catch (e) {
-//     console.error("Error adding document: ", e);
-//   }
-// }
 
 export async function getTest(collectionName: string) {
   const data: QuestionDoc[] = [];
