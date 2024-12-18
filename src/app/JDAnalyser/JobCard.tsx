@@ -46,8 +46,8 @@ function JobCard({ item, id }: { item: Jobs; id: string }) {
         )}
       <CardContent
         sx={{
-          maxHeight: "420px",
-          minHeight: "420px",
+          maxHeight: "820px",
+          minHeight: "820px",
           overflow: "auto",
         }}
       >
