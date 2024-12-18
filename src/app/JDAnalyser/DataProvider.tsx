@@ -9,7 +9,7 @@ import { addDocument } from "../../../lib/fetch";
 function DataProvider({ data }: { data: JobsDocs[] }) {
   return (
     <>
-      <Button sx={{ marginTop: 10, marginLeft: 10, p: 4 }} onClick={() => {
+      <Button sx={{ marginTop: 8, marginLeft: 10, p: 1 }} onClick={() => {
         addDocument("jobs",{
             designation:"add here",
             skills:[]
