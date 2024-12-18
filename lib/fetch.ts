@@ -65,7 +65,7 @@ export async function addDocument(
 }
 
 export async function getRoadMaps() {
-  const rmCollection = ["rm-TypeScript", "rm-React"];
+  const rmCollection = ["rm-TypeScript", "rm-React","rm-JavaScript","rm-CSS","rm-Node"];
   const data: { id: string; doc: RoadMaps }[] = [];
 
   for (const collectionName of rmCollection) {
