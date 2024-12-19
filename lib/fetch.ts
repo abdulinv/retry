@@ -18,6 +18,7 @@ import {
   TestListItem,
 } from "@/app/test/[slug]/types";
 import { Jobs, JobsDocs } from "@/app/JDAnalyser/types";
+import { Rev, RevDocs } from "@/app/revision/types";
 
 export async function getTasks() {
   const data: Tasks[] = [];
@@ -35,7 +36,7 @@ export async function getTasks() {
 export async function updateTask(
   collection: string,
   taskId: string,
-  updatedData: Tasks | RoadMaps | Question | TestListItem | Jobs
+  updatedData: Tasks | RoadMaps | Question | TestListItem | Jobs | Rev
 ) {
   const taskRef = doc(db, collection, taskId);
   await updateDoc(taskRef, updatedData);
@@ -49,11 +50,12 @@ export async function updateTask(
     revalidatePath("/test/");
     revalidatePath("/tests");
   }
+  if(collection.startsWith("rev")) revalidatePath("/revision");
 }
 
 export async function addDocument(
   collectionId: string,
-  doc: RoadMaps | Question | TestListItem | Jobs
+  doc: RoadMaps | Question | TestListItem | Jobs | Rev
 ) {
   try {
     const docRef = await addDoc(collection(db, collectionId), doc);
@@ -110,6 +112,18 @@ export async function getJobs(collectionName: string) {
   querySnapshot.forEach((doc) => {
     console.log(`${doc.id} => `, doc.data());
     data.push({ id: doc.id, doc: doc.data() as Jobs });
+  });
+
+  return data;
+}
+
+export async function getRevision(collectionName: string) {
+  const data: RevDocs[] = [];
+  console.log("collection", collectionName);
+  const querySnapshot = await getDocs(collection(db, collectionName));
+  querySnapshot.forEach((doc) => {
+    console.log(`${doc.id} => `, doc.data());
+    data.push({ id: doc.id, doc: doc.data() as Rev });
   });
 
   return data;

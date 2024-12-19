@@ -39,6 +39,9 @@ function Header() {
             <Link href="/JDAnalyser" color="inherit" underline="none">
               JD Analyser
             </Link>
+            <Link href="/revision" color="inherit" underline="none">
+              Revision Analyser
+            </Link>
           </Box>
           <IconButton >
             <PersonIcon />
