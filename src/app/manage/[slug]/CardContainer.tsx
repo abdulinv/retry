@@ -13,7 +13,7 @@ interface CardContainerProps {
 function CardContainer({ data }: CardContainerProps) {
   const params = useParams();
   const slug = params.slug as string;
-  const tasks = data.filter((item) => item.category === slug);
+  const tasks = data.filter((item) => item.category === slug).toSorted((a,b)=>a.order-b.order);
   let size;
   if (slug === "Daily") {
     size = 4;

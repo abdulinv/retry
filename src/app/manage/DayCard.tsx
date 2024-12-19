@@ -18,6 +18,7 @@ interface Day {
     id?: number;
     category?: string;
     title: string;
+    order:number;
     tasks: {
       text: string;
       status: boolean;
@@ -43,7 +44,7 @@ function DayCard({ day }: Day) {
   } else {
     heading = "The Month is";
   }
-
+  const sortedTasks = day.tasks.toSorted((a,b)=>a.text > b.text?1:-1);
   return (
     <Card>
       <Button fullWidth color="primary" variant="contained">
@@ -59,7 +60,7 @@ function DayCard({ day }: Day) {
             flexDirection: "column",
           }}
         >
-          {day.tasks.map((task, i) => {
+          {sortedTasks.map((task, i) => {
             return (
               <ListItem key={i}>
                 <ListItemText

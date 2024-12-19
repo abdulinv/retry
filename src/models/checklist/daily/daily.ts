@@ -9,6 +9,7 @@ export interface Tasks {
   category?:string;
   title: string;
   tasks: Task[];
+  order:number;
 }
 
 
