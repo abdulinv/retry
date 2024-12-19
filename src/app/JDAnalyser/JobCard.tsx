@@ -17,6 +17,7 @@ function JobCard({ item, id }: { item: Jobs; id: string }) {
   const [showInput, setShowInput] = useState<string | null>(null);
   const [value, setValue] = useState<string>("");
 
+  const sortedList = item.skills.toSorted((a,b)=>b.count-a.count);
   return (
     <Card elevation={10}>
         {showInput !== item.designation && (
@@ -54,7 +55,7 @@ function JobCard({ item, id }: { item: Jobs; id: string }) {
         
 
         <List>
-          {item.skills.map((skill) => {
+          {sortedList.map((skill) => {
             return (
               <ListItem key={skill.name}>
                 <ListItemText onDoubleClick={() => setShowInput(skill.name)}>

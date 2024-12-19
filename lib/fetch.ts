@@ -19,6 +19,7 @@ import {
 } from "@/app/test/[slug]/types";
 import { Jobs, JobsDocs } from "@/app/JDAnalyser/types";
 import { Rev, RevDocs } from "@/app/revision/types";
+import { Bucket, BucketDocs } from "@/app/bucketlist/types";
 
 export async function getTasks() {
   const data: Tasks[] = [];
@@ -36,7 +37,7 @@ export async function getTasks() {
 export async function updateTask(
   collection: string,
   taskId: string,
-  updatedData: Tasks | RoadMaps | Question | TestListItem | Jobs | Rev
+  updatedData: Tasks | RoadMaps | Question | TestListItem | Jobs | Rev | Bucket
 ) {
   const taskRef = doc(db, collection, taskId);
   await updateDoc(taskRef, updatedData);
@@ -50,12 +51,13 @@ export async function updateTask(
     revalidatePath("/test/");
     revalidatePath("/tests");
   }
-  if(collection.startsWith("rev")) revalidatePath("/revision");
+  if (collection.startsWith("rev")) revalidatePath("/revision");
+  if(collection.startsWith("bucket")) revalidatePath("/bucketlist")
 }
 
 export async function addDocument(
   collectionId: string,
-  doc: RoadMaps | Question | TestListItem | Jobs | Rev
+  doc: RoadMaps | Question | TestListItem | Jobs | Rev | Bucket
 ) {
   try {
     const docRef = await addDoc(collection(db, collectionId), doc);
@@ -67,7 +69,13 @@ export async function addDocument(
 }
 
 export async function getRoadMaps() {
-  const rmCollection = ["rm-TypeScript", "rm-React","rm-JavaScript","rm-CSS","rm-Node"];
+  const rmCollection = [
+    "rm-TypeScript",
+    "rm-React",
+    "rm-JavaScript",
+    "rm-CSS",
+    "rm-Node",
+  ];
   const data: { id: string; doc: RoadMaps }[] = [];
 
   for (const collectionName of rmCollection) {
@@ -124,6 +132,18 @@ export async function getRevision(collectionName: string) {
   querySnapshot.forEach((doc) => {
     console.log(`${doc.id} => `, doc.data());
     data.push({ id: doc.id, doc: doc.data() as Rev });
+  });
+
+  return data;
+}
+
+export async function getBucketList(collectionName: string) {
+  const data: BucketDocs[] = [];
+  console.log("collection", collectionName);
+  const querySnapshot = await getDocs(collection(db, collectionName));
+  querySnapshot.forEach((doc) => {
+    console.log(`${doc.id} => `, doc.data());
+    data.push({ id: doc.id, doc: doc.data() as Bucket });
   });
 
   return data;

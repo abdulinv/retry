@@ -85,7 +85,7 @@ function DataProvider({ data }: { data: RevDocs[] }) {
                 {showInput !== item.doc.name && (
                   <Typography variant="body1" fontWeight={500} fontSize={20}>
                     {" "}
-                    {item.doc.name}
+                    {item.doc.name.toUpperCase()}
                   </Typography>
                 )}
                 {showInput === item.doc.name && (

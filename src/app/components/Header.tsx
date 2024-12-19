@@ -42,6 +42,9 @@ function Header() {
             <Link href="/revision" color="inherit" underline="none">
               Revision Analyser
             </Link>
+            <Link href="/bucketlist" color="inherit" underline="none">
+              BucketList
+            </Link>
           </Box>
           <IconButton >
             <PersonIcon />
