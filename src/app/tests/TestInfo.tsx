@@ -13,7 +13,16 @@ function TestInfo({ item }: { item: TestListDoc }) {
     <Box sx={{ display: "flex", gap: 4 }}>
       <Button onDoubleClick={() => setShowInput(`${item.id}-stack`)}>
         {showInput !== `${item.id}-stack` && (
-          <Typography fontWeight={900} key={item.doc.stack}>
+          <Typography
+            variant="h6"
+            align="left"
+            sx={{
+              minWidth: "10vw",
+              maxWidth: "10vw",
+            }}
+            fontWeight={900}
+            key={item.doc.stack}
+          >
             {item.doc.stack}
           </Typography>
         )}

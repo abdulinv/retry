@@ -5,10 +5,11 @@ import TestInfo from "./TestInfo";
 
 async function DashBoard() {
   const data = await getTestList("testList");
+  const soretdList = data.toSorted((a,b)=>a.doc.testNumber-b.doc.testNumber);
   return (
     <>
       <Container sx={{ width: "100vw", p: 8 }}>
-        <AddTest/>
+        <AddTest testNumber={data.length+1}/>
         <Box
           sx={{
             marginTop: "20px",
@@ -17,7 +18,7 @@ async function DashBoard() {
             gap: 2,
           }}
         >
-          {data.map((item, i) => (
+          {soretdList.map((item, i) => (
             <Paper
               key={`${item.doc.testNumber}-${i}`}
               elevation={10}
