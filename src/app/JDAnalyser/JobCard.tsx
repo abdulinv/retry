@@ -10,41 +10,62 @@ import {
   TextField,
   CardActionArea,
   Button,
+  useTheme,
 } from "@mui/material";
 import { updateTask } from "../../../lib/fetch";
 
 function JobCard({ item, id }: { item: Jobs; id: string }) {
   const [showInput, setShowInput] = useState<string | null>(null);
   const [value, setValue] = useState<string>("");
-
-  const sortedList = item.skills.toSorted((a,b)=>b.count-a.count);
+  const theme = useTheme();
+  const sortedList = item.skills.toSorted((a, b) => b.count - a.count);
   return (
-    <Card elevation={10}>
-        {showInput !== item.designation && (
-          <Button
-            onDoubleClick={() => {
-              setShowInput(item.designation);
-            }}
-            fullWidth
-            variant="contained"
-          >
-            {item.designation.toUpperCase()}
-          </Button>
-        )}
+    <Card
+      elevation={10}
+      sx={{
+        height: "82vh",
+        overflowY:"auto",
+        "&::-webkit-scrollbar": {
+          width: "6px",
+        },
+        "&::-webkit-scrollbar-track": {
+          backgroundColor: "#f1f1f1",
+          borderRadius: "4px",
+        },
+        "&::-webkit-scrollbar-thumb": {
+          backgroundColor: theme.palette.primary.main,
+          borderRadius: "4px",
+        },
+        "&::-webkit-scrollbar-thumb:hover": {
+          backgroundColor: theme.palette.primary.dark,
+        },
+      }}
+    >
+      {showInput !== item.designation && (
+        <Button
+          onDoubleClick={() => {
+            setShowInput(item.designation);
+          }}
+          fullWidth
+          variant="contained"
+        >
+          {item.designation.toUpperCase()}
+        </Button>
+      )}
 
-        {showInput === item.designation && (
-          <TextField
-            onChange={(e) => setValue(e.target.value)}
-            value={value}
-            onBlur={() => {
-              updateTask("jobs", id, {
-                ...item,
-                designation: value,
-              });
-              setShowInput(null);
-            }}
-          />
-        )}
+      {showInput === item.designation && (
+        <TextField
+          onChange={(e) => setValue(e.target.value)}
+          value={value}
+          onBlur={() => {
+            updateTask("jobs", id, {
+              ...item,
+              designation: value,
+            });
+            setShowInput(null);
+          }}
+        />
+      )}
       <CardContent
         sx={{
           maxHeight: "820px",
@@ -52,8 +73,6 @@ function JobCard({ item, id }: { item: Jobs; id: string }) {
           overflow: "auto",
         }}
       >
-        
-
         <List>
           {sortedList.map((skill) => {
             return (

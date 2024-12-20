@@ -11,10 +11,13 @@ import {
   ListItemText,
   TextField,
   Typography,
+  useTheme,
 } from "@mui/material";
 import { updateTask } from "../../../lib/fetch";
 
 function DataProvider({ data }: { data: BucketDocs[] }) {
+
+  const theme = useTheme();
   function UpdatePriority(item: Skill, option: string) {
     const { doc } = data[0];
     const index = doc.skills.findIndex((e) => e.name === item.name);
@@ -40,7 +43,7 @@ function DataProvider({ data }: { data: BucketDocs[] }) {
   return (
     <>
       <Button
-        sx={{ marginTop: 6 }}
+        sx={{ marginTop: 4 }}
         onClick={() => {
           updateTask("bucketList", data[0].id, {
             skills: [...data[0].doc.skills, { name: "add here", priority: 0 }],
@@ -56,7 +59,22 @@ function DataProvider({ data }: { data: BucketDocs[] }) {
           marginLeft: 40,
           p: 4,
           maxWidth: "50vw",
-          height: "100vh",
+          height: "80vh",
+          overflowY: "scroll",
+          "&::-webkit-scrollbar": {
+            width: "6px",
+          },
+          "&::-webkit-scrollbar-track": {
+            backgroundColor: "#f1f1f1",
+            borderRadius: "4px",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: theme.palette.primary.main,
+            borderRadius: "4px",
+          },
+          "&::-webkit-scrollbar-thumb:hover": {
+            backgroundColor: theme.palette.primary.dark,
+          },
         }}
       >
         <CardContent>

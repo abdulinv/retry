@@ -9,13 +9,13 @@ import { addDocument } from "../../../lib/fetch";
 function DataProvider({ data }: { data: JobsDocs[] }) {
   return (
     <>
-      <Button sx={{ marginTop: 8, marginLeft: 10, p: 1 }} onClick={() => {
+      <Button sx={{ marginTop: 7, marginLeft: 10, p: 1 }} onClick={() => {
         addDocument("jobs",{
             designation:"add here",
             skills:[]
         })
       }}>+</Button>
-      <Grid2 container rowGap={2} columnGap={4} sx={{ marginTop: 2, marginLeft: 10, p: 4 }}>
+      <Grid2 container rowGap={2} columnGap={4} sx={{ marginTop: 0, marginLeft: 10, p: 4 }}>
         {data.map((item) => {
           return (
             <Grid2 key={item.id} size={3} >
