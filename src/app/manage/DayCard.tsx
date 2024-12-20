@@ -11,6 +11,7 @@ import {
   CardActionArea,
   Button,
   TextField,
+  useTheme,
 } from "@mui/material";
 
 interface Day {
@@ -33,6 +34,7 @@ function DayCard({ day }: Day) {
   const [showInput, setShowInput] = useState<string | null>(null);
   const [value, setValue] = useState("");
   const { slug } = useParams();
+  const theme = useTheme();
   console.log("from car", slug);
 
   let heading: string;
@@ -51,7 +53,26 @@ function DayCard({ day }: Day) {
           {heading} {day.title}
         </Button>
       <CardContent
-        sx={{ maxHeight: "300px", minHeight: "300px", overflow: "scroll" }}
+        sx={{ 
+          maxHeight: "300px",
+          minHeight: "300px", 
+          overflowY: "auto" ,
+          "&::-webkit-scrollbar": {
+            width: "8px",
+          },
+          "&::-webkit-scrollbar-track": {
+            backgroundColor: "#f1f1f1",
+            borderRadius: "4px",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: theme.palette.primary.main,
+            borderRadius: "4px",
+          },
+          "&::-webkit-scrollbar-thumb:hover": {
+            backgroundColor: theme.palette.primary.dark,
+          },
+        
+        }}
       >
         
         <List

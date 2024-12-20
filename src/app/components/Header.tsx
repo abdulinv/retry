@@ -34,7 +34,7 @@ function Header() {
               Road Map
             </Link>
             <Link href="/manage/Daily" color="inherit" underline="none">
-              Check list
+              Manage
             </Link>
             <Link href="/JDAnalyser" color="inherit" underline="none">
               JD Analyser
