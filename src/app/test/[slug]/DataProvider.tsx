@@ -10,6 +10,7 @@ import {
   Typography,
   Button,
   TextField,
+  useTheme,
 } from "@mui/material";
 import Timer from "../../components/Timer";
 import { useState } from "react";
@@ -21,7 +22,7 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
   const [QuestionIndex, setQuestionIndex] = useState(0);
   const [showInput, setShowInput] = useState<string | null>(null);
   const [value, setValue] = useState("");
-
+  const theme = useTheme();
   const params = useParams();
   const id = params.slug;
   console.log("question data", data);
@@ -108,7 +109,21 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
                 minWidth: "60vw",
                 minHeight: "60vh",
                 maxHeight:"60vh",
-                overflow:"auto"
+                overflow:"auto",
+                "&::-webkit-scrollbar": {
+                  width: "6px",
+                },
+                "&::-webkit-scrollbar-track": {
+                  backgroundColor: "#f1f1f1",
+                  borderRadius: "4px",
+                },
+                "&::-webkit-scrollbar-thumb": {
+                  backgroundColor: theme.palette.primary.main,
+                  borderRadius: "4px",
+                },
+                "&::-webkit-scrollbar-thumb:hover": {
+                  backgroundColor: theme.palette.primary.dark,
+                },
               }}
             >
               <pre
