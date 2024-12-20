@@ -18,13 +18,18 @@ import { updateTask } from "../../../lib/fetch";
 function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
   const [showInput, setShowInput] = useState<string | null>(null);
   const [value, setValue] = useState("");
+  const [status, setStatus] = useState(false);
   const theme = useTheme();
   return (
     <Card elevation={10}>
       {showInput !== item.title && (
         <Button
           fullWidth
+          color={!status?"primary":"success"}
           variant="contained"
+          onClick={() => {
+            setStatus((prev) => !prev);
+          }}
           onDoubleClick={() => {
             setShowInput(item.title);
             setValue(item.title);
