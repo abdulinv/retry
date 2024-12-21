@@ -20,27 +20,7 @@ function JobCard({ item, id }: { item: Jobs; id: string }) {
   const theme = useTheme();
   const sortedList = item.skills.toSorted((a, b) => b.count - a.count);
   return (
-    <Card
-      elevation={10}
-      sx={{
-        height: "82vh",
-        overflowY:"auto",
-        "&::-webkit-scrollbar": {
-          width: "6px",
-        },
-        "&::-webkit-scrollbar-track": {
-          backgroundColor: "#f1f1f1",
-          borderRadius: "4px",
-        },
-        "&::-webkit-scrollbar-thumb": {
-          backgroundColor: theme.palette.primary.main,
-          borderRadius: "4px",
-        },
-        "&::-webkit-scrollbar-thumb:hover": {
-          backgroundColor: theme.palette.primary.dark,
-        },
-      }}
-    >
+    <Card elevation={10}>
       {showInput !== item.designation && (
         <Button
           onDoubleClick={() => {
@@ -68,9 +48,22 @@ function JobCard({ item, id }: { item: Jobs; id: string }) {
       )}
       <CardContent
         sx={{
-          maxHeight: "820px",
-          minHeight: "820px",
-          overflow: "auto",
+          height: "70vh",
+          overflowY: "auto",
+          "&::-webkit-scrollbar": {
+            width: "6px",
+          },
+          "&::-webkit-scrollbar-track": {
+            backgroundColor: "#f1f1f1",
+            borderRadius: "4px",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: theme.palette.primary.main,
+            borderRadius: "4px",
+          },
+          "&::-webkit-scrollbar-thumb:hover": {
+            backgroundColor: theme.palette.primary.dark,
+          },
         }}
       >
         <List>
@@ -140,22 +133,22 @@ function JobCard({ item, id }: { item: Jobs; id: string }) {
             );
           })}
         </List>
-        <CardActionArea>
-          <Button
-            onClick={() => {
-              updateTask("jobs", id, {
-                ...item,
-                skills: [
-                  ...item.skills,
-                  { name: "add new skill here", count: 0 },
-                ],
-              });
-            }}
-          >
-            +
-          </Button>
-        </CardActionArea>
       </CardContent>
+      <CardActionArea>
+        <Button
+          onClick={() => {
+            updateTask("jobs", id, {
+              ...item,
+              skills: [
+                ...item.skills,
+                { name: "add new skill here", count: 0 },
+              ],
+            });
+          }}
+        >
+          +
+        </Button>
+      </CardActionArea>
     </Card>
   );
 }
