@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 
 import React from "react";
-import { RoadMapDoc } from "./types";
+import { RoadMapDoc, RoadMaps } from "./types";
 import { useState } from "react";
 import { addDocument } from "../../../lib/fetch";
 
@@ -39,10 +39,11 @@ function StackList({ RoadMaps, setSelectedStack }: RoadMapProps) {
             fullWidth
             onChange={(e) => setValue(e.target.value)}
             onBlur={() => {
-              const newDoc = {
+              const newDoc:RoadMaps = {
                 title: "Enter title here",
                 topics: ["add here"],
                 stack: value,
+                color:"primary"
               };
               addDocument(`rm-${value}`, newDoc);
               setShowInput("");
