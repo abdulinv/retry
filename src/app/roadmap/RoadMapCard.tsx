@@ -11,24 +11,32 @@ import {
   Button,
   useTheme,
 } from "@mui/material";
-import { RoadMaps } from "./types";
+import { Colors, RoadMaps } from "./types";
 import { useState } from "react";
 import { updateTask } from "../../../lib/fetch";
 
+const colors: Colors[] = ["primary", "warning", "success", "info", "error"];
 function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
   const [showInput, setShowInput] = useState<string | null>(null);
   const [value, setValue] = useState("");
-  const [status, setStatus] = useState(false);
+  const [status, setStatus] = useState(0);
   const theme = useTheme();
   return (
     <Card elevation={10}>
       {showInput !== item.title && (
         <Button
           fullWidth
-          color={!status?"primary":"success"}
+          color={item.color}
           variant="contained"
           onClick={() => {
-            setStatus((prev) => !prev);
+            setStatus((prev) => {
+              if (prev < 4) return prev + 1;
+              else return 0;
+            });
+            updateTask(`rm-${item.stack}`, id, {
+              ...item,
+              color: `${colors[status]}`,
+            });
           }}
           onDoubleClick={() => {
             setShowInput(item.title);

@@ -1,11 +1,12 @@
 "use client";
 import React from "react";
-import { Grid2, Typography, Button } from "@mui/material";
+import { Grid2, Typography, Button, colors } from "@mui/material";
 import StackList from "./StackList";
 import { useState } from "react";
-import { RoadMapProps } from "./types";
+import { RoadMapProps, RoadMaps } from "./types";
 import RoadMapCard from "./RoadMapCard";
 import { addDocument} from "../../../lib/fetch";
+import { Rev } from "../revision/types";
 
 function RoadMapProvider({ RoadMaps }: RoadMapProps) {
   const [selectedStack, setSelectedStack] = useState("");
@@ -22,10 +23,11 @@ function RoadMapProvider({ RoadMaps }: RoadMapProps) {
           variant="contained"
           size="small"
           onClick={()=>{
-            const newDoc = {
+            const newDoc:RoadMaps = {
                 title:"Enter title here",
                 topics:["add here"],
                 stack:selectedStack,
+                color:"primary"
             };
             addDocument(`rm-${selectedStack}`,newDoc);
           }}
