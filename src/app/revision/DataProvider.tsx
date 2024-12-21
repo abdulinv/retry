@@ -227,6 +227,12 @@ function DataProvider({ data }: { data: RevDocs[] }) {
                     marginLeft: 12,
                     borderRadius: "100%",
                   }}
+                  onDoubleClick={()=>{
+                    updateTask("revision", item.id, {
+                      ...item.doc,
+                      count: item.doc.count - 1,
+                    });
+                  }}
                   onClick={() => {
                     updateTask("revision", item.id, {
                       ...item.doc,
