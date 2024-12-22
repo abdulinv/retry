@@ -13,7 +13,9 @@ import {
   Modal,
   Box,
   Paper,
+  ListItemIcon,
 } from "@mui/material";
+import InfoIcon from '@mui/icons-material/Info';
 import { Colors, RoadMaps } from "./types";
 import { useState } from "react";
 import { updateTask } from "../../../lib/fetch";
@@ -236,29 +238,34 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
             },
           }}
         >
-          <List sx={{ marginLeft: "16px" }}>
+          <List  sx={{ marginLeft: "16px" }}>
             {item.topics.map((topic) => (
-              <ListItem key={topic.title} sx={{ m: 0, p: 0 }}>
+              <ListItem 
+              divider
+              
+              key={topic.title} sx={{ m: 0, p: 0 }}>
                 <ListItemText
-                  onClick={() => {
-                    setShowNote(topic.title);
-                    setNote(topic.note);
-                  }}
+                 
+                  
                   onDoubleClick={() => {
                     setShowInput(topic.title);
                     setValue(topic.title);
                   }}
-                >
+                > 
                   {showInput !== topic.title && (
                     <Typography
+                      
                       sx={{
                         cursor: "pointer",
                       }}
-                      variant="body2"
+                      variant="body1"
                       fontSize={15}
                       align="left"
+                      lineHeight={2}
+                      letterSpacing={1.3}
+                      fontWeight={500}
                     >
-                      {topic.title}
+                    {topic.title}
                     </Typography>
                   )}
 
@@ -300,6 +307,13 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
                     />
                   )}
                 </ListItemText>
+                <ListItemIcon  
+                  onClick={() => {
+                    setShowNote(topic.title);
+                    setNote(topic.note);
+                  }}>
+                  <InfoIcon sx={{marginLeft:"8px",cursor:"pointer"}} color="info"/>
+                </ListItemIcon>
               </ListItem>
             ))}
           </List>

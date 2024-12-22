@@ -35,10 +35,10 @@ function RoadMapProvider({ RoadMaps }: RoadMapProps) {
           <Typography variant="h5">{selectedStack}</Typography>
         </Button>
 
-        <Grid2 container gap={2} justifyContent={"space-around"}>
+        <Grid2 container gap={1} rowGap={3} justifyContent={"space-around"}>
           {RoadMaps.filter((item) => item.doc.stack === selectedStack)?.map(
             (item, i) => (
-              <Grid2 size={3} key={i}>
+              <Grid2 size={5} key={i}>
                 <RoadMapCard item={item.doc} id={item.id} />
               </Grid2>
             )
