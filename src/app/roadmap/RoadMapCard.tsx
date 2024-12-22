@@ -84,14 +84,18 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
                     sx={{
                       "& .MuiOutlinedInput-root": {
                         "& fieldset": {
-                          border: "none", // Remove the default border
+                          border: "none",
                         },
                         "&:hover fieldset": {
                           border: "none", // Prevent border on hover
                         },
                         "&.Mui-focused fieldset": {
-                          border: "none", // Prevent border on focus
+                          border: "none",
                         },
+                      },
+                      "& .MuiInputBase-input": {
+                        color: "white",
+                        letterSpacing:"1.4px" // Change text color
                       },
                     }}
                   />
