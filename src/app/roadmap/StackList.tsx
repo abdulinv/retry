@@ -41,7 +41,7 @@ function StackList({ RoadMaps, setSelectedStack }: RoadMapProps) {
             onBlur={() => {
               const newDoc:RoadMaps = {
                 title: "Enter title here",
-                topics: ["add here"],
+                topics: [{title:"add here",note:"add note here"}],
                 stack: value,
                 color:"primary"
               };

@@ -1,4 +1,7 @@
-type Topics = string[];
+type Topics = {
+  title:string,
+  note:string
+}[]
 export type Colors = "primary" | "warning" | "success" | "info" | "error";
 export interface RoadMaps {
   [key: string]: string | undefined | number | Topics | Colors;
