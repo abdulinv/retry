@@ -105,6 +105,8 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
                   <Typography 
                   color="white"
                   align="left"
+                  maxWidth={"50vw"}
+                  whiteSpace={"break-spaces"}
                   p={3}
                   variant="body1"
                   fontSize={18}
