@@ -23,12 +23,12 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "45vw",
+  width: "52vw",
   bgcolor: "background.paper",
   boxShadow: 24,
   borderRadius: 5,
   p: 2,
-  height: "88vh",
+  height: "89vh",
 };
 const colors: Colors[] = ["primary", "warning", "success", "info", "error"];
 function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
@@ -53,8 +53,10 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
             >
               <Box
                 sx={{
-                  maxHeight: "75vh",
-                  minHeight: "75vh",
+                  bgcolor:"black",
+                  maxHeight: "80vh",
+                  minHeight: "80vh",
+                  marginBottom:1,
                   overflowY: "scroll",
                   "&::-webkit-scrollbar": {
                     width: "6px",
@@ -94,7 +96,20 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
                     }}
                   />
                 )}
-                {!editNote && <Typography>{topicTobeEdited?.note}</Typography>}
+                {!editNote && 
+                <pre>
+                  <Typography 
+                  color="white"
+                  align="left"
+                  p={3}
+                  variant="body1"
+                  fontSize={18}
+                  fontWeight={500}
+                  letterSpacing={1.4}
+                  lineHeight={1.5}
+                  >{topicTobeEdited?.note}</Typography>
+                </pre>
+                }
               </Box>
             </div>
             <Box display={"flex"} gap={4} justifyContent={"center"}>
