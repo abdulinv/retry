@@ -77,6 +77,7 @@ export async function getRoadMaps() {
     "rm-JavaScript",
     "rm-CSS",
     "rm-Node",
+    "rm-ReactNative"
   ];
   const data: { id: string; doc: RoadMaps }[] = [];
 
