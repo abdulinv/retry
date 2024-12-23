@@ -67,6 +67,7 @@ export async function addDocument(
   } catch (e) {
     console.error("Error adding document: ", e);
   }
+  if(collectionId.startsWith("times")) revalidatePath("/time")
 }
 
 export async function getRoadMaps() {
