@@ -7,14 +7,19 @@ export default function Timer() {
   const [startTime, setStartTime] = useState<Date | null>(null);
   const [timeDifference, setTimeDifference] = useState<string>("00:00:00");
   const [totalHours, setTotalHours] = useState("00 hours:00 minuits");
-  const [login ,setLogin] = useState(false);
-  const [pause,setPause] = useState(false);
+  const [login, setLogin] = useState(false);
+  const [pause, setPause] = useState(false);
   const timerRef = useRef<number>(null);
 
   useEffect(() => {
-    const startTime1 = new Date(JSON.parse(localStorage.getItem("date")!)?.date);
+    const startTime1 = new Date(
+      JSON.parse(localStorage.getItem("date")!)?.date
+    );
+    const loginStatus = JSON.parse(localStorage.getItem("login")!)?.status
+    setLogin(loginStatus)
+    
     console.log(startTime1);
-    if (startTime1 && login) {
+    if (startTime1 && loginStatus) {
       timerRef.current = window.setInterval(() => {
         const now = new Date();
         const diffMs = now.getTime() - startTime1.getTime();
@@ -27,9 +32,9 @@ export default function Timer() {
             .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
         );
       }, 1000);
-      document.addEventListener("keydown",()=>{
+      document.addEventListener("keydown", () => {
         console.log("key is pressed");
-      })
+      });
     }
 
     return () => {
@@ -39,6 +44,15 @@ export default function Timer() {
     };
   }, [startTime]);
 
+  const handleLogin = () => {
+    setLogin(true);
+    localStorage.setItem("login", JSON.stringify({ status: true }));
+  };
+
+  const handleLogout = () => {
+    setLogin(false);
+    localStorage.setItem("login", JSON.stringify({ status: false }));
+  };
   const startTimer = () => {
     setPause(false);
     localStorage.setItem("date", JSON.stringify({ date: new Date() }));
@@ -53,7 +67,7 @@ export default function Timer() {
       "totalhr",
       JSON.stringify({ time: "0 hours 0 minutes" })
     );
-    setLogin(false);
+    handleLogout();
     storeHours();
     // localStorage.setItem("date", JSON.stringify({ date:null }));
   };
@@ -79,46 +93,57 @@ export default function Timer() {
     );
     setTotalHours(total);
     console.log("toal hours", total);
+
     localStorage.setItem("totalhr", JSON.stringify({ time: total }));
   };
 
   return (
     <Stack flexDirection={"row"} justifyContent={"space-evenly"} gap={16}>
-      <Typography 
-    fontWeight={500}
-
-      letterSpacing={1}
-      align="center" variant="h5">{timeDifference}</Typography>
-      <Button size="small" variant="contained" onClick={()=>{
-        setLogin(true)
-        startTimer();
-        
+      <Typography
+        fontWeight={500}
+        letterSpacing={1}
+        align="center"
+        variant="h5"
+      >
+        {timeDifference}
+      </Typography>
+      <Button
+        disabled={login}
+        size="small"
+        variant="contained"
+        onClick={() => {
+          handleLogin();
+          startTimer();
         }}
         color="primary"
-        >
+      >
         Login
       </Button>
       <Button
+        disabled={!login}
         size="small"
-        color={pause?"warning":"primary"}
+        color={pause ? "warning" : "primary"}
         variant="contained"
         onClick={storeHours}
       >
         Break
       </Button>
       <Button
+        disabled={!login}
         size="small"
-        color={pause?"success":"primary"}
+        color={pause ? "success" : "primary"}
         variant="contained"
         onClick={startTimer}
       >
         Resume
       </Button>
       <Button
+        disabled={!login}
         size="small"
         color="error"
         variant="contained"
         onClick={resetTimer}
+        
       >
         Logout
       </Button>

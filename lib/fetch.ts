@@ -20,6 +20,7 @@ import {
 import { Jobs, JobsDocs } from "@/app/JDAnalyser/types";
 import { Rev, RevDocs } from "@/app/revision/types";
 import { Bucket, BucketDocs } from "@/app/bucketlist/types";
+import { TimeDocs, TimeInfo } from "@/app/time/types";
 
 export async function getTasks() {
   const data: Tasks[] = [];
@@ -144,6 +145,18 @@ export async function getBucketList(collectionName: string) {
   querySnapshot.forEach((doc) => {
     console.log(`${doc.id} => `, doc.data());
     data.push({ id: doc.id, doc: doc.data() as Bucket });
+  });
+
+  return data;
+}
+
+export async function getTimeTrackInformation(collectionName:string){
+  const data:TimeDocs[] = [];
+  console.log("collection", collectionName);
+  const querySnapshot = await getDocs(collection(db, collectionName));
+  querySnapshot.forEach((doc) => {
+    console.log(`${doc.id} => `, doc.data());
+    data.push({ id: doc.id, doc: doc.data() as {data:TimeInfo[]} });
   });
 
   return data;

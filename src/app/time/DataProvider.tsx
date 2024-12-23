@@ -1,13 +1,25 @@
 "use client";
-import {  Stack } from "@mui/material";
+import {  List, ListItem, ListItemText, Stack ,Box} from "@mui/material";
 import React from "react";
-import Timer from "./Timer";
 
-function DataProvider() {
+import { TimeDocs } from "./types";
+
+function DataProvider({data}:{data:TimeDocs[]}) {
   return (
     <Stack flexDirection={"row"} gap={4}>
      
-      <Timer />
+      <Box>
+        <List>
+            {data[0].doc.data.map((item)=>{
+                return (
+                    <ListItem key={item.date}>
+                        <ListItemText>{item.date}</ListItemText>
+                        <ListItemText>{item.time?.hours}</ListItemText>
+                    </ListItem>
+                )
+            })}
+        </List>
+      </Box>
     </Stack>
   );
 }

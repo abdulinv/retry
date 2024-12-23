@@ -1,9 +1,12 @@
 import { Paper } from "@mui/material";
 import React from "react";
 import DataProvider from "./DataProvider";
+import { getTimeTrackInformation } from "../../../lib/fetch";
 
 
-function page() {
+async function page() {
+
+    const data = await getTimeTrackInformation("times");
   return (
     <Paper
       elevation={15}
@@ -20,7 +23,7 @@ function page() {
       
       }}
     >
-      <DataProvider/>
+      <DataProvider data={data}/>
     </Paper>
   );
 }
