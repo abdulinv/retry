@@ -13,6 +13,7 @@ async function RoadMap() {
           width: "94vw",
           borderRadius: "12px",
           p: "12px",
+          paddingBottom:"80px"
         }}
       >
         <RoadMapProvider RoadMaps={data}/>

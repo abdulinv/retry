@@ -77,8 +77,12 @@ function DataProvider({ data }: { data: RevDocs[] }) {
           display: "flex",
           justifyContent: "center",
           width: "60vw",
+          height:"72vh",
+          maxHeight:"72vh",
           marginLeft: 35,
           p: 4,
+          paddingBottom:"100px",
+          overflowY:"auto"
         }}
       >
         <List>

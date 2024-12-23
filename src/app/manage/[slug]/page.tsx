@@ -10,7 +10,7 @@ async function CheckList({ params }: { params: Promise<{ slug: string }> }) {
   console.log("slug in server component", slug);
   console.log("or", data);
   return (
-    <Box sx={{ marginTop: "80px", width: "100vw", p: "24px" }}>
+    <Box sx={{ marginTop: "80px", width: "100vw", p: "24px" , paddingBottom:"80px"}}>
       <Notes/>
       <Header />
       <CardContainer data={data} />
