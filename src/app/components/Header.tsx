@@ -6,26 +6,30 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import PersonIcon from "@mui/icons-material/Person";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 
+import {
 
+  AccessTimeRounded,
+
+} from "@mui/icons-material";
 
 function Header() {
   return (
     <>
-      <AppBar>
+      <AppBar >
         <Toolbar>
           {/* <Box component={"img"} src="./public/vite.svg" /> */}
-          <Link href="/tests" color="inherit"  underline="none">
-           <Typography sx={{marginLeft:5}} variant="subtitle1">Tests</Typography>
+          <Link href="/tests" color="inherit" underline="none">
+            <Typography sx={{ marginLeft: 5 }} variant="subtitle1">
+              Tests
+            </Typography>
           </Link>
-          
+
           <Box
             sx={{
               flexGrow: 1,
               display: "flex",
-              justifyContent:"space-evenly",
+              justifyContent: "space-evenly",
               gap: 20,
               paddingLeft: 12,
             }}
@@ -46,13 +50,11 @@ function Header() {
               BucketList
             </Link>
           </Box>
-          <IconButton >
-            <PersonIcon />
-          </IconButton>
-
-          <IconButton>
-            <NotificationsIcon />
-          </IconButton>
+          <Link href = "/time">
+            <IconButton color="warning">
+              <AccessTimeRounded />
+            </IconButton>
+          </Link>
         </Toolbar>
       </AppBar>
     </>
