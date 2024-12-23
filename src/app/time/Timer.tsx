@@ -34,9 +34,6 @@ export default function Timer() {
             .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
         );
       }, 1000);
-      document.addEventListener("keydown", () => {
-        console.log("key is pressed");
-      });
     }
 
     return () => {
@@ -87,7 +84,7 @@ export default function Timer() {
   };
   const storeHours = () => {
     setPause(true);
-    const prevHours = JSON.parse(localStorage.getItem("totalhr")!).time;
+    const prevHours = JSON.parse(localStorage.getItem("totalhr")!)?.time ?? "0 hours 0 minutes";
     clearInterval(timerRef.current as number);
     const endTime = new Date();
     // Parse the times into Date objects
@@ -107,7 +104,7 @@ export default function Timer() {
     setTotalHours(`${total.hour} hours ${total.min} minutes`);
     console.log("toal hours", total);
 
-    localStorage.setItem("totalhr", JSON.stringify({ time: total }));
+    localStorage.setItem("totalhr", JSON.stringify({ time: `${total.hour} hours ${total.min} minutes` }));
     return { hours: total.hour, minuits: total.min };
   };
 
