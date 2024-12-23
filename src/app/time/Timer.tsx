@@ -12,7 +12,7 @@ export default function Timer() {
   const timerRef = useRef<number>(null);
 
   useEffect(() => {
-    const startTime1 = new Date(JSON.parse(localStorage.getItem("date")!).date);
+    const startTime1 = new Date(JSON.parse(localStorage.getItem("date")!)?.date);
     console.log(startTime1);
     if (startTime1 && login) {
       timerRef.current = window.setInterval(() => {
