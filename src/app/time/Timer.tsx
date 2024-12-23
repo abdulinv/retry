@@ -3,6 +3,8 @@
 import { useState, useEffect, useRef } from "react";
 import { Button, Stack, Typography } from "@mui/material";
 import { addTime } from "../../../lib/helper";
+import { addDocument} from "../../../lib/fetch";
+import { Time } from "./types";
 export default function Timer() {
   const [startTime, setStartTime] = useState<Date | null>(null);
   const [timeDifference, setTimeDifference] = useState<string>("00:00:00");
@@ -15,9 +17,9 @@ export default function Timer() {
     const startTime1 = new Date(
       JSON.parse(localStorage.getItem("date")!)?.date
     );
-    const loginStatus = JSON.parse(localStorage.getItem("login")!)?.status
-    setLogin(loginStatus)
-    
+    const loginStatus = JSON.parse(localStorage.getItem("login")!)?.status;
+    setLogin(loginStatus);
+
     console.log(startTime1);
     if (startTime1 && loginStatus) {
       timerRef.current = window.setInterval(() => {
@@ -68,10 +70,21 @@ export default function Timer() {
       JSON.stringify({ time: "0 hours 0 minutes" })
     );
     handleLogout();
-    storeHours();
+    handleSave();
+
     // localStorage.setItem("date", JSON.stringify({ date:null }));
   };
 
+  const handleSave = () => {
+    const time: Time = storeHours();
+    const today = new Date();
+    addDocument("times",{
+        day: "d",
+        week: "w",
+        date: today.toDateString(),
+        time: time,
+      })
+  };
   const storeHours = () => {
     setPause(true);
     const prevHours = JSON.parse(localStorage.getItem("totalhr")!).time;
@@ -91,10 +104,11 @@ export default function Timer() {
       prevHours,
       `${diffHours} hours ${diffMinutes} minutes`
     );
-    setTotalHours(total);
+    setTotalHours(`${total.hour} hours ${total.min} minutes`);
     console.log("toal hours", total);
 
     localStorage.setItem("totalhr", JSON.stringify({ time: total }));
+    return { hours: total.hour, minuits: total.min };
   };
 
   return (
@@ -143,7 +157,6 @@ export default function Timer() {
         color="error"
         variant="contained"
         onClick={resetTimer}
-        
       >
         Logout
       </Button>

@@ -15,11 +15,13 @@ async function page() {
         marginTop: 10,
         width:"70vw",
         height:"70vh",
+        maxHeight:"70vh",
         position:"absolute",
         top:"10%",
         left:"15%",
         display:"flex",
         justifyContent:"center",
+        overflowY:"auto"
       
       }}
     >

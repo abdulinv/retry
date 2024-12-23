@@ -38,7 +38,7 @@ export async function getTasks() {
 export async function updateTask(
   collection: string,
   taskId: string,
-  updatedData: Tasks | RoadMaps | Question | TestListItem | Jobs | Rev | Bucket
+  updatedData: Tasks | RoadMaps | Question | TestListItem | Jobs | Rev | Bucket | TimeInfo
 ) {
   const taskRef = doc(db, collection, taskId);
   await updateDoc(taskRef, updatedData);
@@ -58,7 +58,7 @@ export async function updateTask(
 
 export async function addDocument(
   collectionId: string,
-  doc: RoadMaps | Question | TestListItem | Jobs | Rev | Bucket
+  doc: RoadMaps | Question | TestListItem | Jobs | Rev | Bucket | TimeInfo
 ) {
   try {
     const docRef = await addDoc(collection(db, collectionId), doc);
@@ -156,7 +156,7 @@ export async function getTimeTrackInformation(collectionName:string){
   const querySnapshot = await getDocs(collection(db, collectionName));
   querySnapshot.forEach((doc) => {
     console.log(`${doc.id} => `, doc.data());
-    data.push({ id: doc.id, doc: doc.data() as {data:TimeInfo[]} });
+    data.push({ id: doc.id, doc: doc.data() as TimeInfo });
   });
 
   return data;

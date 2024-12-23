@@ -25,6 +25,6 @@ export const addTime = (time1:string, time2:string) => {
       totalMinutes = totalMinutes % 60;
     }
   
-    return `${totalHours} hours ${totalMinutes} minutes`;
+    return {hour:totalHours,min:totalMinutes}
   };
   

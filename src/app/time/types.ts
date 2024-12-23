@@ -1,6 +1,6 @@
-interface Time {
-  hours: string;
-  minuits: string;
+export interface Time {
+  hours: number;
+  minuits: number;
 }
 
 export interface TimeInfo {
@@ -13,5 +13,5 @@ export interface TimeInfo {
 
 export interface TimeDocs {
   id: string;
-  doc: {data:TimeInfo[]};
+  doc: TimeInfo;
 }
