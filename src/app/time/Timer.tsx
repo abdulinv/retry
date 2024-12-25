@@ -131,7 +131,7 @@ export default function Timer() {
         Login
       </Button>
       <Button
-        disabled={!login}
+        disabled={!login || pause }
         size="small"
         color={pause ? "warning" : "primary"}
         variant="contained"
