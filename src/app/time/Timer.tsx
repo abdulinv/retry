@@ -67,10 +67,6 @@ export default function Timer() {
     setStartTime(null);
     setTimeDifference("00:00:00");
     clearInterval(timerRef.current as number);
-    localStorage.setItem(
-      "totalhr",
-      JSON.stringify({ time: "0 hours 0 minutes" })
-    );
     handleLogout();
     handleSave();
 
