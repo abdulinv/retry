@@ -17,9 +17,10 @@ export default function Timer() {
     const startTime1 = new Date(
       JSON.parse(localStorage.getItem("date")!)?.date
     );
-    const loginStatus = JSON.parse(localStorage.getItem("login")!)?.status;
+    const {status:loginStatus,pause:pauseStatus} = JSON.parse(localStorage.getItem("login")!) ?? {status:false,pause:false}
     const totalHours = JSON.parse(localStorage.getItem("totalhr")!)?.time ?? "0 hours 0 minutes";
     setLogin(loginStatus);
+    setPause(pauseStatus);
     setTotalHours(totalHours);
 
     console.log(startTime1);
@@ -47,12 +48,12 @@ export default function Timer() {
 
   const handleLogin = () => {
     setLogin(true);
-    localStorage.setItem("login", JSON.stringify({ status: true }));
+    localStorage.setItem("login", JSON.stringify({ status: true ,pause:false}));
   };
 
   const handleLogout = () => {
     setLogin(false);
-    localStorage.setItem("login", JSON.stringify({ status: false }));
+    localStorage.setItem("login", JSON.stringify({ status: false ,pause:true}));
     
   };
   const startTimer = () => {
@@ -86,8 +87,14 @@ export default function Timer() {
       })
     localStorage.setItem("totalhr", JSON.stringify({ time: `0 hours 0 minutes` }));
   };
-  const storeHours = () => {
+
+  const handlePause = ()=>{
     setPause(true);
+    storeHours();
+    localStorage.setItem("login", JSON.stringify({ status: true ,pause:true}));
+  }
+  const storeHours = () => {
+    
     const prevHours = JSON.parse(localStorage.getItem("totalhr")!)?.time ?? "0 hours 0 minutes";
     clearInterval(timerRef.current as number);
     const endTime = new Date();
@@ -139,7 +146,7 @@ export default function Timer() {
         size="small"
         color={pause ? "warning" : "primary"}
         variant="contained"
-        onClick={storeHours}
+        onClick={handlePause}
       >
         Break
       </Button>
