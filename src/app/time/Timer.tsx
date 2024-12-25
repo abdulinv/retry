@@ -18,7 +18,9 @@ export default function Timer() {
       JSON.parse(localStorage.getItem("date")!)?.date
     );
     const loginStatus = JSON.parse(localStorage.getItem("login")!)?.status;
+    const totalHours = JSON.parse(localStorage.getItem("totalhr")!)?.time ?? "0 hours 0 minutes";
     setLogin(loginStatus);
+    setTotalHours(totalHours);
 
     console.log(startTime1);
     if (startTime1 && loginStatus) {
@@ -51,6 +53,7 @@ export default function Timer() {
   const handleLogout = () => {
     setLogin(false);
     localStorage.setItem("login", JSON.stringify({ status: false }));
+    
   };
   const startTimer = () => {
     setPause(false);
@@ -81,6 +84,7 @@ export default function Timer() {
         date: today.toDateString(),
         time: time,
       })
+    localStorage.setItem("totalhr", JSON.stringify({ time: `0 hours 0 minutes` }));
   };
   const storeHours = () => {
     setPause(true);
@@ -140,7 +144,7 @@ export default function Timer() {
         Break
       </Button>
       <Button
-        disabled={!login}
+        disabled={!login || !pause}
         size="small"
         color={pause ? "success" : "primary"}
         variant="contained"
