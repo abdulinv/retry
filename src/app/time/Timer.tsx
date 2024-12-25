@@ -24,7 +24,7 @@ export default function Timer() {
     setTotalHours(totalHours);
 
     console.log(startTime1);
-    if (startTime1 && loginStatus && pauseStatus) {
+    if (startTime1 && loginStatus && !pauseStatus) {
       timerRef.current = window.setInterval(() => {
         const now = new Date();
         const diffMs = now.getTime() - startTime1.getTime();
