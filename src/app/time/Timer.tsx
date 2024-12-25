@@ -59,6 +59,7 @@ export default function Timer() {
   const startTimer = () => {
     setPause(false);
     localStorage.setItem("date", JSON.stringify({ date: new Date() }));
+    localStorage.setItem("login", JSON.stringify({ status: true ,pause:false}));
     setStartTime(new Date());
   };
 
