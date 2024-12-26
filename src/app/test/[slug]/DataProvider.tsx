@@ -116,9 +116,13 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
               maxWidth: "60vw",
             }}
           >
+            <Box sx={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
             <Typography m={2} variant="h4">
               Question : {QuestionIndex + 1} out of {data.length}
             </Typography>
+            <Button onClick={()=>navigator.clipboard.writeText(data[QuestionIndex].doc.qtext)}>Copy</Button>
+            </Box>
+            
             <Paper
               elevation={10}
               sx={{
@@ -155,7 +159,7 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
                 }}
               >
                 {showInput !== "question" && (
-                  <code>
+                  <code >
                     {" "}
                     <Typography
                       fontWeight={500}
@@ -163,6 +167,7 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
                       lineHeight={1.5}
                       fontSize={18}
                       variant="body1"
+                      
                     >
                       {data[QuestionIndex].doc.qtext}
                     </Typography>
