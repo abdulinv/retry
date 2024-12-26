@@ -156,7 +156,7 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
           </Box>
         </Paper>
       </Modal>
-      <Card elevation={10}>
+      <Card elevation={10} sx={{margin:"16px"}}>
         {showInput !== item.title && (
           <Button
             fullWidth

@@ -10,9 +10,9 @@ async function RoadMap() {
         container
         sx={{
           marginTop: "100px",
-          width: "94vw",
+          width: "98vw",
           borderRadius: "12px",
-          p: "12px",
+          p: "6px",
           paddingBottom:"80px"
         }}
       >

@@ -14,7 +14,7 @@ function RoadMapProvider({ RoadMaps }: RoadMapProps) {
       <StackList RoadMaps={RoadMaps} setSelectedStack={setSelectedStack} />
       <Grid2
         sx={{ border: "1px solid grey", p: 2, borderRadius: "12px" }}
-        size={10}
+        size={11}
       >
         <Button
           sx={{ height: "40px", marginBottom: 4 }}
@@ -35,10 +35,10 @@ function RoadMapProvider({ RoadMaps }: RoadMapProps) {
           <Typography variant="h5">{selectedStack}</Typography>
         </Button>
 
-        <Grid2 container gap={1} rowGap={3} justifyContent={"space-around"}>
+        <Grid2 container gap={0} rowGap={3} justifyContent={"space-around"}>
           {RoadMaps.filter((item) => item.doc.stack === selectedStack)?.map(
             (item, i) => (
-              <Grid2 size={5} key={i}>
+              <Grid2 size={6} key={i}>
                 <RoadMapCard item={item.doc} id={item.id} />
               </Grid2>
             )
