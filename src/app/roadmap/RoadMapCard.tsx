@@ -308,6 +308,7 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
                   )}
                 </ListItemText>
                 <ListItemIcon  
+                  onMouseOver={()=>navigator.clipboard.writeText(topic.note as string)}
                   onClick={() => {
                     setShowNote(topic.title);
                     setNote(topic.note);
