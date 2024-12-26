@@ -29,9 +29,12 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
 
   if (QuestionIndex >= data.length) {
     return (
-      <Typography variant="h1" m={20}>
-        Test completed
-      </Typography>
+      <>
+        <Typography variant="h1" m={20}>
+          Test completed
+        </Typography>
+        <Button variant="contained"  onClick={()=>setQuestionIndex(0)}>Restart</Button>
+      </>
     );
   }
   return (
@@ -56,6 +59,20 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
               alignItems: "center",
             }}
           >
+            <Button
+              variant="contained"
+              sx={{
+                m: 2,
+              }}
+              onClick={() =>
+                setQuestionIndex((prev) => {
+                  if (prev > 0) return prev - 1;
+                  else return 0;
+                })
+              }
+            >
+              Prev
+            </Button>
             <Button
               variant="contained"
               sx={{
@@ -108,8 +125,8 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
                 p: 5,
                 minWidth: "60vw",
                 minHeight: "60vh",
-                maxHeight:"60vh",
-                overflow:"auto",
+                maxHeight: "60vh",
+                overflow: "auto",
                 "&::-webkit-scrollbar": {
                   width: "6px",
                 },
@@ -128,8 +145,8 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
             >
               <pre
                 onDoubleClick={() => {
-                  setShowInput("question")
-                  setValue(data[QuestionIndex].doc.qtext)
+                  setShowInput("question");
+                  setValue(data[QuestionIndex].doc.qtext);
                 }}
                 style={{
                   textAlign: "left",
@@ -140,7 +157,15 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
                 {showInput !== "question" && (
                   <code>
                     {" "}
-                    <Typography fontWeight={500} letterSpacing={0.8} lineHeight={1.5} fontSize={18} variant="body1">{data[QuestionIndex].doc.qtext}</Typography>
+                    <Typography
+                      fontWeight={500}
+                      letterSpacing={0.8}
+                      lineHeight={1.5}
+                      fontSize={18}
+                      variant="body1"
+                    >
+                      {data[QuestionIndex].doc.qtext}
+                    </Typography>
                   </code>
                 )}
                 {showInput === "question" && (
