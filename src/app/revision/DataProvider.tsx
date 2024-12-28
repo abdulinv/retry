@@ -35,13 +35,13 @@ function getColor(
   if (count > 6 && count <= 9 && Math.abs(prio - max) > 3) {
     return "error";
   }
-  if (count > 10 && count <= 12 && Math.abs(prio - max) > 5) {
+  if (count > 10 && count <= 12 && Math.abs(prio - max) > 4) {
     return "error";
   }
-  if (Math.abs(prio - max) > 6) {
+  if (Math.abs(prio - max) > 3) {
     return "warning";
   }
-  if (Math.abs(prio - max) > 12) {
+  if (Math.abs(prio - max) > 6) {
     return "error";
   }
   return "success";
