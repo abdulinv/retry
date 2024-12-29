@@ -30,7 +30,7 @@ const style = {
   boxShadow: 24,
   borderRadius: 5,
   p: 2,
-  height: "89vh",
+  maxHeight: "89vh",
 };
 const colors: Colors[] = ["primary", "warning", "success", "info", "error"];
 function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
@@ -57,7 +57,7 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
                 sx={{
                   bgcolor:"black",
                   maxHeight: "80vh",
-                  minHeight: "80vh",
+                 
                   marginBottom:1,
                   overflowY: "scroll",
                   "&::-webkit-scrollbar": {
