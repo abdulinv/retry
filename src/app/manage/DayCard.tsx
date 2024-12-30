@@ -52,7 +52,7 @@ function DayCard({ day }: Day) {
   return (
     <Card>
       <Button fullWidth color= {headingColor} variant="contained">
-        {heading} {day.title}
+        {heading} {day.title} - {["Sun","Mon","Tue","Wed","Thur","Fri","Sat"][new Date().getDay()]}
       </Button>
       <CardContent
         sx={{
