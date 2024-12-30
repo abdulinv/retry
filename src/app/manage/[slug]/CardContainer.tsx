@@ -18,14 +18,31 @@ function CardContainer({ data }: CardContainerProps) {
     .filter((item) => item.category === slug)
     .toSorted((a, b) => a.order - b.order);
 
-  function autoUpdateDaily(value:string) {
+  function autoUpdateDaily(value: string) {
     const dailyTasks = data.filter((item) => item.category === "Daily");
+    const weeklyTasks = data.filter((item) => item.category === "Weekly");
+
     dailyTasks.forEach((item) => {
-      updateTask("manageDaily", item.title, {
-        ...item,
-        tasks: [...item.tasks, { text: value.slice(8), status: false }],
-      });
+      const index = item.tasks.findIndex((el) => el.text === value.slice(8));
+      if (index === -1) {
+        updateTask("manageDaily", item.title, {
+          ...item,
+          tasks: [...item.tasks, { text: value.slice(8), status: false }],
+        });
+      }
     });
+
+    weeklyTasks.forEach((item) => {
+      const index = item.tasks.findIndex((el) => el.text === value.slice(8));
+      if (index === -1) {
+        updateTask("manageWeekly", item.title, {
+          ...item,
+          tasks: [...item.tasks, { text: value.slice(8), status: false }],
+        });
+      }
+    });
+
+    
   }
   let size;
   if (slug === "Daily") {
