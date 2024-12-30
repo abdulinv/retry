@@ -40,7 +40,7 @@ function DayCard({ day }: Day) {
   let heading: string;
   let headingColor:"info" | "success" = "info";
   if (slug === "Daily") {
-    heading = "Today is";
+    heading = "Today is "+["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Sataurday"][Number(day.title.slice(-1))-1];
     headingColor = new Date().getDay()+1 == Number(day.title.slice(-1))?"success":"info";
   } else if (slug === "Weekly") {
     heading = "The Week is";
@@ -52,7 +52,7 @@ function DayCard({ day }: Day) {
   return (
     <Card>
       <Button fullWidth color= {headingColor} variant="contained">
-        {heading} {day.title} - {["Sun","Mon","Tue","Wed","Thur","Fri","Sat"][new Date().getDay()]}
+        {heading} - {day.title}
       </Button>
       <CardContent
         sx={{
