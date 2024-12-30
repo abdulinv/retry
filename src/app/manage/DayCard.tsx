@@ -19,7 +19,7 @@ interface Day {
     id?: number;
     category?: string;
     title: string;
-    order:number;
+    order: number;
     tasks: {
       text: string;
       status: boolean;
@@ -46,17 +46,17 @@ function DayCard({ day }: Day) {
   } else {
     heading = "The Month is";
   }
-  const sortedTasks = day.tasks.toSorted((a,b)=>a.text > b.text?1:-1);
+  const sortedTasks = day.tasks.toSorted((a, b) => (a.text > b.text ? 1 : -1));
   return (
     <Card>
-      <Button fullWidth color="primary" variant="contained">
-          {heading} {day.title}
-        </Button>
+      <Button fullWidth color= {new Date().getDay()+1 == Number(day.title.slice(-1))?"success":"info"} variant="contained">
+        {heading} {day.title}
+      </Button>
       <CardContent
-        sx={{ 
+        sx={{
           maxHeight: "300px",
-          minHeight: "300px", 
-          overflowY: "auto" ,
+          minHeight: "300px",
+          overflowY: "auto",
           "&::-webkit-scrollbar": {
             width: "8px",
           },
@@ -71,10 +71,8 @@ function DayCard({ day }: Day) {
           "&::-webkit-scrollbar-thumb:hover": {
             backgroundColor: theme.palette.primary.dark,
           },
-        
         }}
       >
-        
         <List
           sx={{
             display: "flex",
@@ -158,7 +156,12 @@ function DayCard({ day }: Day) {
         >
           +
         </Button>
-        <Button>-</Button>
+        <Button onClick={() => {
+           updateTask(`manage${slug}`, day.title, {
+            ...day,
+            tasks: [],
+          });
+        }}>reset</Button>
       </CardActionArea>
     </Card>
   );
