@@ -25,12 +25,13 @@ interface Day {
       status: boolean;
     }[];
   };
+  autoUpdateDaily:(value:string)=>void
 }
 
 import { useParams } from "next/navigation";
 import { updateTask } from "../../../lib/fetch";
 
-function DayCard({ day }: Day) {
+function DayCard({ day,autoUpdateDaily }: Day) {
   const [showInput, setShowInput] = useState<string | null>(null);
   const [value, setValue] = useState("");
   const { slug } = useParams();
@@ -38,20 +39,36 @@ function DayCard({ day }: Day) {
   console.log("from car", slug);
 
   let heading: string;
-  let headingColor:"info" | "success" = "info";
+  let headingColor: "info" | "success" = "info";
   if (slug === "Daily") {
-    heading = "Today is "+["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Sataurday"][Number(day.title.slice(-1))-1];
-    headingColor = new Date().getDay()+1 == Number(day.title.slice(-1))?"success":"info";
+    heading =
+      "Today is " +
+      [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Sataurday",
+      ][Number(day.title.slice(-1)) - 1];
+    headingColor =
+      new Date().getDay() + 1 == Number(day.title.slice(-1))
+        ? "success"
+        : "info";
   } else if (slug === "Weekly") {
     heading = "The Week is";
-    headingColor = Math.floor(new Date().getDate() / 7) == Number(day.title.slice(-1))?"success":"info";
+    headingColor =
+      Math.floor(new Date().getDate() / 7) == Number(day.title.slice(-1))
+        ? "success"
+        : "info";
   } else {
     heading = "The Month is";
   }
   const sortedTasks = day.tasks.toSorted((a, b) => (a.text > b.text ? 1 : -1));
   return (
     <Card>
-      <Button fullWidth color= {headingColor} variant="contained">
+      <Button fullWidth color={headingColor} variant="contained">
         {heading} - {day.title}
       </Button>
       <CardContent
@@ -109,6 +126,11 @@ function DayCard({ day }: Day) {
                             { text: value, status: task.status },
                           ],
                         });
+                        if (slug === "Monthly" && value.includes("Daily#-")) {
+                          autoUpdateDaily(value);
+                           
+              
+                        }
                         setShowInput(null);
                       }}
                       sx={{
@@ -158,12 +180,16 @@ function DayCard({ day }: Day) {
         >
           +
         </Button>
-        <Button onClick={() => {
-           updateTask(`manage${slug}`, day.title, {
-            ...day,
-            tasks: [],
-          });
-        }}>reset</Button>
+        <Button
+          onClick={() => {
+            updateTask(`manage${slug}`, day.title, {
+              ...day,
+              tasks: [],
+            });
+          }}
+        >
+          reset
+        </Button>
       </CardActionArea>
     </Card>
   );
