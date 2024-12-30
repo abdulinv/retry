@@ -38,18 +38,20 @@ function DayCard({ day }: Day) {
   console.log("from car", slug);
 
   let heading: string;
-
+  let headingColor:"info" | "success" = "info";
   if (slug === "Daily") {
     heading = "Today is";
+    headingColor = new Date().getDay()+1 == Number(day.title.slice(-1))?"success":"info";
   } else if (slug === "Weekly") {
     heading = "The Week is";
+    headingColor = Math.floor(new Date().getDate() / 7) == Number(day.title.slice(-1))?"success":"info";
   } else {
     heading = "The Month is";
   }
   const sortedTasks = day.tasks.toSorted((a, b) => (a.text > b.text ? 1 : -1));
   return (
     <Card>
-      <Button fullWidth color= {new Date().getDay()+1 == Number(day.title.slice(-1))?"success":"info"} variant="contained">
+      <Button fullWidth color= {headingColor} variant="contained">
         {heading} {day.title}
       </Button>
       <CardContent
