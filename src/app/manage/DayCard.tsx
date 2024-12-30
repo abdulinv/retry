@@ -64,10 +64,11 @@ function DayCard({ day,autoUpdateDaily }: Day) {
         : "info";
   } else {
     heading = "The Month is";
+    headingColor = "success";
   }
   const sortedTasks = day.tasks.toSorted((a, b) => (a.text > b.text ? 1 : -1));
   return (
-    <Card>
+    <Card elevation={headingColor === "success" ?20:5} sx={{opacity:headingColor === "success" ?1:0.5}}>
       <Button fullWidth color={headingColor} variant="contained">
         {heading} - {day.title}
       </Button>
