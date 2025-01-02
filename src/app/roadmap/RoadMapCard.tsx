@@ -112,8 +112,8 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
                   p={3}
                   variant="body1"
                   fontSize={18}
-                  fontWeight={500}
-                  letterSpacing={1.4}
+                  fontWeight={600}
+                  letterSpacing={1.2}
                   lineHeight={1.5}
                   >{topicTobeEdited?.note}</Typography>
                 </pre>
