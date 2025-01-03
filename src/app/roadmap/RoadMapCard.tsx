@@ -45,9 +45,11 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
   const topicTobeEdited = item.topics.find((el) => el.title === showNote);
   return (
     <>
-      <Modal open={showNote ? true : false} onClose={() => setShowNote(null)}>
-        <Paper elevation={10}>
-          <Box sx={style}>
+      <Modal open={showNote ? true : false} onClose={() => setShowNote(null)} >
+        <div onMouseOut={()=>{setShowNote(null)}}>
+
+        <Paper elevation={10} >
+          <Box  sx={style} >
             <div
               onDoubleClick={() => {
                 setEditNote(true);
@@ -145,6 +147,7 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
             <Button
               color="warning"
               variant="outlined"
+              onMouseOut={()=>{setShowNote(null);}}
               onClick={() => {
                 setShowNote(null);
               }}
@@ -155,6 +158,9 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
            
           </Box>
         </Paper>
+
+        </div>
+       
       </Modal>
       <Card elevation={10} sx={{margin:"16px"}}>
         {showInput !== item.title && (
