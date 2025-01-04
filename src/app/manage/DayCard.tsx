@@ -119,7 +119,7 @@ function DayCard({ day, autoUpdateDaily, updateWeeklyDuration }: Day) {
   return (
     <Card
       elevation={headingColor === "success" ? 20 : 5}
-      sx={{ opacity: headingColor === "success" ? 1 : 0.5 }}
+      sx={{ opacity: headingColor === "success" ? 1 : 0.7 }}
     >
       <Button fullWidth color={headingColor} variant="contained">
         {heading} - {day.title}
@@ -201,7 +201,7 @@ function DayCard({ day, autoUpdateDaily, updateWeeklyDuration }: Day) {
                             border:"1px solid grey"
                           }}
                           color={task.duration?.hh || 0<20?"error":task.duration?.hh || 0<30?"warning":"success"}
-                          variant="determinate" value={ ( (20 * 60) +
+                          variant="determinate" value={ ( ((task.duration?.hh || 0) * 60) +
                           (task.duration?.mm || 0))/24} />
                         )}
                       </Box>
