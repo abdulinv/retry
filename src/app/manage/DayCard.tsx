@@ -171,6 +171,7 @@ function DayCard({ day, autoUpdateDaily, updateWeeklyDuration }: Day) {
                         padding: 2,
                         borderRadius: 3,
                         color: "white",
+                        opacity:0.8,
                         backgroundColor:
                           taskStart === task.text
                             ? theme.palette.success.light
@@ -186,12 +187,13 @@ function DayCard({ day, autoUpdateDaily, updateWeeklyDuration }: Day) {
                           color: "white",
                         }}
                       >
-                        <Typography color="inherit">{task.text}</Typography>
-                        <Typography color="inherit" fontWeight={600}>
+                        <Typography color= {task.status ? "success":"inherit"}>{task.text}</Typography>
+                        {slug !== "Monthly" && <Typography color="inherit" fontWeight={600}>
                           {task.duration
                             ? `${task.duration.hh} hours ${task.duration.mm} minuits`
                             : "00 hours 00 minuits"}
-                        </Typography>
+                        </Typography>}
+                        
                         {slug === "Weekly" && 
                         (
                          <LinearProgress  
@@ -233,7 +235,7 @@ function DayCard({ day, autoUpdateDaily, updateWeeklyDuration }: Day) {
                               ...day,
                               tasks: [
                                 ...tasks,
-                                { text: task.text, status: !task.status },
+                                { text: task.text, status: !task.status ,duration:task.duration},
                               ],
                             });
                           }}
