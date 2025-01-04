@@ -26,13 +26,18 @@ function CardContainer({ data }: CardContainerProps) {
    const weekTobeUpdated = weeklyTasks.find(week=>week.title === weekTitleTobeUpdated) as Tasks;
    const index = weekTobeUpdated.tasks.findIndex(item=>item.text === text);
    const taskTobeUpdated = weekTobeUpdated.tasks[index];
+
+   const total = ((taskTobeUpdated.duration?.hh || 0) + duration.hh) * 60 + ((taskTobeUpdated.duration?.mm || 0) + duration.mm)
+   const currentHH = Math.floor(total/60);
+   const currentMM = total % 60;
+
    updateTask('manageWeekly',weekTitleTobeUpdated as string,{
         ...weekTobeUpdated ,
         tasks:[
           ...weekTobeUpdated.tasks.slice(0,index),
           {text:taskTobeUpdated.text,status:taskTobeUpdated.status,duration:{
-            hh:taskTobeUpdated.duration?.hh || 0 +duration.hh,
-            mm:taskTobeUpdated.duration?.mm || 0 +duration.mm
+            hh:currentHH,
+            mm:currentMM
           }},
           ...weekTobeUpdated.tasks.slice(index+1,),
         ]
