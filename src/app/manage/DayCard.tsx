@@ -98,12 +98,18 @@ function DayCard({ day, autoUpdateDaily, updateWeeklyDuration }: Day) {
         const hours = Math.floor(diffMs / (1000 * 60 * 60));
         const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
         const tasks = day.tasks.filter((item) => item.text !== text);
-        const prevDuration = day.tasks.filter(item=>item.text === text)[0].duration;
+        const {duration:prevDuration} = day.tasks.filter(item=>item.text === text)[0] 
+      
+         const total = ((prevDuration?.hh ?? 0) + hours) * 60 + (prevDuration?.mm ?? 0 )+minutes;
+         const prevHH = Math.floor(total/60);
+         const prevMM = total % 60;
+     
+
         updateTask(`manage${slug}`, day.title, {
           ...day,
           tasks: [
             ...tasks,
-            { text: text, status: true, duration: { hh: (prevDuration?.hh || 0) + hours, mm:(prevDuration?.mm || 0) + minutes} },
+            { text: text, status: true, duration: { hh: prevHH, mm:prevMM} },
           ],
         });
         updateWeeklyDuration({ hh: hours, mm: minutes }, text);
