@@ -46,7 +46,7 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
   return (
     <>
       <Modal open={showNote ? true : false} onClose={() => setShowNote(null)} >
-        <div onMouseOut={()=>{setShowNote(null)}}>
+        <div >
 
         <Paper elevation={10} >
           <Box  sx={style} >
