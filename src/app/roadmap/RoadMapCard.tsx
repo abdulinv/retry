@@ -147,7 +147,6 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
             <Button
               color="warning"
               variant="outlined"
-              onMouseOut={()=>{setShowNote(null);}}
               onClick={() => {
                 setShowNote(null);
               }}
