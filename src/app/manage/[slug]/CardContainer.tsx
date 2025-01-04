@@ -27,9 +27,10 @@ function CardContainer({ data }: CardContainerProps) {
    const index = weekTobeUpdated.tasks.findIndex(item=>item.text === text);
    const taskTobeUpdated = weekTobeUpdated.tasks[index];
 
-   const total = ((taskTobeUpdated.duration?.hh || 0) + duration.hh) * 60 + ((taskTobeUpdated.duration?.mm || 0) + duration.mm)
+   const total = (((taskTobeUpdated.duration?.hh || 0) + duration.hh) * 60)+ ((taskTobeUpdated.duration?.mm || 0) + duration.mm)
    const currentHH = Math.floor(total/60);
    const currentMM = total % 60;
+   console.log(currentHH,currentMM,total,duration.mm,taskTobeUpdated.duration?.mm)
 
    updateTask('manageWeekly',weekTitleTobeUpdated as string,{
         ...weekTobeUpdated ,
