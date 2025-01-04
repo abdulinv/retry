@@ -1,15 +1,23 @@
+export interface Duration {
+  hh:number;
+  mm:number
+ }
+
 interface Task {
   text: string;
   status: boolean;
+  duration?:Duration
 }
 
+
 export interface Tasks {
-  [key:string]:string |undefined |number |Task[],
+  [key:string]:string |undefined |number |Task[] | Duration,
   id?: number;
   category?:string;
   title: string;
   tasks: Task[];
   order:number;
+
 }
 
 

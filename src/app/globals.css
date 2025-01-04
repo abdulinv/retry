@@ -37,6 +37,16 @@ a {
   text-decoration: none;
 }
 
+ /* For the progress value (the filled part of the bar) */
+ progress::-webkit-progress-value {
+  background-color: #4caf50; /* Green */
+}
+
+/* For the entire progress bar background */
+progress::-webkit-progress-bar {
+  background-color: #c02424; /* Light gray */
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

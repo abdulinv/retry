@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   List,
   ListItem,
@@ -12,6 +12,9 @@ import {
   Button,
   TextField,
   useTheme,
+  Box,
+  Typography,
+  LinearProgress,
 } from "@mui/material";
 
 interface Day {
@@ -23,20 +26,36 @@ interface Day {
     tasks: {
       text: string;
       status: boolean;
+      duration?: {
+        hh: number;
+        mm: number;
+      };
     }[];
   };
-  autoUpdateDaily:(value:string)=>void
+  autoUpdateDaily: (value: string) => void;
+  updateWeeklyDuration: (duration: Duration, text: string) => void;
 }
 
 import { useParams } from "next/navigation";
 import { updateTask } from "../../../lib/fetch";
+import { Duration } from "@/models/checklist/daily/daily";
 
-function DayCard({ day,autoUpdateDaily }: Day) {
+function DayCard({ day, autoUpdateDaily, updateWeeklyDuration }: Day) {
   const [showInput, setShowInput] = useState<string | null>(null);
   const [value, setValue] = useState("");
+  const [taskStart, setTaskStart] = useState<null | string>(null);
   const { slug } = useParams();
   const theme = useTheme();
-  console.log("from car", slug);
+
+   useEffect(()=>{
+    if(localStorage.getItem('activeTask')){
+      const startedTask = JSON.parse(localStorage.getItem("activeTask")!).task;
+      console.log("task local",startedTask);
+      if(startedTask) setTaskStart(startedTask);
+    }
+   
+   },[]);
+
 
   let heading: string;
   let headingColor: "info" | "success" = "info";
@@ -67,8 +86,41 @@ function DayCard({ day,autoUpdateDaily }: Day) {
     headingColor = "success";
   }
   const sortedTasks = day.tasks.toSorted((a, b) => (a.text > b.text ? 1 : -1));
+  const handleStartTask = (text: string) => {
+   
+    if (taskStart === text) {
+      setTaskStart(null);
+      let startTime;
+      if (localStorage.getItem("activeTask")) {
+        startTime = new Date(JSON.parse(localStorage.getItem("activeTask")!).start);
+        const now = new Date();
+        const diffMs = now.getTime() - startTime.getTime();
+        const hours = Math.floor(diffMs / (1000 * 60 * 60));
+        const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+        const tasks = day.tasks.filter((item) => item.text !== text);
+        const prevDuration = day.tasks.filter(item=>item.text === text)[0].duration;
+        alert(prevDuration?.mm);
+        updateTask(`manage${slug}`, day.title, {
+          ...day,
+          tasks: [
+            ...tasks,
+            { text: text, status: true, duration: { hh: (prevDuration?.hh || 0) + hours, mm:(prevDuration?.mm || 0) + minutes} },
+          ],
+        });
+        updateWeeklyDuration({ hh: hours, mm: minutes }, text);
+      }
+
+      localStorage.setItem("activeTask", JSON.stringify({task:null,start:null}));
+    } else {
+      setTaskStart(text);
+      localStorage.setItem("activeTask", JSON.stringify({task:text,start:new Date()}));
+    }
+  };
   return (
-    <Card elevation={headingColor === "success" ?20:5} sx={{opacity:headingColor === "success" ?1:0.5}}>
+    <Card
+      elevation={headingColor === "success" ? 20 : 5}
+      sx={{ opacity: headingColor === "success" ? 1 : 0.5 }}
+    >
       <Button fullWidth color={headingColor} variant="contained">
         {heading} - {day.title}
       </Button>
@@ -108,7 +160,87 @@ function DayCard({ day,autoUpdateDaily }: Day) {
                     setValue(task.text);
                   }}
                 >
-                  {showInput !== task.text && task.text}
+                  {showInput !== task.text && (
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        gap: 4,
+                        border: "1px solid grey",
+                        padding: 2,
+                        borderRadius: 3,
+                        color: "white",
+                        backgroundColor:
+                          taskStart === task.text
+                            ? theme.palette.success.light
+                            : "black",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexGrow: 1,
+                          flexDirection: "column",
+                          gap: 1,
+                          color: "white",
+                        }}
+                      >
+                        <Typography color="inherit">{task.text}</Typography>
+                        <Typography color="inherit" fontWeight={600}>
+                          {task.duration
+                            ? `${task.duration.hh} hours ${task.duration.mm} minuits`
+                            : "00 hours 00 minuits"}
+                        </Typography>
+                        {slug === "Weekly" && 
+                        (
+                         <LinearProgress  
+                          sx={{
+                            height:12,
+                            borderRadius:4,
+                            border:"1px solid grey"
+                          }}
+                          color={task.duration?.hh || 0<20?"error":task.duration?.hh || 0<30?"warning":"success"}
+                          variant="determinate" value={ ( (20 * 60) +
+                          (task.duration?.mm || 0))/24} />
+                        )}
+                      </Box>
+
+                      <Box
+                        sx={{
+                          backgroundColor: "white",
+                          borderRadius: 2,
+                        }}
+                      >
+                        {slug === "Daily" && (
+                          <Button
+                            disabled={slug !== "Daily"}
+                            color="primary"
+                            onClick={() => handleStartTask(task.text)}
+                          >
+                            {taskStart === task.text ? "end" : "start"}
+                          </Button>
+                        )}
+
+                        <Checkbox
+                          color="success"
+                          checked={task.status}
+                          onClick={() => {
+                            const tasks = day.tasks.filter(
+                              (item) => item.text !== task.text
+                            );
+                            updateTask(`manage${slug}`, day.title, {
+                              ...day,
+                              tasks: [
+                                ...tasks,
+                                { text: task.text, status: !task.status },
+                              ],
+                            });
+                          }}
+                        />
+                      </Box>
+                    </Box>
+                  )}
                   {showInput === task.text && (
                     <TextField
                       value={value}
@@ -129,8 +261,6 @@ function DayCard({ day,autoUpdateDaily }: Day) {
                         });
                         if (slug === "Monthly" && value.includes("Daily#-")) {
                           autoUpdateDaily(value);
-                           
-              
                         }
                         setShowInput(null);
                       }}
@@ -150,21 +280,6 @@ function DayCard({ day,autoUpdateDaily }: Day) {
                     />
                   )}
                 </ListItemText>
-                <Checkbox
-                  checked={task.status}
-                  onClick={() => {
-                    const tasks = day.tasks.filter(
-                      (item) => item.text !== task.text
-                    );
-                    updateTask(`manage${slug}`, day.title, {
-                      ...day,
-                      tasks: [
-                        ...tasks,
-                        { text: task.text, status: !task.status },
-                      ],
-                    });
-                  }}
-                />
               </ListItem>
             );
           })}

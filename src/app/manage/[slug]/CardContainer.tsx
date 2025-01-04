@@ -4,7 +4,7 @@ import React from "react";
 import { Grid2 } from "@mui/material";
 import DayCard from "../DayCard";
 import { useParams } from "next/navigation";
-import { Tasks } from "@/models/checklist/daily/daily";
+import { Duration, Tasks } from "@/models/checklist/daily/daily";
 import { updateTask } from "../../../../lib/fetch";
 
 interface CardContainerProps {
@@ -17,6 +17,28 @@ function CardContainer({ data }: CardContainerProps) {
   const tasks = data
     .filter((item) => item.category === slug)
     .toSorted((a, b) => a.order - b.order);
+
+
+  function updateWeeklyDuration(duration:Duration,text:string){
+    const weeklyTasks = data.filter((item) => item.category === "Weekly");
+   
+   const weekTitleTobeUpdated = weeklyTasks.find(week=>week.tasks.find(item=>item.text === text))?.title;
+   const weekTobeUpdated = weeklyTasks.find(week=>week.title === weekTitleTobeUpdated) as Tasks;
+   const index = weekTobeUpdated.tasks.findIndex(item=>item.text === text);
+   const taskTobeUpdated = weekTobeUpdated.tasks[index];
+   updateTask('manageWeekly',weekTitleTobeUpdated as string,{
+        ...weekTobeUpdated ,
+        tasks:[
+          ...weekTobeUpdated.tasks.slice(0,index),
+          {text:taskTobeUpdated.text,status:taskTobeUpdated.status,duration:{
+            hh:taskTobeUpdated.duration?.hh || 0 +duration.hh,
+            mm:taskTobeUpdated.duration?.mm || 0 +duration.mm
+          }},
+          ...weekTobeUpdated.tasks.slice(index+1,),
+        ]
+   })
+
+  }
 
   function autoUpdateDaily(value: string) {
     const dailyTasks = data.filter((item) => item.category === "Daily");
@@ -46,7 +68,7 @@ function CardContainer({ data }: CardContainerProps) {
   }
   let size;
   if (slug === "Daily") {
-    size = 4;
+    size = 6;
   } else if (slug === "Weekly") size = 6;
   else size = 10;
   return (
@@ -55,7 +77,7 @@ function CardContainer({ data }: CardContainerProps) {
         {tasks.map((day: Tasks, i: number) => {
           return (
             <Grid2 key={i} size={size}>
-              <DayCard day={day} autoUpdateDaily={autoUpdateDaily} />
+              <DayCard day={day} autoUpdateDaily={autoUpdateDaily}  updateWeeklyDuration={updateWeeklyDuration}/>
             </Grid2>
           );
         })}
