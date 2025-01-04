@@ -99,7 +99,6 @@ function DayCard({ day, autoUpdateDaily, updateWeeklyDuration }: Day) {
         const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
         const tasks = day.tasks.filter((item) => item.text !== text);
         const prevDuration = day.tasks.filter(item=>item.text === text)[0].duration;
-        alert(prevDuration?.mm);
         updateTask(`manage${slug}`, day.title, {
           ...day,
           tasks: [
