@@ -26,22 +26,23 @@ function getColor(
   | "info"
   | "success"
   | "warning" {
-  if (count <= 3 && Math.abs(prio - max) > 1) {
+  if (count <= 3 && Math.abs(prio - max) >= 1) {
     return "error";
   }
-  if (count > 3 && count <= 6 && Math.abs(prio - max) > 2) {
+  if (count > 3 && count <= 6 && Math.abs(prio - max) >= 2) {
     return "error";
   }
-  if (count > 6 && count <= 9 && Math.abs(prio - max) > 3) {
+  if (count > 6 && count <= 9 && Math.abs(prio - max) >= 3) {
     return "error";
   }
-  if (count > 10 && count <= 12 && Math.abs(prio - max) > 4) {
-    return "error";
-  }
-  if (Math.abs(prio - max) > 3) {
+  if (count > 10 && count <= 12 && Math.abs(prio - max) >= 4) {
     return "warning";
   }
-  if (Math.abs(prio - max) > 6) {
+
+  if (Math.abs(prio - max) >= 6) {
+    return "warning";
+  }
+  if (Math.abs(prio - max) > 11) {
     return "error";
   }
   return "success";
