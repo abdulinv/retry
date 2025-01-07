@@ -41,7 +41,7 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
     <>
       <Box
         sx={{
-          marginTop: "100px",
+          marginTop: "60px",
         }}
       >
         <Box
@@ -106,14 +106,15 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
         sx={{
           width: "100vw",
           gap: 4,
-          height: "100vh",
+         
         }}
       >
         <Grid2>
           <Box
             sx={{
               p: 2,
-              maxWidth: "60vw",
+              marginLeft:24,
+              maxWidth: "80vw",
             }}
           >
             <Box sx={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
@@ -126,9 +127,9 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
             <Paper
               elevation={10}
               sx={{
-                p: 5,
-                minWidth: "60vw",
-                minHeight: "60vh",
+                p: 2,
+                minWidth: "80vw",
+               
                 maxHeight: "60vh",
                 overflow: "auto",
                 "&::-webkit-scrollbar": {
@@ -203,11 +204,11 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
               width: "100%",
             }}
           >
-            <Typography m={2} variant="h4">
+            {/* <Typography m={2} variant="h4">
               {" "}
               Select Answer
-            </Typography>
-            <Paper
+            </Typography> */}
+            {/* <Paper
               elevation={10}
               sx={{ p: 1, minWidth: "30vw", minHeight: "60vh" }}
             >
@@ -268,7 +269,7 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
                   ))}
                 </RadioGroup>
               </form>
-            </Paper>
+            </Paper> */}
           </Box>
         </Grid2>
       </Grid2>
