@@ -17,7 +17,8 @@ import { addDocument, updateTask } from "../../../lib/fetch";
 function getColor(
   prio: number,
   count: number,
-  max: number
+  max: number,
+  name:string
 ):
   | "inherit"
   | "error"
@@ -26,7 +27,14 @@ function getColor(
   | "info"
   | "success"
   | "warning" {
-  if (count <= 3 && Math.abs(prio - max) >= 1) {
+
+  if (name === "JAVASCRIPT" && Math.abs(prio - max) >= 2 ){
+     return "error"
+  }
+  if (name === "REACT" && Math.abs(prio - max) >= 2 ){
+    return "error"
+  }
+  if (count <= 3 && Math.abs(prio - max) >= 1 ) {
     return "error";
   }
   if (count > 3 && count <= 6 && Math.abs(prio - max) >= 2) {
@@ -141,13 +149,15 @@ function DataProvider({ data }: { data: RevDocs[] }) {
                       borderColor={`${getColor(
                         item.doc.priority,
                         item.doc.count,
-                        maxPrio
+                        maxPrio,
+                        item.doc.name.toUpperCase()
                       )}`}
                       border={`1px solid `}
                       color={`${getColor(
                         item.doc.priority,
                         item.doc.count,
-                        maxPrio
+                        maxPrio,
+                        item.doc.name.toUpperCase()
                       )}`}
                       variant="body1"
                       fontWeight={500}
@@ -176,7 +186,8 @@ function DataProvider({ data }: { data: RevDocs[] }) {
                   color={`${getColor(
                     item.doc.priority,
                     item.doc.count,
-                    maxPrio
+                    maxPrio,
+                    item.doc.name.toUpperCase()
                   )}`}
                   variant="contained"
                   size="small"
@@ -218,7 +229,8 @@ function DataProvider({ data }: { data: RevDocs[] }) {
                   color={`${getColor(
                     item.doc.priority,
                     item.doc.count,
-                    maxPrio
+                    maxPrio,
+                    item.doc.name.toUpperCase()
                   )}`}
                   variant="contained"
                   size="small"
