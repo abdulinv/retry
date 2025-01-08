@@ -307,7 +307,7 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
                     setShowNote(topic.title);
                     setNote(topic.note);
                   }}>
-                  <InfoIcon sx={{marginLeft:"8px",cursor:"pointer"}} color={topic.note.length<15?"disabled":"info"}/>
+                  <InfoIcon sx={{marginLeft:"8px",cursor:"pointer"}} color={topic?.note?.length<15?"disabled":"info"}/>
                 </ListItemIcon>
               </ListItem>
             ))}
