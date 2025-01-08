@@ -32,7 +32,7 @@ const style = {
   p: 2,
   maxHeight: "89vh",
 };
-const colors: Colors[] = ["primary", "warning", "success", "info", "error"];
+const colors: Colors[] = ["primary", "warning", "success","error"];
 function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
   const [showInput, setShowInput] = useState<string | null>(null);
   const [value, setValue] = useState("");
