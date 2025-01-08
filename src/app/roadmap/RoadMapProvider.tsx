@@ -36,7 +36,10 @@ function RoadMapProvider({ RoadMaps }: RoadMapProps) {
         </Button>
 
         <Grid2 container gap={0} rowGap={3} justifyContent={"space-around"}>
-          {RoadMaps.filter((item) => item.doc.stack === selectedStack)?.map(
+          {RoadMaps.filter((item) => item.doc.stack === selectedStack)?.sort((a,b)=>{
+            if(a.doc.title>b.doc.title) return 1;
+            else return -1;
+          }).map(
             (item, i) => (
               <Grid2 size={6} key={i}>
                 <RoadMapCard item={item.doc} id={item.id} />
