@@ -36,7 +36,6 @@ const colors: Colors[] = ["primary", "warning", "success","error"];
 function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
   const [showInput, setShowInput] = useState<string | null>(null);
   const [value, setValue] = useState("");
-  const [status, setStatus] = useState(0);
   const [showNote, setShowNote] = useState<string | null>(null);
   const [editNote, setEditNote] = useState(false);
   const [note, setNote] = useState("add note here");
