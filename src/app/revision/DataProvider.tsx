@@ -34,7 +34,7 @@ function getColor(
   if (name === "REACT" && Math.abs(prio - max) >= 2 ){
     return "error"
   }
-  if (count <= 3 && Math.abs(prio - max) >= 1 ) {
+  if (count <= 3 && Math.abs(prio - max) > 1 ) {
     return "error";
   }
   if (count > 3 && count <= 6 && Math.abs(prio - max) >= 2) {

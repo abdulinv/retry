@@ -79,7 +79,7 @@ function CardContainer({ data }: CardContainerProps) {
   else size = 10;
   return (
     <>
-      <Grid2 container gap={2} rowGap={6} justifyContent={"space-evenly"}>
+      <Grid2 container gap={2} rowGap={1} justifyContent={"space-evenly"}>
         {tasks.map((day: Tasks, i: number) => {
           return (
             <Grid2 key={i} size={size}>
