@@ -167,16 +167,6 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
             fullWidth
             color={item.color}
             variant="contained"
-            onClick={() => {
-              setStatus((prev) => {
-                if (prev < 4) return prev + 1;
-                else return 0;
-              });
-              updateTask(`rm-${item.stack}`, id, {
-                ...item,
-                color: `${colors[status]}`,
-              });
-            }}
             onDoubleClick={() => {
               setShowInput(item.title);
               setValue(item.title);
@@ -318,13 +308,13 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
                     setShowNote(topic.title);
                     setNote(topic.note);
                   }}>
-                  <InfoIcon sx={{marginLeft:"8px",cursor:"pointer"}} color="info"/>
+                  <InfoIcon sx={{marginLeft:"8px",cursor:"pointer"}} color={topic.note.length<15?"disabled":"info"}/>
                 </ListItemIcon>
               </ListItem>
             ))}
           </List>
         </CardContent>
-        <CardActionArea>
+        <CardActionArea sx={{display:"flex",flexDirection:"row"}}>
           <Button
             fullWidth
             color="success"
@@ -341,6 +331,34 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
           >
             +
           </Button>
+          <Box sx={{display:"flex",flexDirection:"row"}}>
+          <Button color="success" sx={{fontSize:"8px"}} onClick={()=>{
+            updateTask(`rm-${item.stack}`, id, {
+              ...item,
+              color: `${colors[2]}`,
+            });
+          }}>Done</Button>
+          <Button color="warning" sx={{fontSize:"8px"}} onClick={()=>{
+            updateTask(`rm-${item.stack}`, id, {
+              ...item,
+              color: `${colors[1]}`,
+            });
+          }}>prog</Button>
+          <Button color="error" sx={{fontSize:"8px"}} onClick={()=>{
+            updateTask(`rm-${item.stack}`, id, {
+              ...item,
+              color: `${colors[3]}`,
+            });
+          }}>pend</Button>
+          <Button color="primary" sx={{fontSize:"8px"}} onClick={()=>{
+            updateTask(`rm-${item.stack}`, id, {
+              ...item,
+              color: `${colors[0]}`,
+            });
+          }}>reset</Button>
+          </Box>
+          
+         
         </CardActionArea>
       </Card>
     </>
