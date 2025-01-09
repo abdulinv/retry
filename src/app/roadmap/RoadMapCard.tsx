@@ -20,6 +20,7 @@ import { Colors, RoadMaps } from "./types";
 import { useState } from "react";
 import { updateTask } from "../../../lib/fetch";
 
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -240,7 +241,7 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
               key={topic.title} sx={{ m: 0, p: 0 }}>
                 <ListItemText
                  
-                  
+                 
                   onDoubleClick={() => {
                     setShowInput(topic.title);
                     setValue(topic.title);
@@ -302,11 +303,11 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
                   )}
                 </ListItemText>
                 <ListItemIcon  
-                  onMouseOver={()=>navigator.clipboard.writeText(topic.note as string)}
                   onClick={() => {
                     setShowNote(topic.title);
                     setNote(topic.note);
                   }}>
+                  
                   <InfoIcon sx={{marginLeft:"8px",cursor:"pointer"}} color={topic?.note?.length<15?"disabled":"info"}/>
                 </ListItemIcon>
               </ListItem>
@@ -323,7 +324,7 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
                 ...item,
                 topics: [
                   ...item.topics,
-                  { title: "add here", note: "add note here" },
+                  { title: `add - ${new Date().getMilliseconds().toString().slice(-4)}`, note: "add note here" },
                 ],
               });
             }}
