@@ -10,11 +10,11 @@ function Timer({onFinish}:TimerProps) {
 
   const [time, setTime] = useState({
     min: 2,
-    seconds: 30,
+    seconds: 15,
   });
 
   useEffect(() => {
-    setTime({min:2,seconds:30})
+    setTime({min:2,seconds:15})
     const id = setInterval(() => {
       setTime((prev) => {
         if (prev.min === 0 && prev.seconds === 0) {

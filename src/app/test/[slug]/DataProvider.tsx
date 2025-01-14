@@ -53,7 +53,7 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
           <Timer
             key={QuestionIndex}
             onFinish={(time: {min:number,seconds:number}) =>{
-              if(time.seconds === 0) setQuestionIndex(QuestionIndex+1)
+              if(time.seconds === 0 && time.min === 0) setQuestionIndex(QuestionIndex+1)
               return (
                 <Box>
                   <Typography variant="h4" marginLeft={4}>
