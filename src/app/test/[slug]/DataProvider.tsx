@@ -30,7 +30,9 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
         <Typography variant="h1" m={20}>
           Test completed
         </Typography>
-        <Button variant="contained"  onClick={()=>setQuestionIndex(0)}>Restart</Button>
+        <Button variant="contained" onClick={() => setQuestionIndex(0)}>
+          Restart
+        </Button>
       </>
     );
   }
@@ -48,7 +50,20 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
             justifyContent: "space-between",
           }}
         >
-          <Timer />
+          <Timer
+            key={QuestionIndex}
+            onFinish={(time: {min:number,seconds:number}) =>{
+              if(time.seconds === 0) setQuestionIndex(QuestionIndex+1)
+              return (
+                <Box>
+                  <Typography variant="h4" marginLeft={4}>
+                    Times Remaining {time.min} : {time.seconds}
+                  </Typography>
+                </Box>
+              )
+            } }
+   
+          />
           <Box
             sx={{
               display: "flex",
@@ -103,30 +118,41 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
         sx={{
           width: "100vw",
           gap: 4,
-         
         }}
       >
         <Grid2>
           <Box
             sx={{
               p: 2,
-              marginLeft:24,
+              marginLeft: 24,
               maxWidth: "80vw",
             }}
           >
-            <Box sx={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-            <Typography m={2} variant="h4">
-              Question : {QuestionIndex + 1} out of {data.length}
-            </Typography>
-            <Button onClick={()=>navigator.clipboard.writeText(data[QuestionIndex].doc.qtext)}>Copy</Button>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Typography m={2} variant="h4">
+                Question : {QuestionIndex + 1} out of {data.length}
+              </Typography>
+              <Button
+                onClick={() =>
+                  navigator.clipboard.writeText(data[QuestionIndex].doc.qtext)
+                }
+              >
+                Copy
+              </Button>
             </Box>
-            
+
             <Paper
               elevation={10}
               sx={{
                 p: 2,
                 minWidth: "80vw",
-               
+
                 maxHeight: "60vh",
                 overflow: "auto",
                 "&::-webkit-scrollbar": {
@@ -157,7 +183,7 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
                 }}
               >
                 {showInput !== "question" && (
-                  <code >
+                  <code>
                     {" "}
                     <Typography
                       fontWeight={500}
@@ -165,7 +191,6 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
                       lineHeight={1.5}
                       fontSize={18}
                       variant="body1"
-                      
                     >
                       {data[QuestionIndex].doc.qtext}
                     </Typography>

@@ -1,19 +1,24 @@
-import { Box, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
 
-function Timer() {
+import { ReactElement, useEffect, useState } from "react";
+
+
+interface TimerProps{
+  onFinish:(time:{min:number,seconds:number})=>ReactElement,
+
+}
+function Timer({onFinish}:TimerProps) {
 
   const [time, setTime] = useState({
-    min: 59,
-    seconds: 60,
+    min: 2,
+    seconds: 30,
   });
 
   useEffect(() => {
+    setTime({min:2,seconds:30})
     const id = setInterval(() => {
       setTime((prev) => {
         if (prev.min === 0 && prev.seconds === 0) {
           console.log("clearing");
-
           clearInterval(id);
           return { seconds: 0, min: 0 };
         }
@@ -29,13 +34,7 @@ function Timer() {
     };
   }, []);
 
-  return (
-    <Box>
-      <Typography variant="h4" marginLeft={4}>
-        Times Remaining {time.min} : {time.seconds}
-      </Typography>
-    </Box>
-  );
+  return onFinish(time)
 }
 
 export default Timer;
