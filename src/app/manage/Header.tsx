@@ -3,19 +3,20 @@ import { Box, List, ListItem, ListItemButton } from "@mui/material";
 import Link from "next/link";
 function Header() {
   return (
-    <Box>
+    <Box sx={{m:"auto" ,textAlign:"center", ml:"72px"}}>
       <List
         sx={{
           display: "flex",
           flexDirection: "row",
-          justifyContent: "center",
-          m: "8px",
+          justifyContent: "flex-start",
+          gap:4,
+          m: "12px",
         }}
       >
-        {["Daily", "Weekly", "Monthly"].map((item) => {
+        {["Daily", "Monthly"].map((item) => {
           return (
             <ListItem key={item} sx={{ width: "10%" }}>
-              <ListItemButton>
+              <ListItemButton >
                 <Link href={`/manage/${item}`}>{item}</Link>
               </ListItemButton>
             </ListItem>

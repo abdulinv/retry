@@ -3,21 +3,21 @@ import { Box,Typography } from '@mui/material'
 
 function Notes() {
   return (
-    <Box sx={{ borderRadius: "12px" }}>
+    <Box sx={{ borderRadius: "12px", display:"flex",  gap:4, flexDirection:"column"}}>
         <Typography fontWeight={700} variant="h5">Notes</Typography>
        
         <Typography color="primary" variant="body1">
-          W1 - connected to revision analyser
+          slot1 - connected to revision analyser
         </Typography>
         <Typography color="primary" variant="body1">
-          W2 - conenncted to revision anylyser
+          slot2 - conenncted to revision anylyser
         </Typography>
 
         <Typography color="primary" variant="body1">
-          W3 - T connect to  bucket and revisin analyser
+          slot3 - T connect to  bucket and revisin analyser
         </Typography>
         <Typography color="primary" variant="body1">
-          W4 -  connected to projects
+          slot4 -  connected to projects
         </Typography>
 
         <Typography color="primary" variant="body1">

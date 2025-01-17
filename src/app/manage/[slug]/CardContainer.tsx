@@ -20,27 +20,27 @@ function CardContainer({ data }: CardContainerProps) {
 
 
   function updateWeeklyDuration(duration:Duration,text:string){
-    const weeklyTasks = data.filter((item) => item.category === "Weekly");
+    const monthlyTasks = data.filter((item) => item.category === "Monthly");
    
-   const weekTitleTobeUpdated = weeklyTasks.find(week=>week.tasks.find(item=>item.text === text))?.title;
-   const weekTobeUpdated = weeklyTasks.find(week=>week.title === weekTitleTobeUpdated) as Tasks;
-   const index = weekTobeUpdated.tasks.findIndex(item=>item.text === text);
-   const taskTobeUpdated = weekTobeUpdated.tasks[index];
+   const monthTitleTobeUpdated = monthlyTasks.find(month=>month.tasks.find(item=>item.text === text))?.title;
+   const monthTobeUpdated = monthlyTasks.find(week=>week.title === monthTitleTobeUpdated) as Tasks;
+   const index = monthTobeUpdated.tasks.findIndex(item=>item.text === text);
+   const taskTobeUpdated = monthTobeUpdated.tasks[index];
 
    const total = (((taskTobeUpdated.duration?.hh || 0) + duration.hh) * 60)+ ((taskTobeUpdated.duration?.mm || 0) + duration.mm)
    const currentHH = Math.floor(total/60);
    const currentMM = total % 60;
    console.log(currentHH,currentMM,total,duration.mm,taskTobeUpdated.duration?.mm)
 
-   updateTask('manageWeekly',weekTitleTobeUpdated as string,{
-        ...weekTobeUpdated ,
+   updateTask('manageMonthly',monthTitleTobeUpdated as string,{
+        ...monthTobeUpdated ,
         tasks:[
-          ...weekTobeUpdated.tasks.slice(0,index),
+          ...monthTobeUpdated.tasks.slice(0,index),
           {text:taskTobeUpdated.text,status:taskTobeUpdated.status,duration:{
             hh:currentHH,
             mm:currentMM
           }},
-          ...weekTobeUpdated.tasks.slice(index+1,),
+          ...monthTobeUpdated.tasks.slice(index+1,),
         ]
    })
 
@@ -79,7 +79,7 @@ function CardContainer({ data }: CardContainerProps) {
   else size = 10;
   return (
     <>
-      <Grid2 container gap={2} rowGap={1} justifyContent={"space-evenly"}>
+      <Grid2 container gap={2} rowGap={1} justifyContent={"space-evenly"} flexGrow={"1"}>
         {tasks.map((day: Tasks, i: number) => {
           return (
             <Grid2 key={i} size={size}>
