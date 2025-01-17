@@ -2,14 +2,19 @@ import { Box, Container, Typography, Paper, Button, Link } from "@mui/material";
 import {  getTestList } from "../../../lib/fetch";
 import AddTest from "./AddTest";
 import TestInfo from "./TestInfo";
+import DailyTest from "./DailyTest";
+
 
 async function DashBoard() {
   const data = await getTestList("testList");
   const soretdList = data.toSorted((a,b)=>a.doc.testNumber-b.doc.testNumber);
+  
   return (
     <>
       <Container sx={{ width: "100vw", p: 8 }}>
         <AddTest testNumber={data.length+1}/>
+        <DailyTest/>
+      
         <Box
           sx={{
             marginTop: "20px",
