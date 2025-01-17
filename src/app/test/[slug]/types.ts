@@ -3,7 +3,8 @@ export interface Question{
     testName:string,
     qtext:string,
     answer:string,
-    options:string[]
+    options:string[],
+    date:string
 }
 
 export interface QuestionDoc{

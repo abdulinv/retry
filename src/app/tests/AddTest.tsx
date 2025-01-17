@@ -17,7 +17,8 @@ function AddTest({testNumber = 0}:{testNumber:number}) {
           qtext:"add here",
           answer:"add answer here",
           options:["option1","option2","option3","option4"],
-          testName:`test-${testNumber}`
+          testName:`test-${testNumber}`,
+          date:new Date().getTime().toString()
         })
       }}>+</Button>
   )

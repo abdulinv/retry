@@ -38,22 +38,23 @@ export async function getTasks() {
 export async function updateTask(
   collection: string,
   taskId: string,
-  updatedData: Tasks | RoadMaps | Question | TestListItem | Jobs | Rev | Bucket | TimeInfo
+  updatedData: Tasks | RoadMaps | Question | TestListItem | Jobs | Rev | Bucket | TimeInfo,
+  revalidate:boolean =  true
 ) {
   const taskRef = doc(db, collection, taskId);
   await updateDoc(taskRef, updatedData);
   console.log("Task updated!");
-  if (collection.startsWith("rm")) revalidatePath("/roadmap");
-  if (collection.startsWith("manageDaily")) revalidatePath("/manage/Daily");
-  if (collection.startsWith("manageWeekly")) revalidatePath("/manage/Weekly");
-  if (collection.startsWith("manageMonthly")) revalidatePath("/manage/Monthly");
-  if (collection.startsWith("jobs")) revalidatePath("/JDAnalyser");
-  if (collection.startsWith("test")) {
+  if (collection.startsWith("rm") && revalidate) revalidatePath("/roadmap");
+  if (collection.startsWith("manageDaily") && revalidate) revalidatePath("/manage/Daily");
+  if (collection.startsWith("manageWeekly") && revalidate) revalidatePath("/manage/Weekly");
+  if (collection.startsWith("manageMonthly") && revalidate) revalidatePath("/manage/Monthly");
+  if (collection.startsWith("jobs") && revalidate) revalidatePath("/JDAnalyser");
+  if (collection.startsWith("test") && revalidate) {
     revalidatePath("/test/");
     revalidatePath("/tests");
   }
-  if (collection.startsWith("rev")) revalidatePath("/revision");
-  if(collection.startsWith("bucket")) revalidatePath("/bucketlist")
+  if (collection.startsWith("rev") && revalidate) revalidatePath("/revision");
+  if(collection.startsWith("bucket") && revalidate) revalidatePath("/bucketlist")
 }
 
 export async function addDocument(

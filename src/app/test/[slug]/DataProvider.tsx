@@ -24,7 +24,7 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
   const id = params.slug;
   console.log("question data", data);
 
-  if (QuestionIndex >= data.length) {
+  if (QuestionIndex >= 15) {
     return (
       <>
         <Typography variant="h1" m={20}>
@@ -36,6 +36,8 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
       </>
     );
   }
+
+  const sortedData = data;
   return (
     <>
       <Box
@@ -90,7 +92,14 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
               sx={{
                 m: 2,
               }}
-              onClick={() => setQuestionIndex((prev) => prev + 1)}
+              onClick={() =>{ 
+                setQuestionIndex((prev) => prev + 1)
+                updateTask(`test-${id}`,sortedData[QuestionIndex].id,{
+                  ...data[QuestionIndex].doc,
+                  date:new Date().getTime().toString()
+                },false)
+              
+              }}
             >
               Next
             </Button>
@@ -100,7 +109,8 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
                   qtext: "add question here",
                   options: ["option1", "option2", "option3", "option4"],
                   answer: "option3",
-                  testName: data[0].doc.testName,
+                  testName: sortedData[0].doc.testName,
+                  date:new Date().getTime().toString()
                 };
                 addDocument(`test-${id}`, newDoc);
               }}
@@ -110,7 +120,7 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
           </Box>
         </Box>
 
-        <Typography>{data[0].doc.testName}</Typography>
+        <Typography>{sortedData[0].doc.testName}</Typography>
       </Box>
 
       <Grid2
@@ -136,11 +146,11 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
               }}
             >
               <Typography m={2} variant="h4">
-                Question : {QuestionIndex + 1} out of {data.length}
+                Question : {QuestionIndex + 1} out of {15}
               </Typography>
               <Button
                 onClick={() =>
-                  navigator.clipboard.writeText(data[QuestionIndex].doc.qtext)
+                  navigator.clipboard.writeText(sortedData[QuestionIndex].doc.qtext)
                 }
               >
                 Copy
@@ -192,7 +202,7 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
                       fontSize={18}
                       variant="body1"
                     >
-                      {data[QuestionIndex].doc.qtext}
+                      {sortedData[QuestionIndex].doc.qtext}
                     </Typography>
                   </code>
                 )}
@@ -204,8 +214,8 @@ function DataProvider({ data }: { data: QuestionDoc[] }) {
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
                     onBlur={() => {
-                      updateTask(`test-${id}`, data[QuestionIndex].id, {
-                        ...data[QuestionIndex].doc,
+                      updateTask(`test-${id}`, sortedData[QuestionIndex].id, {
+                        ...sortedData[QuestionIndex].doc,
                         qtext: value,
                       });
                       setShowInput(null);

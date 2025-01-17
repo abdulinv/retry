@@ -21,7 +21,6 @@ const handleClick = ()=>{
     const day =  new Date().getDay();
     const testName = testList[day];
     const slug = testNumbers[testName];
-    console.log("generated",slug);
     router.push(`/test/${slug}`)
     
 }
