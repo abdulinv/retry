@@ -20,7 +20,7 @@ import { Colors, RoadMaps } from "./types";
 import { useState } from "react";
 import { updateTask } from "../../../lib/fetch";
 import SwapVertIcon from '@mui/icons-material/SwapVert';
-import { Inter, Inter_Tight } from "next/font/google";
+
 
 
 const style = {
