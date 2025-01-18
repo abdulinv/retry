@@ -19,6 +19,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import { Colors, RoadMaps } from "./types";
 import { useState } from "react";
 import { updateTask } from "../../../lib/fetch";
+import SwapVertIcon from '@mui/icons-material/SwapVert';
 
 
 const style = {
@@ -135,7 +136,7 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
                   ...item,
                   topics: [
                     ...item.topics.slice(0, index),
-                    { title: itemTobeUpdated.title, note: note },
+                    { title: itemTobeUpdated.title, note: note ,order:itemTobeUpdated.order},
                     ...item.topics.slice(index + 1),
                   ],
                 });
@@ -234,7 +235,7 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
           }}
         >
           <List  sx={{ marginLeft: "16px" }}>
-            {item.topics.map((topic) => (
+            {item.topics.toSorted((a,b)=>b.order-a.order).map((topic) => (
               <ListItem 
               divider
               
@@ -280,7 +281,7 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
                           ...item,
                           topics: [
                             ...item.topics.slice(0, index),
-                            { title: value, note: itemTobeUpdated.note },
+                            { title: value, note: itemTobeUpdated.note,order:itemTobeUpdated?.order||0 },
                             ...item.topics.slice(index + 1),
                           ],
                         });
@@ -308,7 +309,46 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
                     setNote(topic.note);
                   }}>
                   
-                  <InfoIcon sx={{marginLeft:"8px",cursor:"pointer"}} color={topic?.note?.length<15?"disabled":"info"}/>
+                  <InfoIcon sx={{cursor:"pointer"}} color={topic?.note?.length<15?"disabled":"info"}/>
+                
+                </ListItemIcon>
+                <ListItemIcon 
+                
+                onDoubleClick={()=>{
+                  const index = item.topics.findIndex(
+                    (item) => item.title === topic.title
+                  );
+
+                  const itemTobeUpdated = item.topics[index];
+                    updateTask(`rm-${item.stack}`, id, {
+                      ...item,
+                      topics: [
+                        ...item.topics.slice(0, index),
+                        { title: itemTobeUpdated.title, note: itemTobeUpdated.note,order:(itemTobeUpdated?.order || 0)-1 },
+                        ...item.topics.slice(index + 1),
+                      ],
+                    });
+                }}
+                
+                onClick={()=>{
+
+                   const index = item.topics.findIndex(
+                    (item) => item.title === topic.title
+                  );
+
+                  const itemTobeUpdated = item.topics[index];
+                    updateTask(`rm-${item.stack}`, id, {
+                      ...item,
+                      topics: [
+                        ...item.topics.slice(0, index),
+                        { title: itemTobeUpdated.title, note: itemTobeUpdated.note,order:(itemTobeUpdated?.order || 0)+1 },
+                        ...item.topics.slice(index + 1),
+                      ],
+                    });
+                }}>
+                  <SwapVertIcon sx={{cursor:"pointer", "&:hover": {
+            color: "secondary.main", // Change to secondary color on hover
+          },}} color="primary"/>
                 </ListItemIcon>
               </ListItem>
             ))}
@@ -324,7 +364,7 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
                 ...item,
                 topics: [
                   ...item.topics,
-                  { title: `add - ${new Date().getMilliseconds().toString().slice(-4)}`, note: "add note here" },
+                  { title: `add - ${new Date().getMilliseconds().toString().slice(-4)}`, note: "add note here" ,order:1},
                 ],
               });
             }}
