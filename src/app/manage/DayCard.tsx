@@ -225,9 +225,9 @@ function DayCard({ day, autoUpdateDaily, updateWeeklyDuration }: Day) {
                                     border: "1px solid grey",
                                   }}
                                   color={
-                                    task.duration?.hh || 0 < 20
+                                    (task.duration?.hh || 0) < 20 
                                       ? "error"
-                                      : task.duration?.hh || 0 < 30
+                                      : (task.duration?.hh || 0) < 30
                                       ? "warning"
                                       : "success"
                                   }
@@ -248,7 +248,7 @@ function DayCard({ day, autoUpdateDaily, updateWeeklyDuration }: Day) {
                                     You are not started this task yet !
                                   </Typography>
                                 )}
-                                {(task.duration?.hh || 0) > 10 && (
+                                {(task.duration?.hh || 0) > 10  && (task.duration?.hh || 0) < 20 && (
                                   <Typography
                                     color="warning"
                                     variant="body2"
@@ -257,7 +257,7 @@ function DayCard({ day, autoUpdateDaily, updateWeeklyDuration }: Day) {
                                     You are making progress...💪 keep going
                                   </Typography>
                                 )}
-                                {(task.duration?.hh || 0) > 20 && (
+                                {(task.duration?.hh || 0) > 20 && (task.duration?.hh || 0)< 25 && (
                                   <Typography
                                     color="info"
                                     variant="body2"
@@ -266,7 +266,7 @@ function DayCard({ day, autoUpdateDaily, updateWeeklyDuration }: Day) {
                                     you made the minimum requirement...💪
                                   </Typography>
                                 )}
-                                {(task.duration?.hh || 0) > 25 && (
+                                {(task.duration?.hh || 0) > 25 && (task.duration?.hh || 0) < 39 &&(
                                   <Typography
                                     color="success"
                                     variant="body2"
@@ -275,7 +275,7 @@ function DayCard({ day, autoUpdateDaily, updateWeeklyDuration }: Day) {
                                     congratulations...✨
                                   </Typography>
                                 )}
-                                {(task.duration?.hh || 0) > 39 && (
+                                {(task.duration?.hh || 0) > 39 &&  (task.duration?.hh || 0)<49 &&(
                                   <Typography
                                     color="success"
                                     variant="body2"
@@ -412,3 +412,4 @@ function DayCard({ day, autoUpdateDaily, updateWeeklyDuration }: Day) {
 }
 
 export default DayCard;
+
