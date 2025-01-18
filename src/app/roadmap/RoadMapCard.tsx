@@ -20,6 +20,7 @@ import { Colors, RoadMaps } from "./types";
 import { useState } from "react";
 import { updateTask } from "../../../lib/fetch";
 import SwapVertIcon from '@mui/icons-material/SwapVert';
+import { Inter, Inter_Tight } from "next/font/google";
 
 
 const style = {
@@ -58,7 +59,7 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
             >
               <Box
                 sx={{
-                  bgcolor:"black",
+                  bgcolor:"lightBlue",
                   maxHeight: "80vh",
                  
                   marginBottom:1,
@@ -99,7 +100,7 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
                         },
                       },
                       "& .MuiInputBase-input": {
-                        color: "white",
+                        color: "black",
                         letterSpacing:"1.4px" // Change text color
                       },
                     }}
@@ -108,15 +109,16 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
                 {!editNote && 
                 <pre>
                   <Typography 
-                  color="white"
+                  className="font"
+                  color="rgb(0,0,0,0.8)"
                   align="left"
                   maxWidth={"50vw"}
                   whiteSpace={"break-spaces"}
                   p={3}
                   variant="body1"
-                  fontSize={18}
-                  fontWeight={600}
-                  letterSpacing={1.2}
+                  fontSize={16}
+                  fontWeight={500}
+                  letterSpacing={0.8}
                   lineHeight={1.5}
                   >{topicTobeEdited?.note}</Typography>
                 </pre>
