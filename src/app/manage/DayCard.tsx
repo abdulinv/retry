@@ -235,7 +235,7 @@ function DayCard({ day, autoUpdateDaily, updateWeeklyDuration }: Day) {
                                   value={
                                     ((task.duration?.hh || 0) * 60 +
                                       (task.duration?.mm || 0)) /
-                                    24
+                                    60
                                   }
                                 />
 
@@ -257,7 +257,7 @@ function DayCard({ day, autoUpdateDaily, updateWeeklyDuration }: Day) {
                                     You are making progress...💪 keep going
                                   </Typography>
                                 )}
-                                {(task.duration?.hh || 0) > 20 && (task.duration?.hh || 0)< 25 && (
+                                {(task.duration?.hh || 0) > 75 && (task.duration?.hh || 0)< 95 && (
                                   <Typography
                                     color="info"
                                     variant="body2"
@@ -266,7 +266,7 @@ function DayCard({ day, autoUpdateDaily, updateWeeklyDuration }: Day) {
                                     you made the minimum requirement...💪
                                   </Typography>
                                 )}
-                                {(task.duration?.hh || 0) > 25 && (task.duration?.hh || 0) < 39 &&(
+                                {(task.duration?.hh || 0) > 95 && (task.duration?.hh || 0) < 99 &&(
                                   <Typography
                                     color="success"
                                     variant="body2"
@@ -275,7 +275,7 @@ function DayCard({ day, autoUpdateDaily, updateWeeklyDuration }: Day) {
                                     congratulations...✨
                                   </Typography>
                                 )}
-                                {(task.duration?.hh || 0) > 39 &&  (task.duration?.hh || 0)<49 &&(
+                                {(task.duration?.hh || 0) > 99 &&  (task.duration?.hh || 0)<49 &&(
                                   <Typography
                                     color="success"
                                     variant="body2"
@@ -284,13 +284,13 @@ function DayCard({ day, autoUpdateDaily, updateWeeklyDuration }: Day) {
                                     Excellent...💥💥
                                   </Typography>
                                 )}
-                                {(task.duration?.hh || 0) > 49 && (
+                                {(task.duration?.hh || 0) > 100 && (
                                   <Typography
                                     color="success"
                                     variant="body2"
                                     fontSize={14}
                                   >
-                                    Awesome...🔥🔥🔥
+                                    Awesome...🔥🔥🔥 time to switch to another topic
                                   </Typography>
                                 )}
                               </Box>
