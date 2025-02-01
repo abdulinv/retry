@@ -81,7 +81,7 @@ function DayCard({ day, autoUpdateDaily, updateWeeklyDuration }: Day) {
         : "info";
   } else {
     heading = "The Month is";
-    headingColor = new Date().getMonth() == day.order - 1 ? "success" : "info";
+    headingColor = new Date().getMonth() == day.order  ? "success" : "info";
   }
   const sortedTasks = day.tasks.toSorted((a, b) => (a.text > b.text ? 1 : -1));
   const handleStartTask = (text: string) => {

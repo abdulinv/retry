@@ -12,47 +12,57 @@ import React from "react";
 import { TimeDocs } from "./types";
 
 function DataProvider({ data }: { data: TimeDocs[] }) {
-
-
-  const getColor = (value:number)=>{
-    if(value >15) return "success"
-    if(value>7)return "info"
-    if(value>3) return "warning"
-    return "error"
-  }
+  const getColor = (value: number) => {
+    if (value > 15) return "success";
+    if (value > 7) return "info";
+    if (value > 3) return "warning";
+    return "error";
+  };
   return (
     <Stack flexDirection={"row"} gap={4}>
       <Box>
         <List>
-          {data.map((item) => {
-            return (
-              <ListItem
-                divider
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  width: "50vw",
-                }}
-                key={item.doc.date}
-              >
-                <ListItemText
+          {data
+            .toSorted((a, b) => {
+              if (new Date(a.doc.date) > new Date(b.doc.date)) {
+                return 1;
+              } else return -1;
+            })
+            .map((item) => {
+              return (
+                <ListItem
+                  divider
                   sx={{
-                    width: "20vw",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    width: "50vw",
                   }}
+                  key={item.doc.date}
                 >
-                  <Typography 
-                   color={getColor(Number(item.doc.time?.hours))}
-                  variant="h6">{item.doc.date}</Typography>
-                </ListItemText>
-                <ListItemText>
-                  <Typography
-                  color={getColor(Number(item.doc.time?.hours))}
-                  variant="h6">{item.doc.time?.hours} Hours {item.doc.time?.minuits} Minuits only </Typography>
-                   
-                </ListItemText>
-              </ListItem>
-            );
-          })}
+                  <ListItemText
+                    sx={{
+                      width: "20vw",
+                    }}
+                  >
+                    <Typography
+                      color={getColor(Number(item.doc.time?.hours))}
+                      variant="h6"
+                    >
+                      {item.doc.date}
+                    </Typography>
+                  </ListItemText>
+                  <ListItemText>
+                    <Typography
+                      color={getColor(Number(item.doc.time?.hours))}
+                      variant="h6"
+                    >
+                      {item.doc.time?.hours} Hours {item.doc.time?.minuits}{" "}
+                      Minuits only{" "}
+                    </Typography>
+                  </ListItemText>
+                </ListItem>
+              );
+            })}
         </List>
       </Box>
     </Stack>
