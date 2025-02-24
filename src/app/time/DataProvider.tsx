@@ -1,69 +1,32 @@
 "use client";
 import {
-  List,
-  ListItem,
-  ListItemText,
   Stack,
   Box,
-  Typography,
+  Button
 } from "@mui/material";
-import React from "react";
+import React,{useState} from "react";
 
 import { TimeDocs } from "./types";
+import DayWise from "./DayWise";
+import MonthWise from "./MonthWise";
 
 function DataProvider({ data }: { data: TimeDocs[] }) {
-  const getColor = (value: number) => {
-    if (value > 15) return "success";
-    if (value > 7) return "info";
-    if (value > 3) return "warning";
-    return "error";
-  };
+ 
+
+  const [tab,setTab] = useState("daily");
+
+  const handleChangeTab = (tabName:string)=>{
+      setTab(tabName)
+  }
   return (
-    <Stack flexDirection={"row"} gap={4}>
+    <Stack  gap={4}>
+      <Stack flexDirection={"row"} justifyContent={"center"}>
+        <Button onClick={()=>handleChangeTab("daily")}>Daily</Button>
+        <Button onClick={()=>handleChangeTab("monthly")}>Monthly</Button>
+      </Stack>
       <Box>
-        <List>
-          {data
-            .toSorted((a, b) => {
-              if (new Date(a.doc.date) > new Date(b.doc.date)) {
-                return 1;
-              } else return -1;
-            })
-            .map((item) => {
-              return (
-                <ListItem
-                  divider
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    width: "50vw",
-                  }}
-                  key={item.doc.date}
-                >
-                  <ListItemText
-                    sx={{
-                      width: "20vw",
-                    }}
-                  >
-                    <Typography
-                      color={getColor(Number(item.doc.time?.hours))}
-                      variant="h6"
-                    >
-                      {item.doc.date}
-                    </Typography>
-                  </ListItemText>
-                  <ListItemText>
-                    <Typography
-                      color={getColor(Number(item.doc.time?.hours))}
-                      variant="h6"
-                    >
-                      {item.doc.time?.hours} Hours {item.doc.time?.minuits}{" "}
-                      Minuits only{" "}
-                    </Typography>
-                  </ListItemText>
-                </ListItem>
-              );
-            })}
-        </List>
+        {tab === 'daily' &&  <DayWise data={data}/> }
+        {tab === 'monthly' && <MonthWise data={data}/>}
       </Box>
     </Stack>
   );
