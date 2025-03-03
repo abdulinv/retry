@@ -41,7 +41,7 @@ function RoadMapProvider({ RoadMaps }: RoadMapProps) {
             else return -1;
           }).map(
             (item, i) => (
-              <Grid2 size={6} key={i}>
+              <Grid2 size={12} key={i}>
                 <RoadMapCard item={item.doc} id={item.id} />
               </Grid2>
             )
