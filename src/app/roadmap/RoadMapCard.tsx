@@ -217,8 +217,8 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
         )}
         <CardContent
           sx={{
-            minHeight: "250px",
-            maxHeight: "250px",
+            minHeight: "400px",
+            maxHeight: "400px",
             overflow: "auto",
             "&::-webkit-scrollbar": {
               width: "6px",
