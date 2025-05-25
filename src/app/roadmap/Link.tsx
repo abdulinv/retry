@@ -5,11 +5,12 @@ import {
   Box,
   Typography,
 } from '@mui/material';
-import { updateTask } from '../../../lib/fetch';
 import { RoadMaps, Topic } from './types';
 import ControlButton from './ControlButton';
 import { StyledNoteBox, StyledTextInput, TextStyles } from './Styles';
 import LinkIcon from './LinkIcon';
+import { findIndex, UpdateRoadMap } from '@/models/RoadMap/RoadMap';
+import CONSTANTS from './constants';
 
 const style = {
   position: 'absolute',
@@ -38,23 +39,10 @@ function Link({ item, id, topic }: LinkProps) {
   const topicTobeEdited = item.topics.find((el) => el.title === showNote);
 
   const handleSave = async () => {
-    const index = item.topics.findIndex(
-      (item) => item.title === topicTobeEdited?.title
-    );
-    const itemTobeUpdated = item.topics[index];
-    await updateTask(`rm-${item.stack}`, id, {
-      ...item,
-      topics: [
-        ...item.topics.slice(0, index),
-        {
-          title: itemTobeUpdated.title,
-          note: itemTobeUpdated.note,
-          order: itemTobeUpdated.order,
-          link: note,
-        },
-        ...item.topics.slice(index + 1),
-      ],
-    });
+    const index = findIndex(item,topicTobeEdited!)
+    const action = CONSTANTS.ADD_LINK_ACTION;
+    action.value = note;
+    await UpdateRoadMap(item,id,index,action);
     setEditNote(false);
     setShowNote(null);
   };

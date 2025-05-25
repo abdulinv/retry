@@ -10,7 +10,6 @@ import {
 } from '@mui/material';
 import { RoadMaps, Topic } from './types';
 import { useState } from 'react';
-import { updateTask } from '../../../lib/fetch';
 import Link from './Link';
 import ControlButton from './ControlButton';
 import {
@@ -24,6 +23,8 @@ import SortControl from './SortControl';
 import NoteControl from './NoteControl';
 import TitleControl from './TitleControl';
 import CardControl from './CardControl';
+import DateControl from './DateControl';
+import { UpdateRoadMap, UpdateRoadMapCard } from '@/models/RoadMap/RoadMap';
 
 const style = {
   position: 'absolute',
@@ -47,24 +48,15 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
 
   const topicTobeEdited = item.topics.find((el) => el.title === showNote);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const index = item.topics.findIndex(
       (item) => item.title === topicTobeEdited?.title
     );
-    const itemTobeUpdated = item.topics[index];
-    updateTask(`rm-${item.stack}`, id, {
-      ...item,
-      topics: [
-        ...item.topics.slice(0, index),
-        {
-          title: itemTobeUpdated.title,
-          note: note,
-          order: itemTobeUpdated.order,
-          link: '',
-        },
-        ...item.topics.slice(index + 1),
-      ],
-    });
+    const action = {
+      prop:"note",
+      value:note
+    }
+    await UpdateRoadMap(item,id,index,action)
     setEditNote(false);
     setShowNote(null);
   };
@@ -87,30 +79,22 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
     }
   };
 
-  const handleTitleChange = () => {
-    updateTask(`rm-${item.stack}`, id, {
-      ...item,
-      title: value,
-    });
+  const handleTitleChange = async () => {
+    const action = {
+      prop:"title",
+      value:value
+    }
+    await UpdateRoadMapCard(item,id,action)
     setShowInput(null);
   };
 
   const handleTopicUpdate = (topic: Topic) => {
     const index = item.topics.findIndex((item) => item.title === topic.title);
-    const itemTobeUpdated = item.topics[index];
-    updateTask(`rm-${item.stack}`, id, {
-      ...item,
-      topics: [
-        ...item.topics.slice(0, index),
-        {
-          title: value,
-          note: itemTobeUpdated.note,
-          order: itemTobeUpdated?.order || 0,
-          link: '',
-        },
-        ...item.topics.slice(index + 1),
-      ],
-    });
+    const action = {
+      prop:"title",
+      value:value
+    }
+    UpdateRoadMap(item,id,index,action)
     setShowInput(null);
   };
 
@@ -180,6 +164,8 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
                     value={value}
                     showInput={showInput}
                   />
+                  {/* date */}
+                  <DateControl topic={topic} item={item} id={id}/>
                   {/* link */}
                   <Link item={item} id={id} topic={topic} />
                   {/* note */}

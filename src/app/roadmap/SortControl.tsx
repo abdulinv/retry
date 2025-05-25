@@ -2,7 +2,8 @@ import React from 'react';
 import { ListItemIcon } from '@mui/material';
 import SwapVertIcon from '@mui/icons-material/SwapVert';
 import { RoadMaps, Topic } from './types';
-import { updateTask } from '../../../lib/fetch';
+import { findIndex, UpdateRoadMap } from '@/models/RoadMap/RoadMap';
+import CONSTANTS from './constants';
 
 interface SortControlProps {
   topic: Topic;
@@ -11,54 +12,23 @@ interface SortControlProps {
 }
 
 function SortControl({ topic, item, id }: SortControlProps) {
-  const handleAscending = (topic: Topic) => {
-    const index = item.topics.findIndex((item) => item.title === topic.title);
-
-    const itemTobeUpdated = item.topics[index];
-    updateTask(`rm-${item.stack}`, id, {
-      ...item,
-      topics: [
-        ...item.topics.slice(0, index),
-        {
-          title: itemTobeUpdated.title,
-          note: itemTobeUpdated.note,
-          order: (itemTobeUpdated?.order || 0) + 1,
-          link: '',
-        },
-        ...item.topics.slice(index + 1),
-      ],
-    });
-  };
-
-  const handleDescending = (topic: Topic) => {
-    const index = item.topics.findIndex((item) => item.title === topic.title);
-
-    const itemTobeUpdated = item.topics[index];
-    updateTask(`rm-${item.stack}`, id, {
-      ...item,
-      topics: [
-        ...item.topics.slice(0, index),
-        {
-          title: itemTobeUpdated.title,
-          note: itemTobeUpdated.note,
-          order: (itemTobeUpdated?.order || 0) - 1,
-          link: '',
-        },
-        ...item.topics.slice(index + 1),
-      ],
-    });
+  const handleSort = (topic: Topic, order: number) => {
+    const index = findIndex(item, topic);
+    const { SORT_ASC_ACTION, SORT_DSC_ACTION } = CONSTANTS;
+    const action = order === 1 ? SORT_ASC_ACTION : SORT_DSC_ACTION;
+    UpdateRoadMap(item, id, index, action);
   };
 
   return (
     <ListItemIcon
-      onDoubleClick={() => handleDescending(topic)}
-      onClick={() => handleAscending(topic)}
+      onDoubleClick={() => handleSort(topic, -1)}
+      onClick={() => handleSort(topic, 1)}
     >
       <SwapVertIcon
         sx={{
           cursor: 'pointer',
           '&:hover': {
-            color: 'secondary.main', // Change to secondary color on hover
+            color: 'secondary.main',
           },
         }}
         color="primary"

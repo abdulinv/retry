@@ -2,7 +2,8 @@ export type Topic = {
   title:string,
   note:string,
   order:number,
-  link:string
+  link:string,
+  date:string | null
 }
 export type Colors = "primary" | "warning" | "success" | "info" | "error";
 export interface RoadMaps {
