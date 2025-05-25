@@ -197,3 +197,13 @@ export async function UpdateRoadMapCard(
 export function findIndex(item: RoadMapType, topic: Topic) {
   return item.topics.findIndex((item) => item.title === topic.title);
 }
+
+export async function deleteTopic(item:RoadMapType,id:string,index:number){
+  await updateTask(`rm-${item.stack}`, id, {
+    ...item,
+    topics: [
+      ...item.topics.slice(0, index),
+      ...item.topics.slice(index + 1,),
+    ],
+  });
+}

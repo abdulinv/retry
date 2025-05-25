@@ -25,6 +25,7 @@ import TitleControl from './TitleControl';
 import CardControl from './CardControl';
 import DateControl from './DateControl';
 import { UpdateRoadMap, UpdateRoadMapCard } from '@/models/RoadMap/RoadMap';
+import DeleteControl from './DeleteControl';
 
 const style = {
   position: 'absolute',
@@ -180,6 +181,7 @@ function RoadMapCard({ item, id}: RoadMapProps) {
                   />
                   {/* sort */}
                   <SortControl topic={topic} item={item} id={id} />
+                  <DeleteControl id={id} item={item} topic={topic}/>
                 </ListItem>
               ))}
           </List>
