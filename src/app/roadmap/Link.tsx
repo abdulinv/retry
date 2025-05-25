@@ -8,7 +8,7 @@ import {
 import { updateTask } from '../../../lib/fetch';
 import { RoadMaps, Topic } from './types';
 import ControlButton from './ControlButton';
-import { StyledNoteBox, StyledTextInput } from './Styles';
+import { StyledNoteBox, StyledTextInput, TextStyles } from './Styles';
 import LinkIcon from './LinkIcon';
 
 const style = {
@@ -30,17 +30,6 @@ interface LinkProps {
   topic: Topic;
 }
 
-const TextStyles = {
-  color: 'rgb(0,0,0,0.8)',
-  align: 'left',
-  maxWidth: '50vw',
-  whiteSpace: 'break-spaces',
-  p: 3,
-  fontSize: 16,
-  fontWeight: 500,
-  letterSpacing: 0.8,
-  lineHeight: 1.5,
-};
 
 function Link({ item, id, topic }: LinkProps) {
   const [showNote, setShowNote] = useState<string | null>(null);
@@ -90,7 +79,7 @@ function Link({ item, id, topic }: LinkProps) {
                   setEditNote(true);
                 }}
               >
-                <StyledNoteBox>
+                <StyledNoteBox height={"10vh"}>
                   {editNote && (
                     <StyledTextInput
                       fullWidth
@@ -104,6 +93,7 @@ function Link({ item, id, topic }: LinkProps) {
                     <pre>
                       <Typography
                         className="font"
+                        textAlign={"left"}
                         sx={TextStyles}
                         variant="body1"
                       >

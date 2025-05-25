@@ -1,25 +1,25 @@
-import { Box,styled,TextField } from "@mui/material";
+import { Box, CardContent, styled, TextField } from '@mui/material';
 
-export const StyledNoteBox = styled(Box)(({ theme }) => ({
-    backgroundColor: 'lightBlue',
-    maxHeight: '80vh',
-    marginBottom: 1,
-    overflowY: 'scroll',
-    '&::-webkit-scrollbar': {
-      width: '6px',
-    },
-    '&::-webkit-scrollbar-track': {
-      backgroundColor: '#f1f1f1',
-      borderRadius: '4px',
-    },
-    '&::-webkit-scrollbar-thumb': {
-      backgroundColor: theme.palette.primary.main,
-      borderRadius: '4px',
-    },
-    '&::-webkit-scrollbar-thumb:hover': {
-      backgroundColor: theme.palette.primary.dark,
-    },
-  }));
+export const StyledNoteBox = styled(Box)(({ theme, height }) => ({
+  backgroundColor: 'lightBlue',
+  maxHeight: `${height}`,
+  marginBottom: 1,
+  overflowY: 'scroll',
+  '&::-webkit-scrollbar': {
+    width: '6px',
+  },
+  '&::-webkit-scrollbar-track': {
+    backgroundColor: '#f1f1f1',
+    borderRadius: '4px',
+  },
+  '&::-webkit-scrollbar-thumb': {
+    backgroundColor: theme.palette.primary.main,
+    borderRadius: '4px',
+  },
+  '&::-webkit-scrollbar-thumb:hover': {
+    backgroundColor: theme.palette.primary.dark,
+  },
+}));
 
 export const StyledTextInput = styled(TextField)(() => ({
   '& .MuiOutlinedInput-root': {
@@ -36,5 +36,37 @@ export const StyledTextInput = styled(TextField)(() => ({
   '& .MuiInputBase-input': {
     color: 'black',
     letterSpacing: '1.4px', // Change text color
+  },
+}));
+
+export const TextStyles = {
+  color: 'rgb(0,0,0,0.8)',
+  align: "left",
+  maxWidth: '50vw',
+  whiteSpace: 'break-spaces',
+  p: 3,
+  fontSize: 16,
+  fontWeight: 500,
+  letterSpacing: 0.8,
+  lineHeight: 1.5,
+};
+
+export const StyledCardContent = styled(CardContent)(({ theme }) => ({
+  minHeight: '400px',
+  maxHeight: '400px',
+  overflow: 'auto',
+  '&::-webkit-scrollbar': {
+    width: '6px',
+  },
+  '&::-webkit-scrollbar-track': {
+    backgroundColor: '#f1f1f1',
+    borderRadius: '4px',
+  },
+  '&::-webkit-scrollbar-thumb': {
+    backgroundColor: theme.palette.primary.main,
+    borderRadius: '4px',
+  },
+  '&::-webkit-scrollbar-thumb:hover': {
+    backgroundColor: theme.palette.primary.dark,
   },
 }));
