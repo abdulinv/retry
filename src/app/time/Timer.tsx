@@ -46,6 +46,57 @@ export default function Timer() {
     };
   }, [startTime]);
 
+  // auto logout
+
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = new Date();
+      const currentHour = now.getHours();
+      // Automatically logout at 23:00
+      if (currentHour >= 23) {
+        if (login) {
+          handleLogout() // logout
+        }
+      }
+    }, 60*60 * 1000); // check every minute
+  
+    return () => clearInterval(interval);
+  }, [login]);
+
+
+  // auto break
+
+  useEffect(() => {
+    let idleTimeout: ReturnType<typeof setTimeout>;
+  
+    const resetIdleTimer = () => {
+      clearTimeout(idleTimeout);
+      idleTimeout = setTimeout(() => {
+        if (login && !pause) {
+          console.log("No keyboard activity for 30 minutes. Triggering break.");
+          handlePause();
+        }
+      }, 10*60 * 1000); // 30 minutes
+    };
+  
+    const handleActivity = () => {
+      resetIdleTimer();
+    };
+  
+    // Listen to keyboard activity
+    window.addEventListener("keydown", handleActivity);
+  
+    // Initialize timer
+    resetIdleTimer();
+  
+    return () => {
+      window.removeEventListener("keydown", handleActivity);
+      clearTimeout(idleTimeout);
+    };
+  }, [login, pause]);
+  
+
   const handleLogin = () => {
     setLogin(true);
     localStorage.setItem("login", JSON.stringify({ status: true ,pause:false}));
