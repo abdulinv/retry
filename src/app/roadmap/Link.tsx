@@ -13,6 +13,7 @@ import {
 import { updateTask } from '../../../lib/fetch';
 import InsertLinkIcon from '@mui/icons-material/InsertLink';
 import LaunchIcon from '@mui/icons-material/Launch';
+import { RoadMaps, Topic } from './types';
 
 const style = {
   position: 'absolute',
@@ -28,9 +29,9 @@ const style = {
 };
 
 interface LinkProps {
-  item: any;
+  item: RoadMaps;
   id: string;
-  topic: any;
+  topic: Topic;
 }
 
 const StyledBox = styled(Box)(({ theme }) => ({
@@ -88,11 +89,11 @@ function Link({ item, id, topic }: LinkProps) {
   const [showNote, setShowNote] = useState<string | null>(null);
   const [editNote, setEditNote] = useState(false);
   const [note, setNote] = useState('add note here');
-  const topicTobeEdited = item.topics.find((el: any) => el.title === showNote);
+  const topicTobeEdited = item.topics.find((el) => el.title === showNote);
 
   const handleSave = async () => {
     const index = item.topics.findIndex(
-      (item: any) => item.title === topicTobeEdited?.title
+      (item) => item.title === topicTobeEdited?.title
     );
     const itemTobeUpdated = item.topics[index];
     await updateTask(`rm-${item.stack}`, id, {
