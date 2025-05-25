@@ -12,6 +12,7 @@ import {
   AccessTimeRounded,
 
 } from "@mui/icons-material";
+import DescriptionIcon from '@mui/icons-material/Description';
 
 function Header() {
   return (
@@ -55,6 +56,17 @@ function Header() {
               <AccessTimeRounded />
             </IconButton>
           </Link>
+          <a 
+            href="https://docs.google.com/document/d/1UrI00lJnmUJCeIjH8ZIDLomoNfUc0lBJDk2ibD9pI8U/edit?usp=drive_link"
+            target="blank"
+            title="Tech diary"
+            >
+              <Box color={"white"} typography={"Tech diary"}>
+              <DescriptionIcon color="inherit" />
+              </Box>
+              
+           
+          </a>
         </Toolbar>
       </AppBar>
     </>
