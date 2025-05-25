@@ -20,6 +20,7 @@ import { Colors, RoadMaps } from "./types";
 import { useState } from "react";
 import { updateTask } from "../../../lib/fetch";
 import SwapVertIcon from '@mui/icons-material/SwapVert';
+import Link from "./Link";
 
 
 
@@ -138,7 +139,7 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
                   ...item,
                   topics: [
                     ...item.topics.slice(0, index),
-                    { title: itemTobeUpdated.title, note: note ,order:itemTobeUpdated.order},
+                    { title: itemTobeUpdated.title, note: note ,order:itemTobeUpdated.order,link:""},
                     ...item.topics.slice(index + 1),
                   ],
                 });
@@ -283,7 +284,7 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
                           ...item,
                           topics: [
                             ...item.topics.slice(0, index),
-                            { title: value, note: itemTobeUpdated.note,order:itemTobeUpdated?.order||0 },
+                            { title: value, note: itemTobeUpdated.note,order:itemTobeUpdated?.order||0 ,link:""},
                             ...item.topics.slice(index + 1),
                           ],
                         });
@@ -305,6 +306,9 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
                     />
                   )}
                 </ListItemText>
+               
+                <Link item={item} id={id} topic={topic}/>
+
                 <ListItemIcon  
                   onClick={() => {
                     setShowNote(topic.title);
@@ -326,7 +330,7 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
                       ...item,
                       topics: [
                         ...item.topics.slice(0, index),
-                        { title: itemTobeUpdated.title, note: itemTobeUpdated.note,order:(itemTobeUpdated?.order || 0)-1 },
+                        { title: itemTobeUpdated.title, note: itemTobeUpdated.note,order:(itemTobeUpdated?.order || 0)-1,link:"" },
                         ...item.topics.slice(index + 1),
                       ],
                     });
@@ -343,7 +347,7 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
                       ...item,
                       topics: [
                         ...item.topics.slice(0, index),
-                        { title: itemTobeUpdated.title, note: itemTobeUpdated.note,order:(itemTobeUpdated?.order || 0)+1 },
+                        { title: itemTobeUpdated.title, note: itemTobeUpdated.note,order:(itemTobeUpdated?.order || 0)+1,link:"" },
                         ...item.topics.slice(index + 1),
                       ],
                     });
@@ -366,7 +370,7 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
                 ...item,
                 topics: [
                   ...item.topics,
-                  { title: `add - ${new Date().getMilliseconds().toString().slice(-4)}`, note: "add note here" ,order:1},
+                  { title: `add - ${new Date().getMilliseconds().toString().slice(-4)}`, note: "add note here" ,order:1,link:""},
                 ],
               });
             }}
@@ -399,8 +403,6 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
             });
           }}>reset</Button>
           </Box>
-          
-         
         </CardActionArea>
       </Card>
     </>

@@ -1,7 +1,8 @@
 type Topics = {
   title:string,
   note:string,
-  order:number
+  order:number,
+  link:string
 }[]
 export type Colors = "primary" | "warning" | "success" | "info" | "error";
 export interface RoadMaps {

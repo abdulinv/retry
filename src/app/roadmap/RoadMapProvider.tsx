@@ -24,7 +24,7 @@ function RoadMapProvider({ RoadMaps }: RoadMapProps) {
           onClick={() => {
             const newDoc: RoadMaps = {
               title: "Enter title here",
-              topics: [{ title: "add here", note: "add note here",order:1 }],
+              topics: [{ title: "add here", note: "add note here",order:1,link:"" }],
               stack: selectedStack,
               color: "primary",
             };
