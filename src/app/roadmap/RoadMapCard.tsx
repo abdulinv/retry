@@ -158,7 +158,7 @@ function RoadMapCard({ item, id}: RoadMapProps) {
             {item.topics
               .toSorted((a, b) => b.order - a.order)
               .map((topic) => (
-                <ListItem divider key={topic.title} sx={{ m: 0, p: 0 ,height:"42px"}}>
+                <ListItem divider key={topic.title} sx={{ m: 0, p: 0 }}>
                   {/* title */}
                   <TitleControl
                     handleEnableEdit={handleEnableEdit}

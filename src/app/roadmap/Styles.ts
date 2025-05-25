@@ -44,7 +44,7 @@ export const TextStyles = {
   align: "left",
   maxWidth: '50vw',
   whiteSpace: 'break-spaces',
-  p: 3,
+  p: 0.5,
   fontSize: 16,
   fontWeight: 500,
   letterSpacing: 0.8,
