@@ -21,6 +21,7 @@ import { useState } from "react";
 import { updateTask } from "../../../lib/fetch";
 import SwapVertIcon from '@mui/icons-material/SwapVert';
 import Link from "./Link";
+import ControlButton from "./ControlButton";
 
 
 
@@ -46,9 +47,32 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
   const theme = useTheme();
 
   const topicTobeEdited = item.topics.find((el) => el.title === showNote);
+
+   const handleSave = ()=>{
+    const index = item.topics.findIndex(
+      (item) => item.title === topicTobeEdited?.title
+    );
+    const itemTobeUpdated = item.topics[index];
+    updateTask(`rm-${item.stack}`, id, {
+      ...item,
+      topics: [
+        ...item.topics.slice(0, index),
+        { title: itemTobeUpdated.title, note: note ,order:itemTobeUpdated.order,link:""},
+        ...item.topics.slice(index + 1),
+      ],
+    });
+    setEditNote(false);
+    setShowNote(null);
+   }
+
+   const handleClose = ()=>{
+    setShowNote(null);
+    setEditNote(false);
+   }
+
   return (
     <>
-      <Modal open={showNote ? true : false} onClose={() => setShowNote(null)} >
+      <Modal open={showNote ? true : false} onClose={handleClose} >
         <div >
 
         <Paper elevation={10} >
@@ -126,39 +150,12 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
                 }
               </Box>
             </div>
-            <Box display={"flex"} gap={4} justifyContent={"center"}>
-            <Button
-              variant="contained"
-              color="success"
-              onClick={() => {
-                const index = item.topics.findIndex(
-                  (item) => item.title === topicTobeEdited?.title
-                );
-                const itemTobeUpdated = item.topics[index];
-                updateTask(`rm-${item.stack}`, id, {
-                  ...item,
-                  topics: [
-                    ...item.topics.slice(0, index),
-                    { title: itemTobeUpdated.title, note: note ,order:itemTobeUpdated.order,link:""},
-                    ...item.topics.slice(index + 1),
-                  ],
-                });
-                setEditNote(false);
-              }}
-            >
-              Save Note
-            </Button>
-            <Button
-              color="warning"
-              variant="outlined"
-              onClick={() => {
-                setShowNote(null);
-              }}
-            >
-              Close
-            </Button>
-            </Box>
-           
+            <ControlButton
+              handleClose={handleClose}
+              handleSave={handleSave}
+              confirmButtonText="Save Note"
+              cancelButtonText="Close"
+            />
           </Box>
         </Paper>
 

@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
 import {
-  ListItemIcon,
   Modal,
   Paper,
   Box,
-  TextField,
   Typography,
-  Button,
-  Stack,
-  styled,
 } from '@mui/material';
 import { updateTask } from '../../../lib/fetch';
-import InsertLinkIcon from '@mui/icons-material/InsertLink';
-import LaunchIcon from '@mui/icons-material/Launch';
 import { RoadMaps, Topic } from './types';
+import ControlButton from './ControlButton';
+import { StyledNoteBox, StyledTextInput } from './Styles';
+import LinkIcon from './LinkIcon';
 
 const style = {
   position: 'absolute',
@@ -33,45 +29,6 @@ interface LinkProps {
   id: string;
   topic: Topic;
 }
-
-const StyledBox = styled(Box)(({ theme }) => ({
-  backgroundColor: 'lightBlue',
-  maxHeight: '80vh',
-  marginBottom: 1,
-  overflowY: 'scroll',
-  '&::-webkit-scrollbar': {
-    width: '6px',
-  },
-  '&::-webkit-scrollbar-track': {
-    backgroundColor: '#f1f1f1',
-    borderRadius: '4px',
-  },
-  '&::-webkit-scrollbar-thumb': {
-    backgroundColor: theme.palette.primary.main,
-    borderRadius: '4px',
-  },
-  '&::-webkit-scrollbar-thumb:hover': {
-    backgroundColor: theme.palette.primary.dark,
-  },
-}));
-
-const StyledTextInput = styled(TextField)(() => ({
-  '& .MuiOutlinedInput-root': {
-    '& fieldset': {
-      border: 'none',
-    },
-    '&:hover fieldset': {
-      border: 'none', // Prevent border on hover
-    },
-    '&.Mui-focused fieldset': {
-      border: 'none',
-    },
-  },
-  '& .MuiInputBase-input': {
-    color: 'black',
-    letterSpacing: '1.4px', // Change text color
-  },
-}));
 
 const TextStyles = {
   color: 'rgb(0,0,0,0.8)',
@@ -113,9 +70,14 @@ function Link({ item, id, topic }: LinkProps) {
     setShowNote(null);
   };
 
-  const handleClose = ()=>{
+  const handleClose = () => {
     setShowNote(null);
     setEditNote(false);
+  };
+
+  const handleAddLink = ()=>{
+    setShowNote(topic.title);
+    setNote(topic.link);
   }
   return (
     <>
@@ -128,7 +90,7 @@ function Link({ item, id, topic }: LinkProps) {
                   setEditNote(true);
                 }}
               >
-                <StyledBox>
+                <StyledNoteBox>
                   {editNote && (
                     <StyledTextInput
                       fullWidth
@@ -149,54 +111,19 @@ function Link({ item, id, topic }: LinkProps) {
                       </Typography>
                     </pre>
                   )}
-                </StyledBox>
+                </StyledNoteBox>
               </div>
-              <Box display={'flex'} gap={4} justifyContent={'center'}>
-                <Button
-                  variant="contained"
-                  color="success"
-                  onClick={handleSave}
-                >
-                  Save Link
-                </Button>
-                <Button
-                  color="warning"
-                  variant="outlined"
-                  onClick={handleClose}
-                >
-                  Close
-                </Button>
-              </Box>
+              <ControlButton
+                handleClose={handleClose}
+                handleSave={handleSave}
+                confirmButtonText="Save Link"
+                cancelButtonText="Close"
+              />
             </Box>
           </Paper>
         </div>
       </Modal>
-      <Stack
-        flexDirection={'row'}
-        gap={0}
-        justifyContent={'center'}
-        alignItems={'center'}
-      >
-        <ListItemIcon
-          onClick={() => {
-            setShowNote(topic.title);
-            setNote(topic.link);
-          }}
-        >
-          <InsertLinkIcon sx={{ m: 0, p: 0 }} />
-        </ListItemIcon>
-        <a href={topic.link} target="blank">
-          <LaunchIcon
-            sx={{
-              m: 0,
-              p: 0,
-              ml: -10,
-            }}
-            color="primary"
-            fontSize="inherit"
-          />
-        </a>
-      </Stack>
+      <LinkIcon handleClick={handleAddLink} link={topic.link}/>
     </>
   );
 }
