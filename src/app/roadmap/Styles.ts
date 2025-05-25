@@ -52,8 +52,8 @@ export const TextStyles = {
 };
 
 export const StyledCardContent = styled(CardContent)(({ theme }) => ({
-  minHeight: '400px',
-  maxHeight: '400px',
+  minHeight: '550px',
+  maxHeight: '550px',
   overflow: 'auto',
   '&::-webkit-scrollbar': {
     width: '6px',

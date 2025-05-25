@@ -1,8 +1,9 @@
-import React from 'react';
-import { Button } from '@mui/material';
+import React  from 'react';
+import { Button, CircularProgress } from '@mui/material';
 import { findIndex, UpdateRoadMap } from '@/models/RoadMap/RoadMap';
 import { RoadMaps, Topic } from './types';
 import CONSTANTS from './constants';
+import { useLoading } from '../hook/useLoading';
 
 interface DateControlProps {
   topic:Topic,
@@ -10,11 +11,14 @@ interface DateControlProps {
   id:string
 }
 function DateControl({ item ,topic,id}: DateControlProps) {
-  const handleDateChange = () => {
+  const {loading,load,unload} = useLoading();
+  const handleDateChange = async() => {
     const index =  findIndex(item,topic);
     const action = CONSTANTS.ADD_DATE_ACTION;
     action.value = new Date().toISOString().split("T")[0];
-    UpdateRoadMap(item,id,index,action)
+    load();
+    await UpdateRoadMap(item,id,index,action);
+    unload();
   };
   return (
     <Button
@@ -23,8 +27,9 @@ function DateControl({ item ,topic,id}: DateControlProps) {
         mr: 6,
       }}
       onClick={handleDateChange}
-    >
-      {topic.date ? topic.date : 'Pending'}
+    > 
+      {loading && <CircularProgress size={"16px"}/>}
+      {!loading ?topic.date ? topic.date : 'Pending':null}
     </Button>
   );
 }

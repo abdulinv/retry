@@ -105,19 +105,21 @@ export async function UpdateRoadMap(
     value: string;
   }
 ) {
-  let itemTobeUpdated: Topic = {
+  let itemTobeUpdated: Topic= {
     title: `add - ${new Date().getMilliseconds().toString().slice(-4)}`,
     note: 'add note here',
     order: 1,
     link: '',
     date: null,
   };
-  if (index) itemTobeUpdated = item.topics[index];
+  console.log("index check",index)
+  if (index || index === 0) itemTobeUpdated = item.topics[index];
   else index = item.topics.length;
-
+  
   const updatedData = {
     ...itemTobeUpdated,
   };
+  
 
   switch (action.prop) {
     case 'link':
@@ -139,15 +141,13 @@ export async function UpdateRoadMap(
       updatedData.date = action.value;
       break;
   }
-
+  console.log("updation",id,updatedData,index)
   await updateTask(`rm-${item.stack}`, id, {
     ...item,
     topics: [
       ...item.topics.slice(0, index),
-      {
-        ...updatedData,
-      },
-      ...item.topics.slice(index + 1),
+      {...updatedData},
+      ...item.topics.slice(index + 1,),
     ],
   });
 }

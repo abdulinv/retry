@@ -31,15 +31,19 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: '52vw',
+  width: '53vw',
   bgcolor: 'background.paper',
   boxShadow: 24,
   borderRadius: 5,
   p: 2,
-  maxHeight: '89vh',
+  maxHeight: '90vh',
 };
 
-function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
+interface RoadMapProps{
+  item: RoadMaps; 
+  id: string;
+}
+function RoadMapCard({ item, id}: RoadMapProps) {
   const [showInput, setShowInput] = useState<string | null>(null);
   const [value, setValue] = useState('');
   const [showNote, setShowNote] = useState<string | null>(null);
@@ -90,6 +94,7 @@ function RoadMapCard({ item, id }: { item: RoadMaps; id: string }) {
 
   const handleTopicUpdate = (topic: Topic) => {
     const index = item.topics.findIndex((item) => item.title === topic.title);
+    console.log("index check",index,item.title,topic.title)
     const action = {
       prop:"title",
       value:value
