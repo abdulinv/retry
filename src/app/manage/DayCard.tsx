@@ -298,7 +298,7 @@ function DayCard({
                             padding: 2,
                             borderRadius: 3,
                             color:taskStart === task.text?"white": 'black',
-                            opacity: 0.8,
+                            opacity: taskStart === task.text? 1:0.9,
                             backgroundColor:
                               taskStart === task.text
                                 ? "#6F9062"

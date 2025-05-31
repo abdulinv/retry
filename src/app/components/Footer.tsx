@@ -13,7 +13,7 @@ function Footer() {
         bottom:0,
     }}
    >
-   <AppBar color='info' position='relative' sx={{width:"100vw"}}>
+   <AppBar  color='info' position='relative' sx={{width:"100vw",backgroundColor:"midnightblue"}}>
     <Toolbar>
         <Timer/>
     </Toolbar>

@@ -4,7 +4,6 @@ import {
   IconButton,
   Link,
   Toolbar,
-  Typography,
 } from "@mui/material";
 
 import {
@@ -17,24 +16,26 @@ import DescriptionIcon from '@mui/icons-material/Description';
 function Header() {
   return (
     <>
-      <AppBar >
+      <AppBar sx={{backgroundColor:"midnightblue"}}>
         <Toolbar>
           {/* <Box component={"img"} src="./public/vite.svg" /> */}
-          <Link href="/tests" color="inherit" underline="none">
-            <Typography sx={{ marginLeft: 5 }} variant="subtitle1">
-              Tests
-            </Typography>
-          </Link>
+          
 
           <Box
             sx={{
               flexGrow: 1,
               display: "flex",
-              justifyContent: "space-evenly",
-              gap: 20,
+              justifyContent: "start",
+              gap: 4,
               paddingLeft: 12,
             }}
           >
+            <Link href="/tests" color="inherit" underline="none">
+       
+              Tests
+           
+          </Link>
+
             <Link href="/roadmap" color="inherit" underline="none">
               Road Map
             </Link>
