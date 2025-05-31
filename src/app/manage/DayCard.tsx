@@ -7,7 +7,6 @@ import {
   Card,
   CardContent,
   ListItemText,
-  Checkbox,
   CardActionArea,
   Button,
   TextField,
@@ -15,6 +14,7 @@ import {
   Box,
   Typography,
   LinearProgress,
+  Stack,
 } from '@mui/material';
 
 interface Day {
@@ -25,7 +25,7 @@ interface Day {
     order: number;
     tasks: {
       text: string;
-      status: boolean;
+      status: string;
       duration?: {
         hh: number;
         mm: number;
@@ -54,6 +54,7 @@ function DayCard({
   const [showInput, setShowInput] = useState<string | null>(null);
   const [value, setValue] = useState('');
   const [taskStart, setTaskStart] = useState<null | string>(null);
+  const [tab,SetTab] = useState("Open");
 
   const { slug } = useParams();
   const theme = useTheme();
@@ -94,7 +95,11 @@ function DayCard({
     heading = 'Over all tasks summary ';
     headingColor = new Date().getMonth() == day.order + 3 ? 'success' : 'info';
   }
-  const sortedTasks = day.tasks.toSorted((a, b) => (a.text > b.text ? 1 : -1));
+  let filteredTasks = day.tasks;
+  if(mode === "Monthly")
+    filteredTasks = day.tasks.filter(item=>item.status === tab);
+  const sortedTasks = filteredTasks.toSorted((a, b) => (a.text > b.text ? 1 : -1));
+  
   const handleStartTask = (text: string) => {
     if (taskStart === text) {
       setTaskStart(null);
@@ -123,7 +128,7 @@ function DayCard({
           ...day,
           tasks: [
             ...tasks,
-            { text: text, status: true, duration: { hh: prevHH, mm: prevMM } },
+            { text: text, status: "Open", duration: { hh: prevHH, mm: prevMM } },
           ],
         });
         updateWeeklyDuration({ hh: hours, mm: minutes }, text);
@@ -146,9 +151,13 @@ function DayCard({
     console.log('title', title);
     updateTask(`manage${mode}`, day.title, {
       ...day,
-      tasks: [...day.tasks, { text: title, status: false }],
+      tasks: [...day.tasks, { text: title, status: "Planned"}],
     });
   };
+
+  const handleTabChange = (tab:string)=>{
+    SetTab(tab);
+  }
   return (
     <>
       {headingColor === 'success' && (
@@ -160,9 +169,37 @@ function DayCard({
           elevation={headingColor === 'success' ? 20 : 5}
           sx={{ opacity: headingColor === 'success' ? 1 : 0.7 }}
         >
-          <Button fullWidth color={headingColor} variant="contained">
+          <Stack 
+            p={0.8} 
+            flexDirection={"row"} 
+            alignItems={"center"} 
+            justifyContent={"space-around"} 
+            sx={{ color:"white", minHeight:"44px", borderRadius: 0, backgroundColor:"#1A237E" }} color={headingColor}>
             {heading}
-          </Button>
+            {mode === 'Monthly' && (
+              <Stack flexDirection={'row'} m={0} p={0}>
+                <Button
+                sx={{color:tab === "Open"?"white":"grey"}}
+                onClick={handleTabChange.bind(null,"Open")}
+                size="small" variant="text">
+                  Open
+                </Button>
+                <Button 
+                  sx={{color:tab === "Close"?"white":"grey"}}
+                  onClick={handleTabChange.bind(null,"Close")}
+                  size="small" variant="text">
+                  Closed
+                </Button>
+                <Button 
+                   sx={{color:tab === "Planned"?"white":"grey"}}
+                  onClick={handleTabChange.bind(null,"Planned")}
+                  size="small" variant="text">
+                  Planned
+                </Button>
+              </Stack>
+            )}
+          </Stack>
+
           <CardContent
             sx={{
               maxHeight: '575px',
@@ -228,22 +265,25 @@ function DayCard({
                           >
                             <Typography
                               sx={{
-                                cursor:"grabbing"
+                                cursor: 'grabbing',
                               }}
                               width={'60%'}
                               borderRadius={'12px'}
-                              px={1}
+                              px={0.5}
                               draggable={true}
                               onDragStart={() => setDragItem(task.text)}
-                              color={task.status ? 'success' : 'inherit'}
+                              color='grey'
+                              fontWeight={500}
+                              fontSize={16}
                             >
                               {task.text}
                             </Typography>
                             {
                               <Typography
-                                color="inherit"
+                                color="grey"
                                 fontWeight={600}
-                                px={1}
+                                px={0.5}
+                                
                               >
                                 {task.duration
                                   ? `${task.duration.hh} hours ${task.duration.mm} minuits`
@@ -252,10 +292,10 @@ function DayCard({
                             }
 
                             {mode === 'Monthly' && (
-                              <Box>
+                              <Box sx={{px:0.5}}>
                                 <LinearProgress
                                   sx={{
-                                    px: 1,
+                                   
                                     height: 12,
                                     borderRadius: 4,
                                     border: '1px solid grey',
@@ -281,6 +321,8 @@ function DayCard({
                                       color="error"
                                       variant="body2"
                                       fontSize={14}
+                                      mt={0.8}
+                                      px={0.1}
                                     >
                                       You are not started this task yet !
                                     </Typography>
@@ -288,9 +330,11 @@ function DayCard({
                                 {(task.duration?.hh || 0) > 10 &&
                                   (task.duration?.hh || 0) < 20 && (
                                     <Typography
-                                      color="warning"
+                                      color="grey"
                                       variant="body2"
                                       fontSize={14}
+                                      mt={0.8}
+                                      px={0.1}
                                     >
                                       You are making progress...💪 keep going
                                     </Typography>
@@ -301,6 +345,8 @@ function DayCard({
                                       color="info"
                                       variant="body2"
                                       fontSize={14}
+                                      mt={0.8}
+                                      px={0.1}
                                     >
                                       you made the minimum requirement...💪
                                     </Typography>
@@ -308,9 +354,11 @@ function DayCard({
                                 {(task.duration?.hh || 0) > 95 &&
                                   (task.duration?.hh || 0) < 99 && (
                                     <Typography
-                                      color="success"
+                                       color="grey"
                                       variant="body2"
                                       fontSize={14}
+                                      mt={0.8}
+                                      px={0.1}
                                     >
                                       congratulations...✨
                                     </Typography>
@@ -318,18 +366,23 @@ function DayCard({
                                 {(task.duration?.hh || 0) > 99 &&
                                   (task.duration?.hh || 0) < 49 && (
                                     <Typography
-                                      color="success"
+                                      color="grey"
                                       variant="body2"
                                       fontSize={14}
+                                      mt={0.8}
+                                      px={0.1}
                                     >
                                       Excellent...💥💥
                                     </Typography>
                                   )}
                                 {(task.duration?.hh || 0) > 100 && (
                                   <Typography
-                                    color="success"
+                                    color="grey"
                                     variant="body2"
                                     fontSize={14}
+                                    fontWeight={500}
+                                    mt={0.8}
+                                    px={0.1}
                                   >
                                     Awesome...🔥🔥🔥 time to switch to another
                                     topic
@@ -341,8 +394,10 @@ function DayCard({
 
                           <Box
                             sx={{
-                              backgroundColor: 'white',
-                              borderRadius: 2,
+                              backgroundColor: '#1A237E',
+                              borderRadius: 1,
+                              p:0
+
                             }}
                           >
                             {mode === 'Daily' && (
@@ -354,28 +409,55 @@ function DayCard({
                                 {taskStart === task.text ? 'end' : 'start'}
                               </Button>
                             )}
-
-                            {mode === 'Monthly' && (
-                              <Checkbox
-                                color="success"
-                                checked={task.status}
+                            {
+                              mode === 'Monthly' && task.status === "Planned" && 
+                              <Button variant='text' size='small' sx={{backgroundColor:"#1A237E"}} color='info'  onClick={()=>{
+                                const tasks = day.tasks.filter(
+                                  (item) => item.text !== task.text
+                                );
+                                updateTask(`manage${mode}`, day.title, {
+                                  ...day,
+                                  tasks: [
+                                    ...tasks,
+                                    {
+                                      text: task.text,
+                                      status: "Open",
+                                      duration: task.duration,
+                                    },
+                                  ],
+                                });
+                              }}>Open task</Button>
+                            }
+                            {mode === 'Monthly' && task.status !== "Planned" &&(
+                              <Button
+                                variant='text'
+                                size='small'
+                                title='Mark as Complete'
+                                sx={{
+                                  m:0,
+                                  fontSize:12
+                                }}
+                                disabled={task.status === "Open" && (task.duration?.hh || 0 )<100}
+                                color="primary"
                                 onClick={() => {
+                                  if(task.status === "Open" && (task.duration?.hh || 0 )<100) 
+                                     return;
                                   const tasks = day.tasks.filter(
                                     (item) => item.text !== task.text
                                   );
-                                  updateTask(`manage${slug}`, day.title, {
+                                  updateTask(`manage${mode}`, day.title, {
                                     ...day,
                                     tasks: [
                                       ...tasks,
                                       {
                                         text: task.text,
-                                        status: !task.status,
+                                        status: task.status === "Open"?"Close":"Open",
                                         duration: task.duration,
                                       },
                                     ],
                                   });
                                 }}
-                              />
+                              >{task.status === "Open"?"Complete":"Open"}</Button>
                             )}
                           </Box>
                         </Box>
@@ -391,7 +473,7 @@ function DayCard({
                             const tasks = day.tasks.filter(
                               (item) => item.text !== task.text
                             );
-                            updateTask(`manage${slug}`, day.title, {
+                            updateTask(`manage${mode}`, day.title, {
                               ...day,
                               tasks: [
                                 ...tasks,
@@ -399,7 +481,7 @@ function DayCard({
                               ],
                             });
                             if (
-                              slug === 'Monthly' &&
+                              mode === 'Monthly' &&
                               value.includes('Daily#-')
                             ) {
                               autoUpdateDaily(value);

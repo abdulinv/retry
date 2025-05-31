@@ -5,7 +5,7 @@ export interface Duration {
 
 interface Task {
   text: string;
-  status: boolean;
+  status: string;
   duration?:Duration
 }
 

@@ -76,7 +76,7 @@ function CardContainer({ data }: CardContainerProps) {
       if (index === -1) {
         updateTask('manageDaily', item.title, {
           ...item,
-          tasks: [...item.tasks, { text: value.slice(8), status: false }],
+          tasks: [...item.tasks, { text: value.slice(8), status: "Open" }],
         });
       }
     });
@@ -86,7 +86,7 @@ function CardContainer({ data }: CardContainerProps) {
       if (index === -1) {
         updateTask('manageWeekly', item.title, {
           ...item,
-          tasks: [...item.tasks, { text: value.slice(8), status: false }],
+          tasks: [...item.tasks, { text: value.slice(8), status: "Open" }],
         });
       }
     });
