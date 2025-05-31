@@ -34,13 +34,14 @@ interface Day {
   };
   autoUpdateDaily: (value: string) => void;
   updateWeeklyDuration: (duration: Duration, text: string) => void;
+  mode:string
 }
 
 import { useParams } from "next/navigation";
 import { updateTask } from "../../../lib/fetch";
 import { Duration } from "@/models/checklist/daily/daily";
 
-function DayCard({ day, autoUpdateDaily, updateWeeklyDuration }: Day) {
+function DayCard({ day, autoUpdateDaily, updateWeeklyDuration ,mode}: Day) {
   const [showInput, setShowInput] = useState<string | null>(null);
   const [value, setValue] = useState("");
   const [taskStart, setTaskStart] = useState<null | string>(null);
@@ -57,9 +58,9 @@ function DayCard({ day, autoUpdateDaily, updateWeeklyDuration }: Day) {
 
   let heading: string;
   let headingColor: "info" | "success" = "info";
-  if (slug === "Daily") {
+  if (mode === "Daily") {
     heading =
-      "Today is " +
+      "Daily Tasks for " +
       [
         "Sunday",
         "Monday",
@@ -73,14 +74,14 @@ function DayCard({ day, autoUpdateDaily, updateWeeklyDuration }: Day) {
       new Date().getDay() + 1 == Number(day.title.slice(-1))
         ? "success"
         : "info";
-  } else if (slug === "Weekly") {
+  } else if (mode === "Weekly") {
     heading = "The Week is";
     headingColor =
       Math.ceil(new Date().getDate() / 7) == Number(day.title.slice(-1))
         ? "success"
         : "info";
   } else {
-    heading = "The Month is";
+    heading = "Over all tasks summary ";
     headingColor = new Date().getMonth() == day.order+3  ? "success" : "info";
   }
   const sortedTasks = day.tasks.toSorted((a, b) => (a.text > b.text ? 1 : -1));
@@ -138,7 +139,7 @@ function DayCard({ day, autoUpdateDaily, updateWeeklyDuration }: Day) {
           sx={{ opacity: headingColor === "success" ? 1 : 0.7 }}
         >
           <Button fullWidth color={headingColor} variant="contained">
-            {heading} - {day.title}
+            {heading}
           </Button>
           <CardContent
             sx={{

@@ -22,9 +22,22 @@ import { Rev, RevDocs } from "@/app/revision/types";
 import { Bucket, BucketDocs } from "@/app/bucketlist/types";
 import { TimeDocs, TimeInfo } from "@/app/time/types";
 
-export async function getTasks() {
+export async function getDailyTasks() {
   const data: Tasks[] = [];
-  const collections = ["manageDaily", "manageWeekly", "manageMonthly"];
+  const collections = ["manageDaily"];
+  for (const col of collections) {
+    const querySnapshot = await getDocs(collection(db, col));
+    querySnapshot.forEach((doc) => {
+      console.log(`${doc.id} => `, doc.data());
+      data.push(doc.data() as Tasks);
+    });
+  }
+  return data;
+}
+
+export async function getAllTasks() {
+  const data: Tasks[] = [];
+  const collections = ["manageMonthly"];
   for (const col of collections) {
     const querySnapshot = await getDocs(collection(db, col));
     querySnapshot.forEach((doc) => {

@@ -6,23 +6,10 @@ function Notes() {
     <Box sx={{ borderRadius: "12px", display:"flex",  gap:4, flexDirection:"column"}}>
         <Typography fontWeight={700} variant="h5">Notes</Typography>
        
-        <Typography color="primary" variant="body1">
-          slot1 - connected to revision analyser
+        <Typography color="primary" variant="h5">
+          DS-FE-DS-BE-DS-FE-DS
         </Typography>
-        <Typography color="primary" variant="body1">
-          slot2 - conenncted to revision anylyser
-        </Typography>
-
-        <Typography color="primary" variant="body1">
-          slot3 - T connect to  bucket and revisin analyser
-        </Typography>
-        <Typography color="primary" variant="body1">
-          slot4 -  connected to projects
-        </Typography>
-
-        <Typography color="primary" variant="body1">
-          Daily - [ tests , ds]
-        </Typography>
+       
       </Box>
   )
 }
