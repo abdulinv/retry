@@ -16,6 +16,8 @@ import {
   LinearProgress,
   Stack,
   Badge,
+  Select,
+  MenuItem,
 } from '@mui/material';
 
 interface Day {
@@ -34,6 +36,7 @@ interface Day {
       completedOn?: string;
       openedOn?: string;
       updatedOn?: string;
+      tag?:string;
     }[];
   };
   autoUpdateDaily: (value: string) => void;
@@ -97,7 +100,7 @@ function DayCard({
         : 'info';
   } else {
     heading = 'Over all tasks summary ';
-    headingColor = new Date().getMonth() == day.order + 3 ? 'success' : 'info';
+    headingColor = new Date().getMonth() == day.order + 4 ? 'success' : 'info';
   }
   let filteredTasks = day.tasks;
   const openCount = day.tasks.filter((item) => item.status === 'Open').length;
@@ -376,6 +379,53 @@ function DayCard({
                                     </Typography>
                                   </Stack>
                                 )}
+
+                                <Select size='small'  
+                                  color='info'
+                                   value={task.tag ?? "Notag"}
+                                   onChange={(e)=>{
+
+                                    const tasks = day.tasks.filter(
+                                      (item) => item.text !== task.text
+                                    );
+                                    updateTask(`manage${mode}`, day.title, {
+                                      ...day,
+                                      tasks: [
+                                        ...tasks,
+                                        {
+                                          text: task.text,
+                                          status: task.status,
+                                          duration: task.duration,
+                                          openedOn: task?.openedOn ?? "",
+                                          completedOn: task?.completedOn ?? "",
+                                          updatedOn:task?.updatedOn ?? "",
+                                          tag:e.target.value
+                                            
+                                        },
+                                      ],
+                                    });
+                                   }}
+                                   sx={{
+                                     fontSize:"14px",
+                                     color:"grey",
+                                     fontWeight:"500",
+                                     height:"24px",
+                                     width:"150px",
+                                     "& .MuiOutlinedInput-notchedOutline": {
+                                      border: "none",
+                                    },
+                                    "&:hover .MuiOutlinedInput-notchedOutline": {
+                                      border: "none",
+                                    },
+                                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                                      border: "none",
+                                    },
+                                     }}>
+                                    <MenuItem value="Notag" >#NOTAG</MenuItem>
+                                   <MenuItem value="dsa" >#DSA</MenuItem>
+                                   <MenuItem value="fe" >#FRONTEND</MenuItem>
+                                   <MenuItem value="be" >#BACKEND</MenuItem>
+                                </Select>
                               </Stack>
                             )}
                             <Typography

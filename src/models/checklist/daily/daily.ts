@@ -10,6 +10,7 @@ interface Task {
   completedOn?:string;
   openedOn?:string;
   updatedOn?:string;
+  tag?:string
 }
 
 
