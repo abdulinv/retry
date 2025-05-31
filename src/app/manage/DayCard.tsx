@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   List,
   ListItem,
@@ -15,7 +15,7 @@ import {
   Box,
   Typography,
   LinearProgress,
-} from "@mui/material";
+} from '@mui/material';
 
 interface Day {
   day: {
@@ -34,64 +34,74 @@ interface Day {
   };
   autoUpdateDaily: (value: string) => void;
   updateWeeklyDuration: (duration: Duration, text: string) => void;
-  mode:string
+  mode: string;
+  dragItem: string;
+  setDragItem: (arg: string) => void;
 }
 
-import { useParams } from "next/navigation";
-import { updateTask } from "../../../lib/fetch";
-import { Duration } from "@/models/checklist/daily/daily";
+import { useParams } from 'next/navigation';
+import { updateTask } from '../../../lib/fetch';
+import { Duration } from '@/models/checklist/daily/daily';
 
-function DayCard({ day, autoUpdateDaily, updateWeeklyDuration ,mode}: Day) {
+function DayCard({
+  day,
+  autoUpdateDaily,
+  updateWeeklyDuration,
+  mode,
+  dragItem,
+  setDragItem,
+}: Day) {
   const [showInput, setShowInput] = useState<string | null>(null);
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState('');
   const [taskStart, setTaskStart] = useState<null | string>(null);
+
   const { slug } = useParams();
   const theme = useTheme();
 
   useEffect(() => {
-    if (localStorage.getItem("activeTask")) {
-      const startedTask = JSON.parse(localStorage.getItem("activeTask")!).task;
-      console.log("task local", startedTask);
+    if (localStorage.getItem('activeTask')) {
+      const startedTask = JSON.parse(localStorage.getItem('activeTask')!).task;
+      console.log('task local', startedTask);
       if (startedTask) setTaskStart(startedTask);
     }
   }, []);
 
   let heading: string;
-  let headingColor: "info" | "success" = "info";
-  if (mode === "Daily") {
+  let headingColor: 'info' | 'success' = 'info';
+  if (mode === 'Daily') {
     heading =
-      "Daily Tasks for " +
+      'Daily Tasks for ' +
       [
-        "Sunday",
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Sataurday",
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Sataurday',
       ][Number(day.title.slice(-1)) - 1];
     headingColor =
       new Date().getDay() + 1 == Number(day.title.slice(-1))
-        ? "success"
-        : "info";
-  } else if (mode === "Weekly") {
-    heading = "The Week is";
+        ? 'success'
+        : 'info';
+  } else if (mode === 'Weekly') {
+    heading = 'The Week is';
     headingColor =
       Math.ceil(new Date().getDate() / 7) == Number(day.title.slice(-1))
-        ? "success"
-        : "info";
+        ? 'success'
+        : 'info';
   } else {
-    heading = "Over all tasks summary ";
-    headingColor = new Date().getMonth() == day.order+3  ? "success" : "info";
+    heading = 'Over all tasks summary ';
+    headingColor = new Date().getMonth() == day.order + 3 ? 'success' : 'info';
   }
   const sortedTasks = day.tasks.toSorted((a, b) => (a.text > b.text ? 1 : -1));
   const handleStartTask = (text: string) => {
     if (taskStart === text) {
       setTaskStart(null);
       let startTime;
-      if (localStorage.getItem("activeTask")) {
+      if (localStorage.getItem('activeTask')) {
         startTime = new Date(
-          JSON.parse(localStorage.getItem("activeTask")!).start
+          JSON.parse(localStorage.getItem('activeTask')!).start
         );
         const now = new Date();
         const diffMs = now.getTime() - startTime.getTime();
@@ -120,52 +130,64 @@ function DayCard({ day, autoUpdateDaily, updateWeeklyDuration ,mode}: Day) {
       }
 
       localStorage.setItem(
-        "activeTask",
+        'activeTask',
         JSON.stringify({ task: null, start: null })
       );
     } else {
       setTaskStart(text);
       localStorage.setItem(
-        "activeTask",
+        'activeTask',
         JSON.stringify({ task: text, start: new Date() })
       );
     }
   };
+
+  const handleAddTask = (title: string) => {
+    console.log('title', title);
+    updateTask(`manage${mode}`, day.title, {
+      ...day,
+      tasks: [...day.tasks, { text: title, status: false }],
+    });
+  };
   return (
     <>
-      {headingColor === "success" && (
+      {headingColor === 'success' && (
         <Card
-          elevation={headingColor === "success" ? 20 : 5}
-          sx={{ opacity: headingColor === "success" ? 1 : 0.7 }}
+          onDragOver={(e) => e.preventDefault()}
+          onDrop={() => {
+            handleAddTask(dragItem);
+          }}
+          elevation={headingColor === 'success' ? 20 : 5}
+          sx={{ opacity: headingColor === 'success' ? 1 : 0.7 }}
         >
           <Button fullWidth color={headingColor} variant="contained">
             {heading}
           </Button>
           <CardContent
             sx={{
-              maxHeight: "575px",
-              minHeight: "575px",
-              overflowY: "auto",
-              "&::-webkit-scrollbar": {
-                width: "8px",
+              maxHeight: '575px',
+              minHeight: '575px',
+              overflowY: 'auto',
+              '&::-webkit-scrollbar': {
+                width: '8px',
               },
-              "&::-webkit-scrollbar-track": {
-                backgroundColor: "#f1f1f1",
-                borderRadius: "4px",
+              '&::-webkit-scrollbar-track': {
+                backgroundColor: '#f1f1f1',
+                borderRadius: '4px',
               },
-              "&::-webkit-scrollbar-thumb": {
+              '&::-webkit-scrollbar-thumb': {
                 backgroundColor: theme.palette.primary.main,
-                borderRadius: "4px",
+                borderRadius: '4px',
               },
-              "&::-webkit-scrollbar-thumb:hover": {
+              '&::-webkit-scrollbar-thumb:hover': {
                 backgroundColor: theme.palette.primary.dark,
               },
             }}
           >
             <List
               sx={{
-                display: "flex",
-                flexDirection: "column",
+                display: 'flex',
+                flexDirection: 'column',
               }}
             >
               {sortedTasks.map((task, i) => {
@@ -180,57 +202,70 @@ function DayCard({ day, autoUpdateDaily, updateWeeklyDuration ,mode}: Day) {
                       {showInput !== task.text && (
                         <Box
                           sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "space-between",
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
                             gap: 4,
-                            border: "1px solid grey",
+                            border: '1px solid grey',
                             padding: 2,
                             borderRadius: 3,
-                            color: "white",
+                            color: 'white',
                             opacity: 0.8,
                             backgroundColor:
                               taskStart === task.text
                                 ? theme.palette.success.light
-                                : "black",
+                                : '#1A237E',
                           }}
                         >
                           <Box
                             sx={{
-                              display: "flex",
+                              display: 'flex',
                               flexGrow: 1,
-                              flexDirection: "column",
+                              flexDirection: 'column',
                               gap: 1,
-                              color: "white",
+                              color: 'white',
                             }}
                           >
                             <Typography
-                              color={task.status ? "success" : "inherit"}
+                              sx={{
+                                cursor:"grabbing"
+                              }}
+                              width={'60%'}
+                              borderRadius={'12px'}
+                              px={1}
+                              draggable={true}
+                              onDragStart={() => setDragItem(task.text)}
+                              color={task.status ? 'success' : 'inherit'}
                             >
                               {task.text}
                             </Typography>
-                            { (
-                              <Typography color="inherit" fontWeight={600}>
+                            {
+                              <Typography
+                                color="inherit"
+                                fontWeight={600}
+                                px={1}
+                              >
                                 {task.duration
                                   ? `${task.duration.hh} hours ${task.duration.mm} minuits`
-                                  : "00 hours 00 minuits"}
+                                  : '00 hours 00 minuits'}
                               </Typography>
-                            )}
+                            }
 
-                            {slug === "Monthly" && (
+                            {mode === 'Monthly' && (
                               <Box>
                                 <LinearProgress
                                   sx={{
+                                    px: 1,
                                     height: 12,
                                     borderRadius: 4,
-                                    border: "1px solid grey",
+                                    border: '1px solid grey',
                                   }}
                                   color={
-                                    (task.duration?.hh || 0) < 20 
-                                      ? "error"
+                                    (task.duration?.hh || 0) < 20
+                                      ? 'error'
                                       : (task.duration?.hh || 0) < 30
-                                      ? "warning"
-                                      : "success"
+                                      ? 'warning'
+                                      : 'success'
                                   }
                                   variant="determinate"
                                   value={
@@ -240,58 +275,64 @@ function DayCard({ day, autoUpdateDaily, updateWeeklyDuration ,mode}: Day) {
                                   }
                                 />
 
-                                {(task.duration?.hh || 0) === 0 && (task.duration?.mm || 0) === 0  && (
-                                  <Typography
-                                    color="error"
-                                    variant="body2"
-                                    fontSize={14}
-                                  >
-                                    You are not started this task yet !
-                                  </Typography>
-                                )}
-                                {(task.duration?.hh || 0) > 10  && (task.duration?.hh || 0) < 20 && (
-                                  <Typography
-                                    color="warning"
-                                    variant="body2"
-                                    fontSize={14}
-                                  >
-                                    You are making progress...💪 keep going
-                                  </Typography>
-                                )}
-                                {(task.duration?.hh || 0) > 75 && (task.duration?.hh || 0)< 95 && (
-                                  <Typography
-                                    color="info"
-                                    variant="body2"
-                                    fontSize={14}
-                                  >
-                                    you made the minimum requirement...💪
-                                  </Typography>
-                                )}
-                                {(task.duration?.hh || 0) > 95 && (task.duration?.hh || 0) < 99 &&(
-                                  <Typography
-                                    color="success"
-                                    variant="body2"
-                                    fontSize={14}
-                                  >
-                                    congratulations...✨
-                                  </Typography>
-                                )}
-                                {(task.duration?.hh || 0) > 99 &&  (task.duration?.hh || 0)<49 &&(
-                                  <Typography
-                                    color="success"
-                                    variant="body2"
-                                    fontSize={14}
-                                  >
-                                    Excellent...💥💥
-                                  </Typography>
-                                )}
+                                {(task.duration?.hh || 0) === 0 &&
+                                  (task.duration?.mm || 0) === 0 && (
+                                    <Typography
+                                      color="error"
+                                      variant="body2"
+                                      fontSize={14}
+                                    >
+                                      You are not started this task yet !
+                                    </Typography>
+                                  )}
+                                {(task.duration?.hh || 0) > 10 &&
+                                  (task.duration?.hh || 0) < 20 && (
+                                    <Typography
+                                      color="warning"
+                                      variant="body2"
+                                      fontSize={14}
+                                    >
+                                      You are making progress...💪 keep going
+                                    </Typography>
+                                  )}
+                                {(task.duration?.hh || 0) > 75 &&
+                                  (task.duration?.hh || 0) < 95 && (
+                                    <Typography
+                                      color="info"
+                                      variant="body2"
+                                      fontSize={14}
+                                    >
+                                      you made the minimum requirement...💪
+                                    </Typography>
+                                  )}
+                                {(task.duration?.hh || 0) > 95 &&
+                                  (task.duration?.hh || 0) < 99 && (
+                                    <Typography
+                                      color="success"
+                                      variant="body2"
+                                      fontSize={14}
+                                    >
+                                      congratulations...✨
+                                    </Typography>
+                                  )}
+                                {(task.duration?.hh || 0) > 99 &&
+                                  (task.duration?.hh || 0) < 49 && (
+                                    <Typography
+                                      color="success"
+                                      variant="body2"
+                                      fontSize={14}
+                                    >
+                                      Excellent...💥💥
+                                    </Typography>
+                                  )}
                                 {(task.duration?.hh || 0) > 100 && (
                                   <Typography
                                     color="success"
                                     variant="body2"
                                     fontSize={14}
                                   >
-                                    Awesome...🔥🔥🔥 time to switch to another topic
+                                    Awesome...🔥🔥🔥 time to switch to another
+                                    topic
                                   </Typography>
                                 )}
                               </Box>
@@ -300,40 +341,42 @@ function DayCard({ day, autoUpdateDaily, updateWeeklyDuration ,mode}: Day) {
 
                           <Box
                             sx={{
-                              backgroundColor: "white",
+                              backgroundColor: 'white',
                               borderRadius: 2,
                             }}
                           >
-                            {slug === "Daily" && (
+                            {mode === 'Daily' && (
                               <Button
-                                disabled={slug !== "Daily"}
+                                disabled={slug !== 'Daily'}
                                 color="primary"
                                 onClick={() => handleStartTask(task.text)}
                               >
-                                {taskStart === task.text ? "end" : "start"}
+                                {taskStart === task.text ? 'end' : 'start'}
                               </Button>
                             )}
 
-                            <Checkbox
-                              color="success"
-                              checked={task.status}
-                              onClick={() => {
-                                const tasks = day.tasks.filter(
-                                  (item) => item.text !== task.text
-                                );
-                                updateTask(`manage${slug}`, day.title, {
-                                  ...day,
-                                  tasks: [
-                                    ...tasks,
-                                    {
-                                      text: task.text,
-                                      status: !task.status,
-                                      duration: task.duration,
-                                    },
-                                  ],
-                                });
-                              }}
-                            />
+                            {mode === 'Monthly' && (
+                              <Checkbox
+                                color="success"
+                                checked={task.status}
+                                onClick={() => {
+                                  const tasks = day.tasks.filter(
+                                    (item) => item.text !== task.text
+                                  );
+                                  updateTask(`manage${slug}`, day.title, {
+                                    ...day,
+                                    tasks: [
+                                      ...tasks,
+                                      {
+                                        text: task.text,
+                                        status: !task.status,
+                                        duration: task.duration,
+                                      },
+                                    ],
+                                  });
+                                }}
+                              />
+                            )}
                           </Box>
                         </Box>
                       )}
@@ -356,23 +399,23 @@ function DayCard({ day, autoUpdateDaily, updateWeeklyDuration ,mode}: Day) {
                               ],
                             });
                             if (
-                              slug === "Monthly" &&
-                              value.includes("Daily#-")
+                              slug === 'Monthly' &&
+                              value.includes('Daily#-')
                             ) {
                               autoUpdateDaily(value);
                             }
                             setShowInput(null);
                           }}
                           sx={{
-                            "& .MuiOutlinedInput-root": {
-                              "& fieldset": {
-                                border: "none", // Remove the default border
+                            '& .MuiOutlinedInput-root': {
+                              '& fieldset': {
+                                border: 'none', // Remove the default border
                               },
-                              "&:hover fieldset": {
-                                border: "none", // Prevent border on hover
+                              '&:hover fieldset': {
+                                border: 'none', // Prevent border on hover
                               },
-                              "&.Mui-focused fieldset": {
-                                border: "none", // Prevent border on focus
+                              '&.Mui-focused fieldset': {
+                                border: 'none', // Prevent border on focus
                               },
                             },
                           }}
@@ -387,10 +430,7 @@ function DayCard({ day, autoUpdateDaily, updateWeeklyDuration ,mode}: Day) {
           <CardActionArea>
             <Button
               onClick={() => {
-                updateTask(`manage${slug}`, day.title, {
-                  ...day,
-                  tasks: [...day.tasks, { text: "add here", status: false }],
-                });
+                handleAddTask('add task');
               }}
             >
               +
@@ -413,4 +453,3 @@ function DayCard({ day, autoUpdateDaily, updateWeeklyDuration ,mode}: Day) {
 }
 
 export default DayCard;
-

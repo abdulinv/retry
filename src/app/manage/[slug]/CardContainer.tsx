@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React,{useState} from 'react';
 import { Grid2 } from '@mui/material';
 import DayCard from '../DayCard';
 import { Duration, Tasks } from '@/models/checklist/daily/daily';
@@ -12,6 +12,7 @@ interface CardContainerProps {
 
 function CardContainer({ data }: CardContainerProps) {
 
+    const [draggedItem,setDraggedItem] =  useState("");
   const tasks = data
     .filter((item) => item.category === 'Daily')
     .toSorted((a, b) => a.order - b.order);
@@ -108,6 +109,8 @@ function CardContainer({ data }: CardContainerProps) {
                 day={day}
                 autoUpdateDaily={autoUpdateDaily}
                 updateWeeklyDuration={updateWeeklyDuration}
+                dragItem={draggedItem}
+                setDragItem={setDraggedItem}
               />
             );
           })}
@@ -118,10 +121,12 @@ function CardContainer({ data }: CardContainerProps) {
             return (
               <DayCard
                 key={i}
-                mode='all'
+                mode='Monthly'
                 day={day}
                 autoUpdateDaily={autoUpdateDaily}
                 updateWeeklyDuration={updateWeeklyDuration}
+                dragItem={draggedItem}
+                setDragItem={setDraggedItem}
               />
             );
           })}
