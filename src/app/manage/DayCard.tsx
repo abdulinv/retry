@@ -15,6 +15,7 @@ import {
   Typography,
   LinearProgress,
   Stack,
+  Badge,
 } from '@mui/material';
 
 interface Day {
@@ -96,6 +97,10 @@ function DayCard({
     headingColor = new Date().getMonth() == day.order + 3 ? 'success' : 'info';
   }
   let filteredTasks = day.tasks;
+  const openCount = day.tasks.filter(item=>item.status === "Open").length;
+  const closeCount = day.tasks.filter(item=>item.status === "Close").length;
+  const plannedCount = day.tasks.filter(item=>item.status === "Planned").length;
+
   if(mode === "Monthly")
     filteredTasks = day.tasks.filter(item=>item.status === tab);
   const sortedTasks = filteredTasks.toSorted((a, b) => (a.text > b.text ? 1 : -1));
@@ -174,28 +179,74 @@ function DayCard({
             flexDirection={"row"} 
             alignItems={"center"} 
             justifyContent={"space-around"} 
-            sx={{ color:"white", minHeight:"44px", borderRadius: 0, backgroundColor:"#1A237E" }} color={headingColor}>
+            sx={{ color:"white", minHeight:"54px", borderRadius: 0, backgroundColor:"#1A237E" }} color={headingColor}>
             {heading}
             {mode === 'Monthly' && (
-              <Stack flexDirection={'row'} m={0} p={0}>
-                <Button
-                sx={{color:tab === "Open"?"white":"grey"}}
-                onClick={handleTabChange.bind(null,"Open")}
-                size="small" variant="text">
-                  Open
-                </Button>
+              <Stack flexDirection={'row'} m={0} p={0} gap={3}>
+                <Badge 
+                  badgeContent={openCount} 
+                  color="primary" 
+                  
+                  sx={{
+                    "& .MuiBadge-badge": {
+                      top: 15, // adjust as needed
+                      right: 10, // adjust as needed
+                      mb:2
+                    },
+                    
+                  }}
+                  >
+                  <Button
+                  sx={{color:tab === "Open"?"white":"grey",mr:"16px"}}
+                  onClick={handleTabChange.bind(null,"Open")}
+                  size="small" variant="text">
+                    Open
+                  </Button>
+                </Badge>
+
+                <Badge 
+                badgeContent={closeCount} 
+                color="success" 
+                sx={{
+                  "& .MuiBadge-badge": {
+                    top: 15, // adjust as needed
+                    right: -5, // adjust as needed
+                    mb:2
+                  },
+                  
+                }}
+                >
+
                 <Button 
-                  sx={{color:tab === "Close"?"white":"grey"}}
+                  sx={{color:tab === "Close"?"white":"grey",mr:"4px"}}
                   onClick={handleTabChange.bind(null,"Close")}
                   size="small" variant="text">
                   Closed
                 </Button>
-                <Button 
+                </Badge>
+               
+               <Badge
+                badgeContent={plannedCount}
+                color='warning'
+                sx={{
+                  "& .MuiBadge-badge": {
+                    top: 15, // adjust as needed
+                    right: -10, // adjust as needed
+                    mb:2
+                  },
+                  
+                }}
+               >
+
+               <Button 
                    sx={{color:tab === "Planned"?"white":"grey"}}
                   onClick={handleTabChange.bind(null,"Planned")}
                   size="small" variant="text">
                   Planned
                 </Button>
+
+               </Badge>
+               
               </Stack>
             )}
           </Stack>
@@ -246,11 +297,11 @@ function DayCard({
                             border: '1px solid grey',
                             padding: 2,
                             borderRadius: 3,
-                            color: 'white',
+                            color:taskStart === task.text?"white": 'black',
                             opacity: 0.8,
                             backgroundColor:
                               taskStart === task.text
-                                ? theme.palette.success.light
+                                ? "#6F9062"
                                 : '#1A237E',
                           }}
                         >
@@ -260,7 +311,7 @@ function DayCard({
                               flexGrow: 1,
                               flexDirection: 'column',
                               gap: 1,
-                              color: 'white',
+                              color: 'inherit',
                             }}
                           >
                             <Typography
@@ -272,7 +323,7 @@ function DayCard({
                               px={0.5}
                               draggable={true}
                               onDragStart={() => setDragItem(task.text)}
-                              color='grey'
+                              color='inherit'
                               fontWeight={500}
                               fontSize={16}
                             >
@@ -280,7 +331,7 @@ function DayCard({
                             </Typography>
                             {
                               <Typography
-                                color="grey"
+                                color="inherit"
                                 fontWeight={600}
                                 px={0.5}
                                 
@@ -330,7 +381,7 @@ function DayCard({
                                 {(task.duration?.hh || 0) > 10 &&
                                   (task.duration?.hh || 0) < 20 && (
                                     <Typography
-                                      color="grey"
+                                      color="inherit"
                                       variant="body2"
                                       fontSize={14}
                                       mt={0.8}
