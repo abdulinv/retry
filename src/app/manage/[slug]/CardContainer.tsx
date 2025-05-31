@@ -61,6 +61,11 @@ function CardContainer({ data }: CardContainerProps) {
             hh: currentHH,
             mm: currentMM,
           },
+          updatedOn: new Date().toLocaleDateString('en-GB', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric',
+          }),
         },
         ...monthTobeUpdated.tasks.slice(index + 1),
       ],

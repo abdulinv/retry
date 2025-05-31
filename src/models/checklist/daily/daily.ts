@@ -6,7 +6,10 @@ export interface Duration {
 interface Task {
   text: string;
   status: string;
-  duration?:Duration
+  duration?:Duration;
+  completedOn?:string;
+  openedOn?:string;
+  updatedOn?:string;
 }
 
 
