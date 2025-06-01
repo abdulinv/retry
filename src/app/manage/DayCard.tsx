@@ -36,7 +36,7 @@ interface Day {
       completedOn?: string;
       openedOn?: string;
       updatedOn?: string;
-      tag?:string;
+      tag?: string;
     }[];
   };
   autoUpdateDaily: (value: string) => void;
@@ -62,6 +62,7 @@ function DayCard({
   const [value, setValue] = useState('');
   const [taskStart, setTaskStart] = useState<null | string>(null);
   const [tab, SetTab] = useState('Open');
+  const [search, setSearch] = useState('');
 
   const { slug } = useParams();
   const theme = useTheme();
@@ -109,8 +110,12 @@ function DayCard({
     (item) => item.status === 'Planned'
   ).length;
 
-  if (mode === 'Monthly')
-    filteredTasks = day.tasks.filter((item) => item.status === tab);
+  if (mode === 'Monthly') {
+    filteredTasks = day.tasks
+      .filter((item) => item.status === tab)
+      .filter((item) => item.text.toLocaleLowerCase().includes(search.toLocaleLowerCase()));
+  }
+
   const sortedTasks = filteredTasks.toSorted((a, b) =>
     a.text > b.text ? 1 : -1
   );
@@ -210,6 +215,33 @@ function DayCard({
             color={headingColor}
           >
             {heading}
+            {mode === 'Monthly' && (
+              <TextField
+                placeholder="search..."
+                size="small"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                sx={{
+                  width: '300px',
+                  '& .MuiOutlinedInput-root': {
+                    height: '30px', // set desired height
+                    borderRadius: '6px',
+                    color: 'grey',
+                    fontSize: '14px',
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      border: '1px solid midnightblue', // remove default border
+                    },
+                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                      border: '1px solid midnightblue',
+                    },
+                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                      border: '1px solid midnightblue',
+                    },
+                  },
+                }}
+              />
+            )}
+
             {mode === 'Monthly' && (
               <Stack flexDirection={'row'} m={0} p={0} gap={3}>
                 <Badge
@@ -348,43 +380,67 @@ function DayCard({
                             {mode === 'Monthly' && (
                               <Stack flexDirection={'row'} gap={4} px={0.5}>
                                 {task?.openedOn && (
-                                  <Stack flexDirection={"row"} gap={1}>
-                                    <Typography color='info' fontWeight={500} fontSize={14}>
+                                  <Stack flexDirection={'row'} gap={1}>
+                                    <Typography
+                                      color="info"
+                                      fontWeight={500}
+                                      fontSize={14}
+                                    >
                                       Opened On
                                     </Typography>
-                                    <Typography color='info' fontWeight={500} fontSize={14}>
+                                    <Typography
+                                      color="info"
+                                      fontWeight={500}
+                                      fontSize={14}
+                                    >
                                       {task.openedOn ?? 'no date'}
                                     </Typography>
                                   </Stack>
                                 )}
 
                                 {task?.completedOn && (
-                                  <Stack flexDirection={"row"} gap={1}>
-                                    <Typography color='success' fontWeight={500} fontSize={14}>
+                                  <Stack flexDirection={'row'} gap={1}>
+                                    <Typography
+                                      color="success"
+                                      fontWeight={500}
+                                      fontSize={14}
+                                    >
                                       Completed On
                                     </Typography>
-                                    <Typography color='success' fontWeight={500} fontSize={14}>
+                                    <Typography
+                                      color="success"
+                                      fontWeight={500}
+                                      fontSize={14}
+                                    >
                                       {task.completedOn ?? 'no date'}
                                     </Typography>
                                   </Stack>
                                 )}
 
                                 {task?.updatedOn && (
-                                  <Stack flexDirection={"row"} gap={1}>
-                                    <Typography color='info' fontWeight={500} fontSize={14}>
+                                  <Stack flexDirection={'row'} gap={1}>
+                                    <Typography
+                                      color="info"
+                                      fontWeight={500}
+                                      fontSize={14}
+                                    >
                                       Last Updated On
                                     </Typography>
-                                    <Typography color='info' fontWeight={500} fontSize={14}>
+                                    <Typography
+                                      color="info"
+                                      fontWeight={500}
+                                      fontSize={14}
+                                    >
                                       {task.updatedOn ?? 'no date'}
                                     </Typography>
                                   </Stack>
                                 )}
 
-                                <Select size='small'  
-                                  color='info'
-                                   value={task.tag ?? "Notag"}
-                                   onChange={(e)=>{
-
+                                <Select
+                                  size="small"
+                                  color="info"
+                                  value={task.tag ?? 'Notag'}
+                                  onChange={(e) => {
                                     const tasks = day.tasks.filter(
                                       (item) => item.text !== task.text
                                     );
@@ -396,35 +452,37 @@ function DayCard({
                                           text: task.text,
                                           status: task.status,
                                           duration: task.duration,
-                                          openedOn: task?.openedOn ?? "",
-                                          completedOn: task?.completedOn ?? "",
-                                          updatedOn:task?.updatedOn ?? "",
-                                          tag:e.target.value
-                                            
+                                          openedOn: task?.openedOn ?? '',
+                                          completedOn: task?.completedOn ?? '',
+                                          updatedOn: task?.updatedOn ?? '',
+                                          tag: e.target.value,
                                         },
                                       ],
                                     });
-                                   }}
-                                   sx={{
-                                     fontSize:"14px",
-                                     color:"grey",
-                                     fontWeight:"500",
-                                     height:"24px",
-                                     width:"150px",
-                                     "& .MuiOutlinedInput-notchedOutline": {
-                                      border: "none",
+                                  }}
+                                  sx={{
+                                    fontSize: '14px',
+                                    color: 'grey',
+                                    fontWeight: '500',
+                                    height: '24px',
+                                    width: '150px',
+                                    '& .MuiOutlinedInput-notchedOutline': {
+                                      border: 'none',
                                     },
-                                    "&:hover .MuiOutlinedInput-notchedOutline": {
-                                      border: "none",
-                                    },
-                                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                                      border: "none",
-                                    },
-                                     }}>
-                                    <MenuItem value="Notag" >#NOTAG</MenuItem>
-                                   <MenuItem value="dsa" >#DSA</MenuItem>
-                                   <MenuItem value="fe" >#FRONTEND</MenuItem>
-                                   <MenuItem value="be" >#BACKEND</MenuItem>
+                                    '&:hover .MuiOutlinedInput-notchedOutline':
+                                      {
+                                        border: 'none',
+                                      },
+                                    '&.Mui-focused .MuiOutlinedInput-notchedOutline':
+                                      {
+                                        border: 'none',
+                                      },
+                                  }}
+                                >
+                                  <MenuItem value="Notag">#NOTAG</MenuItem>
+                                  <MenuItem value="dsa">#DSA</MenuItem>
+                                  <MenuItem value="fe">#FRONTEND</MenuItem>
+                                  <MenuItem value="be">#BACKEND</MenuItem>
                                 </Select>
                               </Stack>
                             )}
