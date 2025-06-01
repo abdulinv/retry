@@ -75,9 +75,41 @@ export default function Filter({ onApply ,onCancel}: FilterProps) {
         }));
       }
 
-      if (label === 'sevenDays') {
+      if (label === 'last 7 days') {
         const sevenDaysAgo = new Date();
         sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+        const formattedDate = sevenDaysAgo.toLocaleDateString('en-GB', {
+          day: '2-digit',
+          month: 'long',
+          year: 'numeric',
+        });
+
+        setFilterState((prev) => ({
+          ...prev,
+          date: formattedDate,
+        }));
+      }
+
+      if (label === 'last 15 days') {
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 15);
+
+        const formattedDate = sevenDaysAgo.toLocaleDateString('en-GB', {
+          day: '2-digit',
+          month: 'long',
+          year: 'numeric',
+        });
+
+        setFilterState((prev) => ({
+          ...prev,
+          date: formattedDate,
+        }));
+      }
+
+      if (label === 'last month') {
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 30);
 
         const formattedDate = sevenDaysAgo.toLocaleDateString('en-GB', {
           day: '2-digit',

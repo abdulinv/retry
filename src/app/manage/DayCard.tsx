@@ -140,9 +140,10 @@ function DayCard({
     }
 }
 
-  const sortedTasks = filteredTasks.toSorted((a, b) =>
-    a.text > b.text ? 1 : -1
-  );
+const sortedTasks = filteredTasks.toSorted((a, b) =>
+  Date.parse(b.updatedOn || "") - Date.parse(a.updatedOn || "")
+);
+
 
   const handleStartTask = (text: string) => {
     if (taskStart === text) {
