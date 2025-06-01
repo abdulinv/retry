@@ -1,6 +1,9 @@
+"use client"
+
 import {
   AppBar,
   Box,
+  Button,
   IconButton,
   Link,
   Toolbar,
@@ -12,15 +15,23 @@ import {
 
 } from "@mui/icons-material";
 import DescriptionIcon from '@mui/icons-material/Description';
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 function Header() {
+
+  const router = useRouter();
+  useEffect(()=>{
+       if(!window.localStorage.getItem("access")) {
+    router.push("/login")
+    return;
+  }
+  },[]);
+
   return (
     <>
       <AppBar sx={{backgroundColor:"midnightblue"}}>
         <Toolbar>
-          {/* <Box component={"img"} src="./public/vite.svg" /> */}
-          
-
           <Box
             sx={{
               flexGrow: 1,
@@ -31,11 +42,8 @@ function Header() {
             }}
           >
             <Link href="/tests" color="inherit" underline="none">
-       
               Tests
-           
           </Link>
-
             <Link href="/roadmap" color="inherit" underline="none">
               Road Map
             </Link>
@@ -66,9 +74,13 @@ function Header() {
               <DescriptionIcon color="inherit" />
               </Box>
               
-           
           </a>
+          <Button onClick={()=>{
+            window.localStorage.removeItem("access");
+            router.push("/login")
+          }}>Logout</Button>
         </Toolbar>
+       
       </AppBar>
     </>
   );
