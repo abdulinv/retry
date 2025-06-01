@@ -19,6 +19,7 @@ import {
   Select,
   MenuItem,
 } from '@mui/material';
+import Filter from "./Filter";
 
 interface Day {
   day: {
@@ -63,6 +64,10 @@ function DayCard({
   const [taskStart, setTaskStart] = useState<null | string>(null);
   const [tab, SetTab] = useState('Open');
   const [search, setSearch] = useState('');
+  const [filter,setFilter] = useState({
+    tag:"",
+    date:""
+  });
 
   const { slug } = useParams();
   const theme = useTheme();
@@ -115,6 +120,25 @@ function DayCard({
       .filter((item) => item.status === tab)
       .filter((item) => item.text.toLocaleLowerCase().includes(search.toLocaleLowerCase()));
   }
+
+  if(filter?.tag){
+      filteredTasks = filteredTasks.filter(item=>item.tag === filter.tag);
+  }
+
+  if(filter?.date){
+    if (tab === "Close") {
+      filteredTasks = filteredTasks.filter((item) => {
+        const taskDate = new Date(item.completedOn ?? "");
+        return taskDate >= new Date(filter.date);
+      });
+    }
+    if (tab === "Open"){
+      filteredTasks = filteredTasks.filter((item) => {
+        const taskDate = new Date(item.updatedOn ?? "");
+        return taskDate >= new Date(filter.date);
+      });
+    }
+}
 
   const sortedTasks = filteredTasks.toSorted((a, b) =>
     a.text > b.text ? 1 : -1
@@ -190,6 +214,20 @@ function DayCard({
   const handleTabChange = (tab: string) => {
     SetTab(tab);
   };
+
+  const handleFilter = (filterData:{
+    tag:string,
+    date:string
+  })=>{
+     setFilter(filterData)
+  }
+
+  const handleCancel = ()=>{
+    setFilter({
+      tag:'',
+      date:''
+    })
+  }
   return (
     <>
       {headingColor === 'success' && (
@@ -222,7 +260,7 @@ function DayCard({
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 sx={{
-                  width: '300px',
+                  width: '250px',
                   '& .MuiOutlinedInput-root': {
                     height: '30px', // set desired height
                     borderRadius: '6px',
@@ -241,7 +279,7 @@ function DayCard({
                 }}
               />
             )}
-
+            <Filter onApply={handleFilter} onCancel={handleCancel}/>
             {mode === 'Monthly' && (
               <Stack flexDirection={'row'} m={0} p={0} gap={3}>
                 <Badge
