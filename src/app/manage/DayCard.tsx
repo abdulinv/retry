@@ -50,6 +50,7 @@ interface Day {
 import { useParams } from 'next/navigation';
 import { updateTask } from '../../../lib/fetch';
 import { Duration } from '@/models/checklist/daily/daily';
+import { parseCustomDate } from '@/utils/helper';
 
 function DayCard({
   day,
@@ -141,7 +142,7 @@ function DayCard({
 }
 
 const sortedTasks = filteredTasks.toSorted((a, b) =>
-  Date.parse(b.updatedOn || "") - Date.parse(a.updatedOn || "")
+  parseCustomDate(b.updatedOn || "") - parseCustomDate(a.updatedOn || "")
 );
 
 
