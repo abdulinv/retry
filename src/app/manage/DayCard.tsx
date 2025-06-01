@@ -261,7 +261,7 @@ const sortedTasks = filteredTasks.toSorted((a, b) =>
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 sx={{
-                  width: '250px',
+                  width: '220px',
                   '& .MuiOutlinedInput-root': {
                     height: '30px', // set desired height
                     borderRadius: '6px',
@@ -283,7 +283,7 @@ const sortedTasks = filteredTasks.toSorted((a, b) =>
             {mode === 'Monthly' &&  <Filter onApply={handleFilter} onCancel={handleCancel}/>  }
            
             {mode === 'Monthly' && (
-              <Stack flexDirection={'row'} m={0} p={0} gap={3}>
+              <Stack flexDirection={'row'} m={0} p={0} gap={2}>
                 <Badge
                   badgeContent={openCount}
                   color="primary"
@@ -298,7 +298,7 @@ const sortedTasks = filteredTasks.toSorted((a, b) =>
                   <Button
                     sx={{
                       color: tab === 'Open' ? 'white' : 'grey',
-                      mr: '16px',
+                      mr: '12px',
                     }}
                     onClick={handleTabChange.bind(null, 'Open')}
                     size="small"
@@ -340,6 +340,7 @@ const sortedTasks = filteredTasks.toSorted((a, b) =>
                       top: 15, // adjust as needed
                       right: -10, // adjust as needed
                       mb: 2,
+                      mr:1
                     },
                   }}
                 >
@@ -349,7 +350,7 @@ const sortedTasks = filteredTasks.toSorted((a, b) =>
                     size="small"
                     variant="text"
                   >
-                    Planned
+                    Plan
                   </Button>
                 </Badge>
               </Stack>
