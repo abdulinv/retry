@@ -280,7 +280,8 @@ const sortedTasks = filteredTasks.toSorted((a, b) =>
                 }}
               />
             )}
-            <Filter onApply={handleFilter} onCancel={handleCancel}/>
+            {mode === 'Monthly' &&  <Filter onApply={handleFilter} onCancel={handleCancel}/>  }
+           
             {mode === 'Monthly' && (
               <Stack flexDirection={'row'} m={0} p={0} gap={3}>
                 <Badge
