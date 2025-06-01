@@ -106,7 +106,7 @@ function DayCard({
         : 'info';
   } else {
     heading = 'Over all tasks summary ';
-    headingColor = new Date().getMonth() == day.order + 4 ? 'success' : 'info';
+    headingColor =  day.title === "january2025"  ? 'success' : 'info';
   }
   let filteredTasks = day.tasks;
   const openCount = day.tasks.filter((item) => item.status === 'Open').length;
