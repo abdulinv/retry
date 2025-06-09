@@ -11,19 +11,10 @@ async function page() {
     <Paper
       elevation={15}
       
-      sx={{
-        marginTop: 10,
-        width:"70vw",
-        height:"70vh",
-        maxHeight:"70vh",
-        position:"absolute",
-        top:"10%",
-        left:"15%",
-        display:"flex",
-        justifyContent:"center",
-        overflowY:"auto"
-      
-      }}
+     sx={{
+      mt:10,
+      height:"90vh"
+     }}
     >
       <DataProvider data={data}/>
     </Paper>

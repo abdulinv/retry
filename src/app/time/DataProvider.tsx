@@ -1,32 +1,15 @@
-"use client";
-import {
-  Stack,
-  Box,
-  Button
-} from "@mui/material";
-import React,{useState} from "react";
+'use client';
+import { Stack, Box } from '@mui/material';
+import React from 'react';
 
-import { TimeDocs } from "./types";
-import DayWise from "./DayWise";
-import MonthWise from "./MonthWise";
+import { TimeDocs } from './types';
+import DayWise from './DayWise';
 
 function DataProvider({ data }: { data: TimeDocs[] }) {
- 
-
-  const [tab,setTab] = useState("daily");
-
-  const handleChangeTab = (tabName:string)=>{
-      setTab(tabName)
-  }
   return (
-    <Stack  gap={4}>
-      <Stack flexDirection={"row"} justifyContent={"center"}>
-        <Button onClick={()=>handleChangeTab("daily")}>Daily</Button>
-        <Button onClick={()=>handleChangeTab("monthly")}>Monthly</Button>
-      </Stack>
+    <Stack gap={4}>
       <Box>
-        {tab === 'daily' &&  <DayWise data={data}/> }
-        {tab === 'monthly' && <MonthWise data={data}/>}
+        <DayWise data={data} />
       </Box>
     </Stack>
   );
