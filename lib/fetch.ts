@@ -21,6 +21,7 @@ import { Jobs, JobsDocs } from "@/app/JDAnalyser/types";
 import { Rev, RevDocs } from "@/app/revision/types";
 import { Bucket, BucketDocs } from "@/app/bucketlist/types";
 import { TimeDocs, TimeInfo } from "@/app/time/types";
+import { Project, ProjectDocs } from "@/app/projects/types";
 
 export async function getDailyTasks() {
   const data: Tasks[] = [];
@@ -51,7 +52,7 @@ export async function getAllTasks() {
 export async function updateTask(
   collection: string,
   taskId: string,
-  updatedData: Tasks | RoadMaps | Question | TestListItem | Jobs | Rev | Bucket | TimeInfo,
+  updatedData: Tasks | RoadMaps | Question | TestListItem | Jobs | Rev | Bucket | TimeInfo | Project,
   revalidate:boolean =  true
 ) {
   const taskRef = doc(db, collection, taskId);
@@ -67,12 +68,13 @@ export async function updateTask(
     revalidatePath("/tests");
   }
   if (collection.startsWith("rev") && revalidate) revalidatePath("/revision");
-  if(collection.startsWith("bucket") && revalidate) revalidatePath("/bucketlist")
+  if(collection.startsWith("bucket") && revalidate) revalidatePath("/bucketlist");
+  if(collection.startsWith("projects") && revalidate) revalidatePath("/projects")
 }
 
 export async function addDocument(
   collectionId: string,
-  doc: RoadMaps | Question | TestListItem | Jobs | Rev | Bucket | TimeInfo
+  doc: RoadMaps | Question | TestListItem | Jobs | Rev | Bucket | TimeInfo | Project
 ) {
   try {
     const docRef = await addDoc(collection(db, collectionId), doc);
@@ -177,6 +179,18 @@ export async function getTimeTrackInformation(collectionName:string){
   querySnapshot.forEach((doc) => {
     console.log(`${doc.id} => `, doc.data());
     data.push({ id: doc.id, doc: doc.data() as TimeInfo });
+  });
+
+  return data;
+}
+
+export async function getProjects(collectionName: string) {
+  const data: ProjectDocs[] = [];
+  console.log("collection", collectionName);
+  const querySnapshot = await getDocs(collection(db, collectionName));
+  querySnapshot.forEach((doc) => {
+    console.log(`${doc.id} => `, doc.data());
+    data.push({ id: doc.id, doc: doc.data() as Project });
   });
 
   return data;

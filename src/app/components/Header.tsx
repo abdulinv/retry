@@ -53,11 +53,14 @@ function Header() {
             <Link href="/JDAnalyser" color="inherit" underline="none">
               JD Analyser
             </Link>
-            <Link href="/revision" color="inherit" underline="none">
+            {/* <Link href="/revision" color="inherit" underline="none">
               Revision Analyser
-            </Link>
+            </Link> */}
             <Link href="/bucketlist" color="inherit" underline="none">
               BucketList
+            </Link>
+            <Link href="/projects" color="inherit" underline="none">
+              Projects
             </Link>
           </Box>
           <Link href = "/time">
