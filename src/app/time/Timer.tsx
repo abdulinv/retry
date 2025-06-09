@@ -1,24 +1,27 @@
-"use client";
+'use client';
 
-import { useState, useEffect, useRef } from "react";
-import { Button, Stack, Typography } from "@mui/material";
-import { addTime } from "../../../lib/helper";
-import { addDocument} from "../../../lib/fetch";
-import { Time } from "./types";
+import { useState, useEffect, useRef } from 'react';
+import { Button, Stack, Typography } from '@mui/material';
+import { addTime } from '../../../lib/helper';
+import { addDocument } from '../../../lib/fetch';
+import { Time } from './types';
 export default function Timer() {
   const [startTime, setStartTime] = useState<Date | null>(null);
-  const [timeDifference, setTimeDifference] = useState<string>("00:00:00");
-  const [totalHours, setTotalHours] = useState("00 hours:00 minuits");
+  const [timeDifference, setTimeDifference] = useState<string>('00:00:00');
+  const [totalHours, setTotalHours] = useState('00 hours:00 minuits');
   const [login, setLogin] = useState(false);
   const [pause, setPause] = useState(false);
   const timerRef = useRef<number>(null);
 
   useEffect(() => {
     const startTime1 = new Date(
-      JSON.parse(localStorage.getItem("date")!)?.date
+      JSON.parse(localStorage.getItem('date')!)?.date
     );
-    const {status:loginStatus,pause:pauseStatus} = JSON.parse(localStorage.getItem("login")!) ?? {status:false,pause:false}
-    const totalHours = JSON.parse(localStorage.getItem("totalhr")!)?.time ?? "0 hours 0 minutes";
+    const { status: loginStatus, pause: pauseStatus } = JSON.parse(
+      localStorage.getItem('login')!
+    ) ?? { status: false, pause: false };
+    const totalHours =
+      JSON.parse(localStorage.getItem('totalhr')!)?.time ?? '0 hours 0 minutes';
     setLogin(loginStatus);
     setPause(pauseStatus);
     setTotalHours(totalHours);
@@ -32,9 +35,9 @@ export default function Timer() {
         const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
         setTimeDifference(
-          `${hours.toString().padStart(2, "0")}:${minutes
+          `${hours.toString().padStart(2, '0')}:${minutes
             .toString()
-            .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
+            .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
         );
       }, 1000);
     }
@@ -48,7 +51,6 @@ export default function Timer() {
 
   // auto logout
 
-
   useEffect(() => {
     const interval = setInterval(() => {
       const now = new Date();
@@ -56,67 +58,73 @@ export default function Timer() {
       // Automatically logout at 23:00
       if (currentHour >= 23) {
         if (login) {
-          handleLogout() // logout
+          handleLogout(); // logout
         }
       }
-    }, 60*60 * 1000); // check every minute
-  
+    }, 60 * 60 * 1000); // check every minute
+
     return () => clearInterval(interval);
   }, [login]);
-
 
   // auto break
 
   useEffect(() => {
     let idleTimeout: ReturnType<typeof setTimeout>;
-  
+
     const resetIdleTimer = () => {
       clearTimeout(idleTimeout);
       idleTimeout = setTimeout(() => {
         if (login && !pause) {
-          console.log("No keyboard activity for 30 minutes. Triggering break.");
+          console.log('No keyboard activity for 30 minutes. Triggering break.');
           handlePause();
         }
-      }, 10*60 * 1000); // 30 minutes
+      }, 10 * 60 * 1000); // 30 minutes
     };
-  
+
     const handleActivity = () => {
       resetIdleTimer();
     };
-  
+
     // Listen to keyboard activity
-    window.addEventListener("keydown", handleActivity);
-  
+    window.addEventListener('keydown', handleActivity);
+
     // Initialize timer
     resetIdleTimer();
-  
+
     return () => {
-      window.removeEventListener("keydown", handleActivity);
+      window.removeEventListener('keydown', handleActivity);
       clearTimeout(idleTimeout);
     };
   }, [login, pause]);
-  
 
   const handleLogin = () => {
     setLogin(true);
-    localStorage.setItem("login", JSON.stringify({ status: true ,pause:false}));
+    localStorage.setItem(
+      'login',
+      JSON.stringify({ status: true, pause: false })
+    );
   };
 
   const handleLogout = () => {
     setLogin(false);
-    localStorage.setItem("login", JSON.stringify({ status: false ,pause:true}));
-    
+    localStorage.setItem(
+      'login',
+      JSON.stringify({ status: false, pause: true })
+    );
   };
   const startTimer = () => {
     setPause(false);
-    localStorage.setItem("date", JSON.stringify({ date: new Date() }));
-    localStorage.setItem("login", JSON.stringify({ status: true ,pause:false}));
+    localStorage.setItem('date', JSON.stringify({ date: new Date() }));
+    localStorage.setItem(
+      'login',
+      JSON.stringify({ status: true, pause: false })
+    );
     setStartTime(new Date());
   };
 
   const resetTimer = () => {
     setStartTime(null);
-    setTimeDifference("00:00:00");
+    setTimeDifference('00:00:00');
     clearInterval(timerRef.current as number);
     handleLogout();
     handleSave();
@@ -127,27 +135,43 @@ export default function Timer() {
   const handleSave = () => {
     const time: Time = storeHours();
     const today = new Date();
-    addDocument("times",{
-        day: "d",
-        week: "w",
+
+    const isConfirmed = window.confirm(
+      `You have worked more than ${time.hours} hours. Do you want to proceed to logout?`
+    );
+    if (isConfirmed) {
+      const customHour = window.prompt(
+        `Please provide  hours in number - out of ${time.hours} :`
+      );
+      time.hours = Number(customHour);
+      addDocument('times', {
+        day: 'd',
+        week: 'w',
         date: today.toDateString(),
         time: time,
-      })
-    localStorage.setItem("totalhr", JSON.stringify({ time: `0 hours 0 minutes` }));
+      });
+    }
+    localStorage.setItem(
+      'totalhr',
+      JSON.stringify({ time: `0 hours 0 minutes` })
+    );
   };
 
-  const handlePause = ()=>{
+  const handlePause = () => {
     setPause(true);
     storeHours();
-    localStorage.setItem("login", JSON.stringify({ status: true ,pause:true}));
-  }
+    localStorage.setItem(
+      'login',
+      JSON.stringify({ status: true, pause: true })
+    );
+  };
   const storeHours = () => {
-    
-    const prevHours = JSON.parse(localStorage.getItem("totalhr")!)?.time ?? "0 hours 0 minutes";
+    const prevHours =
+      JSON.parse(localStorage.getItem('totalhr')!)?.time ?? '0 hours 0 minutes';
     clearInterval(timerRef.current as number);
     const endTime = new Date();
     // Parse the times into Date objects
-    const start = new Date(JSON.parse(localStorage.getItem("date")!).date);
+    const start = new Date(JSON.parse(localStorage.getItem('date')!).date);
     const end = endTime;
 
     // Calculate the difference in milliseconds
@@ -161,14 +185,17 @@ export default function Timer() {
       `${diffHours} hours ${diffMinutes} minutes`
     );
     setTotalHours(`${total.hour} hours ${total.min} minutes`);
-    console.log("toal hours", total);
+    console.log('toal hours', total);
 
-    localStorage.setItem("totalhr", JSON.stringify({ time: `${total.hour} hours ${total.min} minutes` }));
+    localStorage.setItem(
+      'totalhr',
+      JSON.stringify({ time: `${total.hour} hours ${total.min} minutes` })
+    );
     return { hours: total.hour, minuits: total.min };
   };
 
   return (
-    <Stack flexDirection={"row"} justifyContent={"space-evenly"} gap={16}>
+    <Stack flexDirection={'row'} justifyContent={'space-evenly'} gap={16}>
       <Typography
         fontWeight={500}
         letterSpacing={1}
@@ -190,9 +217,9 @@ export default function Timer() {
         Login
       </Button>
       <Button
-        disabled={!login || pause }
+        disabled={!login || pause}
         size="small"
-        color={pause ? "warning" : "primary"}
+        color={pause ? 'warning' : 'primary'}
         variant="contained"
         onClick={handlePause}
       >
@@ -201,7 +228,7 @@ export default function Timer() {
       <Button
         disabled={!login || !pause}
         size="small"
-        color={pause ? "success" : "primary"}
+        color={pause ? 'success' : 'primary'}
         variant="contained"
         onClick={startTimer}
       >
