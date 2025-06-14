@@ -75,10 +75,10 @@ export default function Timer() {
       clearTimeout(idleTimeout);
       idleTimeout = setTimeout(() => {
         if (login && !pause) {
-          console.log('No keyboard activity for 30 minutes. Triggering break.');
+          console.log('No keyboard activity for 1 hours. Triggering break.');
           handlePause();
         }
-      }, 10 * 60 * 1000); // 30 minutes
+      }, 60 * 60 * 1000); // 30 minutes
     };
 
     const handleActivity = () => {
