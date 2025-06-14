@@ -194,7 +194,7 @@ function ProjectList({ projectList }: ProjectListProps) {
                   <TextField
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
-                    onBlur={handleSave.bind(null, item, 'title')}
+                    onBlur={handleSave.bind(null, item, 'description')}
                   />
                 )}
 
