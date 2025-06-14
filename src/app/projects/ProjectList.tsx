@@ -17,6 +17,7 @@ import { ProjectDocs } from './types';
 import { addDocument, updateTask } from '../../../lib/fetch';
 import LinkController from './LinkController';
 import TagController from './TagController';
+import Filter from './Filter';
 
 interface ProjectListProps {
   projectList: ProjectDocs[];
@@ -27,10 +28,17 @@ interface Edit {
   field: string;
 }
 
+const findTagList = (list:ProjectDocs[])=>{
+
+  const temp  = list.map(pro=>pro.doc.tags).flat();
+  return [...new Set(temp)].filter(item=>item)
+}
+
 function ProjectList({ projectList }: ProjectListProps) {
   console.log('projects', projectList[0].doc.title);
 
   const [search,setSearch] = useState('');
+  const [tag,setTag] = useState('')
   const [edit, setEdit] = useState<Edit>({
     id: '',
     field: '',
@@ -46,7 +54,9 @@ function ProjectList({ projectList }: ProjectListProps) {
     };
     addDocument('projects', newDoc);
   };
-
+ 
+  const taglist = findTagList(projectList);
+  console.log("taglist",taglist);
   const setEditMode = (arg: string, id: string) => {
     setEdit({
       id,
@@ -74,7 +84,9 @@ function ProjectList({ projectList }: ProjectListProps) {
       tags: updatedTags
     });
   }
-  const searchedProjectList = projectList.filter(item=>item.doc.title?.includes(search));
+  const filteredList =  projectList.filter(item=>item.doc.tags?.includes(tag) || tag === "");
+  const searchedProjectList = filteredList.filter(item=>item.doc.title?.includes(search));
+
   return (
     <Box
       sx={{
@@ -106,6 +118,14 @@ function ProjectList({ projectList }: ProjectListProps) {
           margin:1,
           width:"20vw",
          }} size='small' color='info' placeholder='search..'/>
+         <Filter 
+          tagList={taglist}
+          onApply={(data)=>{
+          console.log(data.tag);
+          setTag(data.tag)
+         }} onCancel={()=>{
+          setTag("")
+         }}/>
 
       </Stack>
      
@@ -195,7 +215,7 @@ function ProjectList({ projectList }: ProjectListProps) {
               </CardContent>
               <CardActionArea sx={{display:"flex"}}>
                 <LinkController id={item.id} doc={item.doc} />
-                <TagController id={item.id} doc={item.doc}/>
+                <TagController id={item.id} doc={item.doc} tagList={taglist}/>
               </CardActionArea>
             </Card>
           </Grid2>
