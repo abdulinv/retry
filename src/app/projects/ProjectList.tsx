@@ -197,9 +197,9 @@ function ProjectList({ projectList }: ProjectListProps) {
                     edit.id !== item.id && (
                       <Box
                         component={'div'}
-                        onDoubleClick={() => {
-                          setEditMode.bind(null, item.doc.description, item.id);
-                        }}
+                        onDoubleClick={
+                          setEditMode.bind(null, item.doc.description, item.id)
+                        }
                       >
                         <Typography variant="body2">
                           {' '}
