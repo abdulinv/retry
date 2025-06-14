@@ -162,11 +162,15 @@ function ProjectList({ projectList }: ProjectListProps) {
               <Card>
                 <CardContent
                   sx={{
-                    minHeight: '200px',
+                  
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-evenly',
                     alignItems: 'center',
+                    gap:"6px",
+                    maxHeight:"300px",
+                    minHeight: '300px',
+                    overflowY:"scroll"
                   }}
                 >
                   {edit.field !== item.doc.title && edit.id !== item.id && (
