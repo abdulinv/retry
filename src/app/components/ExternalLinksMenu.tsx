@@ -23,6 +23,10 @@ function ExternalLinksMenu() {
       label: "Interview Experinces",
       href: "https://docs.google.com/document/d/1rtLkj6tK6mGJGMek1OFw6j4OBItYflFBuA4hzjr3btA/edit?usp=drive_link",
     },
+    {
+        label:"Resume-2025",
+        href: "https://docs.google.com/document/d/1nFi3gudRKTpFG9tTiVr7MgeQYdFq6qfck8PstrS3ll0/edit?usp=drive_link"
+    }
   ];
 
   return (
