@@ -1,89 +1,88 @@
-"use client"
+'use client';
 
-import {
-  AppBar,
-  Box,
-  Button,
-  IconButton,
-  Link,
-  Toolbar,
-} from "@mui/material";
-
-import {
-
-  AccessTimeRounded,
-
-} from "@mui/icons-material";
-import DescriptionIcon from '@mui/icons-material/Description';
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { AppBar, Box, Button, Menu, MenuItem, Toolbar } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import ExternalLinksMenu from './ExternalLinksMenu';
 
 function Header() {
-
   const router = useRouter();
-  useEffect(()=>{
-       if(!window.localStorage.getItem("access")) {
-    router.push("/login")
-    return;
-  }
-  },[]);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  useEffect(() => {
+    if (!window.localStorage.getItem('access')) {
+      router.push('/login');
+      return;
+    }
+  }, []);
+
+  const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <>
-      <AppBar sx={{backgroundColor:"midnightblue"}}>
+      <AppBar sx={{ backgroundColor: 'midnightblue' }}>
         <Toolbar>
           <Box
             sx={{
               flexGrow: 1,
-              display: "flex",
-              justifyContent: "start",
-              gap: 4,
-              paddingLeft: 12,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 2,
+              paddingLeft: 4,
             }}
           >
-            <Link href="/tests" color="inherit" underline="none">
-              Tests
-          </Link>
-            <Link href="/roadmap" color="inherit" underline="none">
-              Road Map
-            </Link>
-            <Link href="/manage/Daily" color="inherit" underline="none">
-              Manage
-            </Link>
-            <Link href="/JDAnalyser" color="inherit" underline="none">
-              JD Analyser
-            </Link>
-            {/* <Link href="/revision" color="inherit" underline="none">
-              Revision Analyser
-            </Link> */}
-            <Link href="/bucketlist" color="inherit" underline="none">
-              BucketList
-            </Link>
-            <Link href="/projects" color="inherit" underline="none">
-              Projects
-            </Link>
-          </Box>
-          <Link href = "/time">
-            <IconButton color="warning">
-              <AccessTimeRounded />
-            </IconButton>
-          </Link>
-          <a 
-            href="https://docs.google.com/document/d/1UrI00lJnmUJCeIjH8ZIDLomoNfUc0lBJDk2ibD9pI8U/edit?usp=drive_link"
-            target="blank"
-            title="Tech diary"
+            <Button onClick={handleMenuClick} sx={{ color: 'white' }}>
+              Menu
+            </Button>
+            <Menu
+              PaperProps={{
+                sx: {
+                  width: 300, // You can adjust the value to your need
+                },
+              }}
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleMenuClose}
             >
-              <Box color={"white"} typography={"Tech diary"}>
-              <DescriptionIcon color="inherit" />
-              </Box>
-              
-          </a>
-          <Button onClick={()=>{
-            window.localStorage.removeItem("access");
-            router.push("/login")
-          }}>Logout</Button>
+              {[
+                { label: 'Tests', path: '/tests' },
+                { label: 'Road Map', path: '/roadmap' },
+                { label: 'Manage Tasks', path: '/manage/Daily' },
+                { label: 'JD Analyser', path: '/JDAnalyser' },
+                { label: 'Bucket List', path: '/bucketlist' },
+                { label: 'Projects', path: '/projects' },
+                { label: 'Time Spend', path: '/time' },
+              ].map(({ label, path }) => (
+                <MenuItem
+                  key={path}
+                  onClick={() => {
+                    router.push(path);
+                    handleMenuClose();
+                  }}
+                >
+                  {label}
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+          <ExternalLinksMenu />
+          <Button
+            onClick={() => {
+              window.localStorage.removeItem('access');
+              router.push('/login');
+            }}
+            sx={{ color: 'white' }}
+          >
+            Logout
+          </Button>
         </Toolbar>
-       
       </AppBar>
     </>
   );
