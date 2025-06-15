@@ -20,6 +20,10 @@ import {
   MenuItem,
 } from '@mui/material';
 import Filter from "./Filter";
+import { useParams } from 'next/navigation';
+import { updateTask } from '../../../lib/fetch';
+import { Duration } from '@/models/checklist/daily/daily';
+import { parseCustomDate } from '@/utils/helper';
 
 interface Day {
   day: {
@@ -45,12 +49,11 @@ interface Day {
   mode: string;
   dragItem: string;
   setDragItem: (arg: string) => void;
+  taskStart:string |null;
+  setTaskStart:(arg:string|null)=>void
 }
 
-import { useParams } from 'next/navigation';
-import { updateTask } from '../../../lib/fetch';
-import { Duration } from '@/models/checklist/daily/daily';
-import { parseCustomDate } from '@/utils/helper';
+
 
 function DayCard({
   day,
@@ -59,10 +62,12 @@ function DayCard({
   mode,
   dragItem,
   setDragItem,
+  taskStart,
+  setTaskStart
 }: Day) {
   const [showInput, setShowInput] = useState<string | null>(null);
   const [value, setValue] = useState('');
-  const [taskStart, setTaskStart] = useState<null | string>(null);
+ 
   const [tab, SetTab] = useState('Open');
   const [search, setSearch] = useState('');
   const [filter,setFilter] = useState({

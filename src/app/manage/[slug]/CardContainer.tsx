@@ -13,6 +13,7 @@ interface CardContainerProps {
 function CardContainer({ data }: CardContainerProps) {
 
     const [draggedItem,setDraggedItem] =  useState("");
+     const [taskStart, setTaskStart] = useState<null | string>(null);
   const tasks = data
     .filter((item) => item.category === 'Daily')
     .toSorted((a, b) => a.order - b.order);
@@ -118,6 +119,9 @@ function CardContainer({ data }: CardContainerProps) {
                 updateWeeklyDuration={updateWeeklyDuration}
                 dragItem={draggedItem}
                 setDragItem={setDraggedItem}
+                taskStart={taskStart}
+                setTaskStart={setTaskStart}
+
               />
             );
           })}
@@ -134,6 +138,8 @@ function CardContainer({ data }: CardContainerProps) {
                 updateWeeklyDuration={updateWeeklyDuration}
                 dragItem={draggedItem}
                 setDragItem={setDraggedItem}
+                taskStart={taskStart}
+                setTaskStart={setTaskStart}
               />
             );
           })}
