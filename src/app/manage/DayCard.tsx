@@ -159,7 +159,7 @@ const sortedTasks = filteredTasks.toSorted((a, b) =>
         const hours = Math.floor(diffMs / (1000 * 60 * 60));
         const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
         const tasks = day.tasks.filter((item) => item.text !== text);
-        const { duration: prevDuration } = day.tasks.filter(
+        const { duration: prevDuration ,tag} = day.tasks.filter(
           (item) => item.text === text
         )[0];
 
@@ -183,6 +183,7 @@ const sortedTasks = filteredTasks.toSorted((a, b) =>
                 month: 'long',
                 year: 'numeric',
               }),
+              tag:tag
             },
           ],
         });

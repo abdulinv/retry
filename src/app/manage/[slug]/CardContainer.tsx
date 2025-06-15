@@ -36,6 +36,7 @@ function CardContainer({ data }: CardContainerProps) {
       (item) => item.text === text
     );
     const taskTobeUpdated = monthTobeUpdated.tasks[index];
+    console.log("t2",taskTobeUpdated )
 
     const total =
       ((taskTobeUpdated.duration?.hh || 0) + duration.hh) * 60 +
@@ -66,6 +67,7 @@ function CardContainer({ data }: CardContainerProps) {
             month: 'long',
             year: 'numeric',
           }),
+          tag:taskTobeUpdated.tag
         },
         ...monthTobeUpdated.tasks.slice(index + 1),
       ],
