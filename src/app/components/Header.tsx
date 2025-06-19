@@ -4,6 +4,7 @@ import { AppBar, Box, Button, Menu, MenuItem, Toolbar } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import ExternalLinksMenu from './ExternalLinksMenu';
+import Scheduler from './Scheduler';
 
 function Header() {
   const router = useRouter();
@@ -29,6 +30,7 @@ function Header() {
     <>
       <AppBar sx={{ backgroundColor: 'midnightblue' }}>
         <Toolbar>
+       
           <Box
             sx={{
               flexGrow: 1,
@@ -71,7 +73,9 @@ function Header() {
                 </MenuItem>
               ))}
             </Menu>
+            <Scheduler/>
           </Box>
+         
           <ExternalLinksMenu />
           <Button
             onClick={() => {

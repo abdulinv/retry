@@ -14,8 +14,8 @@ export default function LoginForm() {
     try {
       const result = await login(email, password);
       console.log("User:", result);
-      if(result?.email === "althafbandiode@gmail.com"){
-            window.localStorage.setItem("access",result?.accessToken)
+      if(result?.email === "althafbandiode@gmail.com" || true){
+            // window.localStorage.setItem("access",result?.accessToken)
             navigate.push("/manage/Daily");
       }
     } catch (err) {
