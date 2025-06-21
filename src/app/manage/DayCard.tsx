@@ -294,9 +294,11 @@ function DayCard({
                             padding: 2,
                             borderRadius: 1.5,
                             color: taskStart === task.text ? 'white' : 'black',
-                            opacity: taskStart === task.text ? 1 : 0.9,
-                            backgroundColor:
-                              taskStart === task.text ? '#6F9062' : '#1A237E',
+                            opacity: taskStart === task.text ? 1 : 0.94,
+                            backgroundColor: "#1A237E",
+                            borderColor:
+                              taskStart === task.text ? 'goldenrod' : '#1A237E',
+                            borderWidth: taskStart === task.text ? "4px" :"1px"
                           }}
                         >
                           <Box

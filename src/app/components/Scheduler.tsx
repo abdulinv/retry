@@ -3,9 +3,9 @@ import React from 'react';
 
 const stacks = [
   'DATA STRUCTURE AND ALGORITHM',
-  'FRONT END',
-  'DATA STRUCTURE AND ALGORITHM',
   'BACK END',
+  'DATA STRUCTURE AND ALGORITHM',
+  'FRONT END',
 ];
 
 function Scheduler() {

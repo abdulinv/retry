@@ -108,7 +108,7 @@ function CardContainer({ data }: CardContainerProps) {
         gap={4}
         mt={2}
       >
-        <Grid2 size={10}>
+        <Grid2 size={11}>
           {allTasks.map((day: Tasks, i: number) => {
             return (
               <DayCard
