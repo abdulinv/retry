@@ -50,6 +50,7 @@ function RoadMapCard({ item, id}: RoadMapProps) {
   const [showNote, setShowNote] = useState<string | null>(null);
   const [editNote, setEditNote] = useState(false);
   const [note, setNote] = useState('add note here');
+  const [expand,setExpand] = useState(false);
 
   const topicTobeEdited = item.topics.find((el) => el.title === showNote);
 
@@ -144,7 +145,7 @@ function RoadMapCard({ item, id}: RoadMapProps) {
           </Paper>
         </div>
       </Modal>
-      <Card elevation={10} sx={{ margin: '16px' }}>
+      <Card elevation={10} >
         <CardHeading
           handleTitleChange={handleTitleChange}
           handleTitleEdit={handleEnableEdit}
@@ -152,8 +153,10 @@ function RoadMapCard({ item, id}: RoadMapProps) {
           item={item}
           value={value}
           onChange={(val) => setValue(val)}
+          expand={expand}
+          setExpand={()=>setExpand(prev=>!prev)}
         />
-        <StyledCardContent>
+        {expand &&  <StyledCardContent>
           <List sx={{ marginLeft: '16px' }}>
             {item.topics
               .toSorted((a, b) => b.order - a.order)
@@ -185,8 +188,11 @@ function RoadMapCard({ item, id}: RoadMapProps) {
                 </ListItem>
               ))}
           </List>
-        </StyledCardContent>
-        <CardControl item={item} id={id} />
+        </StyledCardContent>}
+
+        {expand &&  <CardControl item={item} id={id} />}
+        
+        
       </Card>
     </>
   );

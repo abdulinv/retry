@@ -43,7 +43,7 @@ function RoadMapProvider({ RoadMaps }: RoadMapProps) {
           <Typography variant="h5">{selectedStack}</Typography>
         </Button>
         {(
-          <Grid2 container gap={0} rowGap={3} justifyContent={'space-around'}>
+          <Grid2 container gap={0} rowGap={1.5} justifyContent={'space-around'}>
             {RoadMaps.filter((item) => item.doc.stack === selectedStack)
               ?.sort((a, b) => {
                 if (
