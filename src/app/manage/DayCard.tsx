@@ -5,27 +5,30 @@ import {
   List,
   ListItem,
   Card,
-  CardContent,
   ListItemText,
   CardActionArea,
   Button,
-  TextField,
-  useTheme,
   Box,
   Typography,
-  LinearProgress,
+  IconButton,
   Stack,
-  Badge,
-  Select,
-  MenuItem,
 } from '@mui/material';
-import Filter from "./Filter";
 import { useParams } from 'next/navigation';
 import { updateTask } from '../../../lib/fetch';
 import { Duration } from '@/models/checklist/daily/daily';
 import { parseCustomDate } from '@/utils/helper';
+import CheckList from './CheckList';
+import TagControl from './TagControl';
+import DateSection from './DateSection';
+import ProgressControl from './ProgressControl';
+import DurationControl from './DurationControl';
+import HeadingBar from './HeadingBar';
+import InputControl from './InputControl';
+import TitleControl from './TitleControl';
+import { ArrowDownward, ArrowUpward } from '@mui/icons-material';
+import { StyledCardContent } from './styles';
 
-interface Day {
+export interface Day {
   day: {
     id?: number;
     category?: string;
@@ -38,6 +41,10 @@ interface Day {
         hh: number;
         mm: number;
       };
+      subTasks: {
+        text: string;
+        status: boolean;
+      }[];
       completedOn?: string;
       openedOn?: string;
       updatedOn?: string;
@@ -49,36 +56,33 @@ interface Day {
   mode: string;
   dragItem: string;
   setDragItem: (arg: string) => void;
-  taskStart:string |null;
-  setTaskStart:(arg:string|null)=>void
+  taskStart: string | null;
+  setTaskStart: (arg: string | null) => void;
 }
-
-
 
 function DayCard({
   day,
-  autoUpdateDaily,
   updateWeeklyDuration,
   mode,
   dragItem,
-  setDragItem,
   taskStart,
-  setTaskStart
+  setTaskStart,
 }: Day) {
   const [showInput, setShowInput] = useState<string | null>(null);
   const [value, setValue] = useState('');
- 
+  const [expand, setExpand] = useState<null | string>(null);
+
   const [tab, SetTab] = useState('Open');
   const [search, setSearch] = useState('');
-  const [filter,setFilter] = useState({
-    tag:"",
-    date:""
+  const [filter, setFilter] = useState({
+    tag: '',
+    date: '',
   });
 
   const { slug } = useParams();
-  const theme = useTheme();
 
   useEffect(() => {
+    console.log(value)
     if (localStorage.getItem('activeTask')) {
       const startedTask = JSON.parse(localStorage.getItem('activeTask')!).task;
       console.log('task local', startedTask);
@@ -112,44 +116,41 @@ function DayCard({
         : 'info';
   } else {
     heading = 'Over all tasks summary ';
-    headingColor =  day.title === "january2025"  ? 'success' : 'info';
+    headingColor = day.title === 'january2025' ? 'success' : 'info';
   }
   let filteredTasks = day.tasks;
-  const openCount = day.tasks.filter((item) => item.status === 'Open').length;
-  const closeCount = day.tasks.filter((item) => item.status === 'Close').length;
-  const plannedCount = day.tasks.filter(
-    (item) => item.status === 'Planned'
-  ).length;
 
   if (mode === 'Monthly') {
     filteredTasks = day.tasks
       .filter((item) => item.status === tab)
-      .filter((item) => item.text.toLocaleLowerCase().includes(search.toLocaleLowerCase()));
+      .filter((item) =>
+        item.text.toLocaleLowerCase().includes(search.toLocaleLowerCase())
+      );
   }
 
-  if(filter?.tag){
-      filteredTasks = filteredTasks.filter(item=>item.tag === filter.tag);
+  if (filter?.tag) {
+    filteredTasks = filteredTasks.filter((item) => item.tag === filter.tag);
   }
 
-  if(filter?.date){
-    if (tab === "Close") {
+  if (filter?.date) {
+    if (tab === 'Close') {
       filteredTasks = filteredTasks.filter((item) => {
-        const taskDate = new Date(item.completedOn ?? "");
+        const taskDate = new Date(item.completedOn ?? '');
         return taskDate >= new Date(filter.date);
       });
     }
-    if (tab === "Open"){
+    if (tab === 'Open') {
       filteredTasks = filteredTasks.filter((item) => {
-        const taskDate = new Date(item.updatedOn ?? "");
+        const taskDate = new Date(item.updatedOn ?? '');
         return taskDate >= new Date(filter.date);
       });
     }
-}
+  }
 
-const sortedTasks = filteredTasks.toSorted((a, b) =>
-  parseCustomDate(b.updatedOn || "") - parseCustomDate(a.updatedOn || "")
-);
-
+  const sortedTasks = filteredTasks.toSorted(
+    (a, b) =>
+      parseCustomDate(b.updatedOn || '') - parseCustomDate(a.updatedOn || '')
+  );
 
   const handleStartTask = (text: string) => {
     if (taskStart === text) {
@@ -164,9 +165,11 @@ const sortedTasks = filteredTasks.toSorted((a, b) =>
         const hours = Math.floor(diffMs / (1000 * 60 * 60));
         const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
         const tasks = day.tasks.filter((item) => item.text !== text);
-        const { duration: prevDuration ,tag} = day.tasks.filter(
-          (item) => item.text === text
-        )[0];
+        const {
+          duration: prevDuration,
+          tag,
+          subTasks,
+        } = day.tasks.filter((item) => item.text === text)[0];
 
         const total =
           ((prevDuration?.hh ?? 0) + hours) * 60 +
@@ -188,7 +191,8 @@ const sortedTasks = filteredTasks.toSorted((a, b) =>
                 month: 'long',
                 year: 'numeric',
               }),
-              tag:tag
+              tag: tag,
+              subTasks,
             },
           ],
         });
@@ -208,13 +212,18 @@ const sortedTasks = filteredTasks.toSorted((a, b) =>
     }
   };
 
+  const handleCollapse = (text: string) => {
+    if (text === expand) setExpand(null);
+    else setExpand(text);
+  };
+
   const handleAddTask = (title: string) => {
     console.log('title', title);
     updateTask(`manage${mode}`, day.title, {
       ...day,
       tasks: [
         ...day.tasks,
-        { text: title, status: 'Planned', completedOn: '' },
+        { text: title, status: 'Planned', completedOn: '', subTasks: [] },
       ],
     });
   };
@@ -223,19 +232,16 @@ const sortedTasks = filteredTasks.toSorted((a, b) =>
     SetTab(tab);
   };
 
-  const handleFilter = (filterData:{
-    tag:string,
-    date:string
-  })=>{
-     setFilter(filterData)
-  }
+  const handleFilter = (filterData: { tag: string; date: string }) => {
+    setFilter(filterData);
+  };
 
-  const handleCancel = ()=>{
+  const handleCancel = () => {
     setFilter({
-      tag:'',
-      date:''
-    })
-  }
+      tag: '',
+      date: '',
+    });
+  };
   return (
     <>
       {headingColor === 'success' && (
@@ -247,144 +253,20 @@ const sortedTasks = filteredTasks.toSorted((a, b) =>
           elevation={headingColor === 'success' ? 20 : 5}
           sx={{ opacity: headingColor === 'success' ? 1 : 0.7 }}
         >
-          <Stack
-            p={0.8}
-            flexDirection={'row'}
-            alignItems={'center'}
-            justifyContent={'space-around'}
-            sx={{
-              color: 'white',
-              minHeight: '54px',
-              borderRadius: 0,
-              backgroundColor: '#1A237E',
-            }}
-            color={headingColor}
-          >
-            {heading}
-            {mode === 'Monthly' && (
-              <TextField
-                placeholder="search..."
-                size="small"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                sx={{
-                  width: '220px',
-                  '& .MuiOutlinedInput-root': {
-                    height: '30px', // set desired height
-                    borderRadius: '6px',
-                    color: 'grey',
-                    fontSize: '14px',
-                    '& .MuiOutlinedInput-notchedOutline': {
-                      border: '1px solid midnightblue', // remove default border
-                    },
-                    '&:hover .MuiOutlinedInput-notchedOutline': {
-                      border: '1px solid midnightblue',
-                    },
-                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                      border: '1px solid midnightblue',
-                    },
-                  },
-                }}
-              />
-            )}
-            {mode === 'Monthly' &&  <Filter onApply={handleFilter} onCancel={handleCancel}/>  }
-           
-            {mode === 'Monthly' && (
-              <Stack flexDirection={'row'} m={0} p={0} gap={2}>
-                <Badge
-                  badgeContent={openCount}
-                  color="primary"
-                  sx={{
-                    '& .MuiBadge-badge': {
-                      top: 15, // adjust as needed
-                      right: 10, // adjust as needed
-                      mb: 2,
-                    },
-                  }}
-                >
-                  <Button
-                    sx={{
-                      color: tab === 'Open' ? 'white' : 'grey',
-                      mr: '12px',
-                    }}
-                    onClick={handleTabChange.bind(null, 'Open')}
-                    size="small"
-                    variant="text"
-                  >
-                    Open
-                  </Button>
-                </Badge>
+          <HeadingBar
+            mode={mode}
+            tab={tab}
+            handleTabChange={handleTabChange}
+            handleCancel={handleCancel}
+            handleFilter={handleFilter}
+            day={day}
+            heading={heading}
+            headingColor={headingColor}
+            search={search}
+            setSearch={setSearch}
+          />
 
-                <Badge
-                  badgeContent={closeCount}
-                  color="success"
-                  sx={{
-                    '& .MuiBadge-badge': {
-                      top: 15, // adjust as needed
-                      right: -5, // adjust as needed
-                      mb: 2,
-                    },
-                  }}
-                >
-                  <Button
-                    sx={{
-                      color: tab === 'Close' ? 'white' : 'grey',
-                      mr: '4px',
-                    }}
-                    onClick={handleTabChange.bind(null, 'Close')}
-                    size="small"
-                    variant="text"
-                  >
-                    Closed
-                  </Button>
-                </Badge>
-
-                <Badge
-                  badgeContent={plannedCount}
-                  color="warning"
-                  sx={{
-                    '& .MuiBadge-badge': {
-                      top: 15, // adjust as needed
-                      right: -10, // adjust as needed
-                      mb: 2,
-                      mr:1
-                    },
-                  }}
-                >
-                  <Button
-                    sx={{ color: tab === 'Planned' ? 'white' : 'grey' }}
-                    onClick={handleTabChange.bind(null, 'Planned')}
-                    size="small"
-                    variant="text"
-                  >
-                    Plan
-                  </Button>
-                </Badge>
-              </Stack>
-            )}
-          </Stack>
-
-          <CardContent
-            sx={{
-              maxHeight: '575px',
-              minHeight: '575px',
-              overflowY: 'auto',
-              '&::-webkit-scrollbar': {
-                width: '8px',
-              },
-              '&::-webkit-scrollbar-track': {
-                backgroundColor: '#f1f1f1',
-                borderRadius: '4px',
-              },
-              '&::-webkit-scrollbar-thumb': {
-                backgroundColor: theme.palette.primary.main,
-                borderRadius: '4px',
-              },
-              '&::-webkit-scrollbar-thumb:hover': {
-                backgroundColor: theme.palette.primary.dark,
-              },
-            }}
-          >
+          <StyledCardContent>
             <List
               sx={{
                 display: 'flex',
@@ -393,14 +275,14 @@ const sortedTasks = filteredTasks.toSorted((a, b) =>
             >
               {sortedTasks.map((task, i) => {
                 return (
-                  <ListItem key={i}>
+                  <ListItem key={i} sx={{ display: 'flex' }}>
                     <ListItemText
                       onDoubleClick={() => {
                         setShowInput(task.text);
                         setValue(task.text);
                       }}
                     >
-                      {showInput !== task.text && (
+                      {
                         <Box
                           sx={{
                             display: 'flex',
@@ -409,7 +291,7 @@ const sortedTasks = filteredTasks.toSorted((a, b) =>
                             gap: 4,
                             border: '1px solid grey',
                             padding: 2,
-                            borderRadius: 3,
+                            borderRadius: 1.5,
                             color: taskStart === task.text ? 'white' : 'black',
                             opacity: taskStart === task.text ? 1 : 0.9,
                             backgroundColor:
@@ -425,405 +307,79 @@ const sortedTasks = filteredTasks.toSorted((a, b) =>
                               color: 'inherit',
                             }}
                           >
-                            {mode === 'Monthly' && (
-                              <Stack flexDirection={'row'} gap={4} px={0.5}>
-                                {task?.openedOn && (
-                                  <Stack flexDirection={'row'} gap={1}>
-                                    <Typography
-                                      color="info"
-                                      fontWeight={500}
-                                      fontSize={14}
-                                    >
-                                      Opened On
-                                    </Typography>
-                                    <Typography
-                                      color="info"
-                                      fontWeight={500}
-                                      fontSize={14}
-                                    >
-                                      {task.openedOn ?? 'no date'}
-                                    </Typography>
-                                  </Stack>
-                                )}
-
-                                {task?.completedOn && (
-                                  <Stack flexDirection={'row'} gap={1}>
-                                    <Typography
-                                      color="success"
-                                      fontWeight={500}
-                                      fontSize={14}
-                                    >
-                                      Completed On
-                                    </Typography>
-                                    <Typography
-                                      color="success"
-                                      fontWeight={500}
-                                      fontSize={14}
-                                    >
-                                      {task.completedOn ?? 'no date'}
-                                    </Typography>
-                                  </Stack>
-                                )}
-
-                                {task?.updatedOn && (
-                                  <Stack flexDirection={'row'} gap={1}>
-                                    <Typography
-                                      color="info"
-                                      fontWeight={500}
-                                      fontSize={14}
-                                    >
-                                      Last Updated On
-                                    </Typography>
-                                    <Typography
-                                      color="info"
-                                      fontWeight={500}
-                                      fontSize={14}
-                                    >
-                                      {task.updatedOn ?? 'no date'}
-                                    </Typography>
-                                  </Stack>
-                                )}
-
-                                <Select
-                                  size="small"
-                                  color="info"
-                                  value={task.tag ?? 'Notag'}
-                                  onChange={(e) => {
-                                    const tasks = day.tasks.filter(
-                                      (item) => item.text !== task.text
-                                    );
-                                    updateTask(`manage${mode}`, day.title, {
-                                      ...day,
-                                      tasks: [
-                                        ...tasks,
-                                        {
-                                          text: task.text,
-                                          status: task.status,
-                                          duration: task.duration,
-                                          openedOn: task?.openedOn ?? '',
-                                          completedOn: task?.completedOn ?? '',
-                                          updatedOn: task?.updatedOn ?? '',
-                                          tag: e.target.value,
-                                        },
-                                      ],
-                                    });
-                                  }}
-                                  sx={{
-                                    fontSize: '14px',
-                                    color: 'grey',
-                                    fontWeight: '500',
-                                    height: '24px',
-                                    width: '150px',
-                                    '& .MuiOutlinedInput-notchedOutline': {
-                                      border: 'none',
-                                    },
-                                    '&:hover .MuiOutlinedInput-notchedOutline':
-                                      {
-                                        border: 'none',
-                                      },
-                                    '&.Mui-focused .MuiOutlinedInput-notchedOutline':
-                                      {
-                                        border: 'none',
-                                      },
-                                  }}
+                            <Stack
+                              flexDirection={'row'}
+                              justifyContent={'space-between'}
+                              alignItems={'center'}
+                              color={'GrayText'}
+                            >
+                              <Typography color="inherit">
+                                {task.text}
+                              </Typography>
+                              <Stack flexDirection={'row'}>
+                                <Button
+                                  disabled={slug !== 'Daily'}
+                                  color="inherit"
+                                  onClick={() => handleStartTask(task.text)}
                                 >
-                                  <MenuItem value="Notag">#NOTAG</MenuItem>
-                                  <MenuItem value="dsa">#DSA</MenuItem>
-                                  <MenuItem value="fe">#FRONTEND</MenuItem>
-                                  <MenuItem value="be">#BACKEND</MenuItem>
-                                </Select>
+                                  {taskStart === task.text ? 'end' : 'start'}
+                                </Button>
+
+                                <IconButton
+                                  color="inherit"
+                                  onClick={handleCollapse.bind(null, task.text)}
+                                >
+                                  {expand === task.text ? (
+                                    <ArrowUpward color="inherit" />
+                                  ) : (
+                                    <ArrowDownward color="inherit" />
+                                  )}
+                                </IconButton>
+                              </Stack>
+                            </Stack>
+                            {expand === task.text && (
+                              <Stack gap={1}>
+                                <Stack
+                                  flexDirection={'row'}
+                                  justifyContent={'space-between'}
+                                >
+                                  <DateSection task={task} />
+                                  <TagControl
+                                    mode={mode}
+                                    day={day}
+                                    task={task}
+                                  />
+                                </Stack>
+
+                                <TitleControl
+                                  task={task}
+                                  showInput={showInput}
+                                  onEdit={() => {
+                                    setShowInput(task.text);
+                                    setValue(task.text);
+                                  }}
+                                />
+                                <InputControl
+                                  setShowInput={() => setShowInput(null)}
+                                  day={day}
+                                  task={task}
+                                  mode={mode}
+                                  showInput={showInput}
+                                />
+                                <DurationControl task={task} />
+                                <ProgressControl mode={mode} task={task} />
+                                <CheckList mode={mode} day={day} task={task} />
                               </Stack>
                             )}
-                            <Typography
-                              sx={{
-                                cursor: 'grabbing',
-                              }}
-                              width={'60%'}
-                              borderRadius={'12px'}
-                              px={0.5}
-                              draggable={true}
-                              onDragStart={() => setDragItem(task.text)}
-                              color="inherit"
-                              fontWeight={500}
-                              fontSize={16}
-                            >
-                              {task.text}
-                            </Typography>
-                            {
-                              <Typography
-                                color="inherit"
-                                fontWeight={600}
-                                px={0.5}
-                              >
-                                {task.duration
-                                  ? `${task.duration.hh} hours ${task.duration.mm} minuits`
-                                  : '00 hours 00 minuits'}
-                              </Typography>
-                            }
-
-                            {mode === 'Monthly' && (
-                              <Box sx={{ px: 0.5 }}>
-                                <LinearProgress
-                                  sx={{
-                                    height: 12,
-                                    borderRadius: 4,
-                                    border: '1px solid grey',
-                                  }}
-                                  color={
-                                    (task.duration?.hh || 0) < 20
-                                      ? 'error'
-                                      : (task.duration?.hh || 0) < 30
-                                      ? 'warning'
-                                      : 'success'
-                                  }
-                                  variant="determinate"
-                                  value={
-                                    ((task.duration?.hh || 0) * 60 +
-                                      (task.duration?.mm || 0)) /
-                                    60
-                                  }
-                                />
-
-                                {(task.duration?.hh || 0) === 0 &&
-                                  (task.duration?.mm || 0) === 0 && (
-                                    <Typography
-                                      color="error"
-                                      variant="body2"
-                                      fontSize={14}
-                                      mt={0.8}
-                                      px={0.1}
-                                    >
-                                      You are not started this task yet !
-                                    </Typography>
-                                  )}
-                                {(task.duration?.hh || 0) > 10 &&
-                                  (task.duration?.hh || 0) < 20 && (
-                                    <Typography
-                                      color="inherit"
-                                      variant="body2"
-                                      fontSize={14}
-                                      mt={0.8}
-                                      px={0.1}
-                                    >
-                                      You are making progress...💪 keep going
-                                    </Typography>
-                                  )}
-                                {(task.duration?.hh || 0) > 75 &&
-                                  (task.duration?.hh || 0) < 95 && (
-                                    <Typography
-                                      color="info"
-                                      variant="body2"
-                                      fontSize={14}
-                                      mt={0.8}
-                                      px={0.1}
-                                    >
-                                      you made the minimum requirement...💪
-                                    </Typography>
-                                  )}
-                                {(task.duration?.hh || 0) > 95 &&
-                                  (task.duration?.hh || 0) < 99 && (
-                                    <Typography
-                                      color="grey"
-                                      variant="body2"
-                                      fontSize={14}
-                                      mt={0.8}
-                                      px={0.1}
-                                    >
-                                      congratulations...✨
-                                    </Typography>
-                                  )}
-                                {(task.duration?.hh || 0) > 99 &&
-                                  (task.duration?.hh || 0) < 49 && (
-                                    <Typography
-                                      color="grey"
-                                      variant="body2"
-                                      fontSize={14}
-                                      mt={0.8}
-                                      px={0.1}
-                                    >
-                                      Excellent...💥💥
-                                    </Typography>
-                                  )}
-                                {(task.duration?.hh || 0) > 100 && (
-                                  <Typography
-                                    color="grey"
-                                    variant="body2"
-                                    fontSize={14}
-                                    fontWeight={500}
-                                    mt={0.8}
-                                    px={0.1}
-                                  >
-                                    Awesome...🔥🔥🔥 time to switch to another
-                                    topic
-                                  </Typography>
-                                )}
-                              </Box>
-                            )}
-                          </Box>
-
-                          <Box
-                            sx={{
-                              backgroundColor: '#1A237E',
-                              borderRadius: 1,
-                              p: 0,
-                            }}
-                          >
-                            {mode === 'Daily' && (
-                              <Button
-                                disabled={slug !== 'Daily'}
-                                color="primary"
-                                onClick={() => handleStartTask(task.text)}
-                              >
-                                {taskStart === task.text ? 'end' : 'start'}
-                              </Button>
-                            )}
-                            {mode === 'Monthly' &&
-                              task.status === 'Planned' && (
-                                <Button
-                                  variant="text"
-                                  size="small"
-                                  sx={{ backgroundColor: '#1A237E' }}
-                                  color="info"
-                                  onClick={() => {
-                                    const tasks = day.tasks.filter(
-                                      (item) => item.text !== task.text
-                                    );
-                                    updateTask(`manage${mode}`, day.title, {
-                                      ...day,
-                                      tasks: [
-                                        ...tasks,
-                                        {
-                                          text: task.text,
-                                          status: 'Open',
-                                          duration: task.duration,
-                                          openedOn:
-                                            new Date().toLocaleDateString(
-                                              'en-GB',
-                                              {
-                                                day: '2-digit',
-                                                month: 'long',
-                                                year: 'numeric',
-                                              }
-                                            ),
-                                        },
-                                      ],
-                                    });
-                                  }}
-                                >
-                                  Open task
-                                </Button>
-                              )}
-                            {mode === 'Monthly' &&
-                              task.status !== 'Planned' && (
-                                <Button
-                                  variant="text"
-                                  size="small"
-                                  title="Mark as Complete"
-                                  sx={{
-                                    m: 0,
-                                    fontSize: 12,
-                                  }}
-                                  disabled={
-                                    task.status === 'Open' &&
-                                    (task.duration?.hh || 0) < 100
-                                  }
-                                  color="primary"
-                                  onClick={() => {
-                                    if (
-                                      task.status === 'Open' &&
-                                      (task.duration?.hh || 0) < 100
-                                    )
-                                      return;
-                                    const tasks = day.tasks.filter(
-                                      (item) => item.text !== task.text
-                                    );
-                                    const updatedObject = {
-                                      text: task.text,
-                                      status:
-                                        task.status === 'Open'
-                                          ? 'Close'
-                                          : 'Open',
-                                      duration: task.duration,
-                                      completedOn: '',
-                                      openedOn: '',
-                                    };
-                                    if (task.status === 'Open') {
-                                      updatedObject.completedOn =
-                                        new Date().toLocaleDateString('en-GB', {
-                                          day: '2-digit',
-                                          month: 'long',
-                                          year: 'numeric',
-                                        });
-                                    }
-
-                                    if (task.status === 'Close') {
-                                      updatedObject.openedOn =
-                                        new Date().toLocaleDateString('en-GB', {
-                                          day: '2-digit',
-                                          month: 'long',
-                                          year: 'numeric',
-                                        });
-                                    }
-
-                                    updateTask(`manage${mode}`, day.title, {
-                                      ...day,
-                                      tasks: [...tasks, updatedObject],
-                                    });
-                                  }}
-                                >
-                                  {task.status === 'Open' ? 'Complete' : 'Open'}
-                                </Button>
-                              )}
                           </Box>
                         </Box>
-                      )}
-                      {showInput === task.text && (
-                        <TextField
-                          value={value}
-                          autoFocus
-                          size="small"
-                          fullWidth
-                          onChange={(e) => setValue(e.target.value)}
-                          onBlur={() => {
-                            const tasks = day.tasks.filter(
-                              (item) => item.text !== task.text
-                            );
-                            updateTask(`manage${mode}`, day.title, {
-                              ...day,
-                              tasks: [
-                                ...tasks,
-                                { text: value, status: task.status },
-                              ],
-                            });
-                            if (
-                              mode === 'Monthly' &&
-                              value.includes('Daily#-')
-                            ) {
-                              autoUpdateDaily(value);
-                            }
-                            setShowInput(null);
-                          }}
-                          sx={{
-                            '& .MuiOutlinedInput-root': {
-                              '& fieldset': {
-                                border: 'none', // Remove the default border
-                              },
-                              '&:hover fieldset': {
-                                border: 'none', // Prevent border on hover
-                              },
-                              '&.Mui-focused fieldset': {
-                                border: 'none', // Prevent border on focus
-                              },
-                            },
-                          }}
-                        />
-                      )}
+                      }
                     </ListItemText>
                   </ListItem>
                 );
               })}
             </List>
-          </CardContent>
+          </StyledCardContent>
           <CardActionArea>
             <Button
               onClick={() => {

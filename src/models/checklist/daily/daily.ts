@@ -3,16 +3,24 @@ export interface Duration {
   mm:number
  }
 
-interface Task {
+export interface Task {
   text: string;
   status: string;
   duration?:Duration;
   completedOn?:string;
   openedOn?:string;
   updatedOn?:string;
-  tag?:string
+  tag?:string,
+  subTasks:{
+    text:string,
+    status:boolean,
+  }[]
 }
+export interface SubTask{
+  text:string;
+  status:boolean;
 
+}
 
 export interface Tasks {
   [key:string]:string |undefined |number |Task[] | Duration,

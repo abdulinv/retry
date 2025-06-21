@@ -14,9 +14,7 @@ function CardContainer({ data }: CardContainerProps) {
 
     const [draggedItem,setDraggedItem] =  useState("");
      const [taskStart, setTaskStart] = useState<null | string>(null);
-  const tasks = data
-    .filter((item) => item.category === 'Daily')
-    .toSorted((a, b) => a.order - b.order);
+
 
   const allTasks = data
     .filter((item) => item.title === 'january2025')
@@ -68,7 +66,9 @@ function CardContainer({ data }: CardContainerProps) {
             month: 'long',
             year: 'numeric',
           }),
-          tag:taskTobeUpdated.tag
+          tag:taskTobeUpdated.tag,
+          subTasks:taskTobeUpdated?.subTasks
+
         },
         ...monthTobeUpdated.tasks.slice(index + 1),
       ],
@@ -84,7 +84,7 @@ function CardContainer({ data }: CardContainerProps) {
       if (index === -1) {
         updateTask('manageDaily', item.title, {
           ...item,
-          tasks: [...item.tasks, { text: value.slice(8), status: "Open" }],
+          tasks: [...item.tasks, { text: value.slice(8), status: "Open" ,subTasks:[]}],
         });
       }
     });
@@ -94,7 +94,7 @@ function CardContainer({ data }: CardContainerProps) {
       if (index === -1) {
         updateTask('manageWeekly', item.title, {
           ...item,
-          tasks: [...item.tasks, { text: value.slice(8), status: "Open" }],
+          tasks: [...item.tasks, { text: value.slice(8), status: "Open" ,subTasks:[]}],
         });
       }
     });
@@ -108,26 +108,7 @@ function CardContainer({ data }: CardContainerProps) {
         gap={4}
         mt={2}
       >
-        <Grid2 size={4}>
-          {tasks.map((day: Tasks, i: number) => {
-            return (
-              <DayCard
-                key={i}
-                mode='Daily'
-                day={day}
-                autoUpdateDaily={autoUpdateDaily}
-                updateWeeklyDuration={updateWeeklyDuration}
-                dragItem={draggedItem}
-                setDragItem={setDraggedItem}
-                taskStart={taskStart}
-                setTaskStart={setTaskStart}
-
-              />
-            );
-          })}
-        </Grid2>
-
-        <Grid2 size={7}>
+        <Grid2 size={10}>
           {allTasks.map((day: Tasks, i: number) => {
             return (
               <DayCard
