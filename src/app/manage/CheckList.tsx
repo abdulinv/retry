@@ -62,8 +62,8 @@ function CheckList({ mode, day, task }: CheckListProps) {
   };
 
   return (
-    <Box sx={{ color: 'GrayText' }}>
-      <Typography
+    <Box sx={{ color: 'GrayText', px:0.7,mt:1}}>
+      {task?.subTasks && task?.subTasks?.length !==0 &&  <Typography
         fontWeight={600}
         fontSize={15}
         color="inherit"
@@ -72,7 +72,8 @@ function CheckList({ mode, day, task }: CheckListProps) {
         textTransform="uppercase"
       >
         Subtasks
-      </Typography>
+      </Typography> }
+     
       <CheckListContainer>
         {task.subTasks?.map((item, index) => (
           <Box
@@ -142,8 +143,8 @@ function CheckList({ mode, day, task }: CheckListProps) {
           </Box>
         ))}
       </CheckListContainer>
-
-      <Button
+      
+      {task.status === 'Open' &&   <Button
         onClick={handleOpen}
         size="small"
         variant="outlined"
@@ -158,7 +159,8 @@ function CheckList({ mode, day, task }: CheckListProps) {
         }}
       >
         + Add Subtask
-      </Button>
+      </Button>}
+     
 
       <Dialog open={open} onClose={handleClose}>
         <Stack spacing={2} p={2} minWidth="300px">

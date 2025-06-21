@@ -27,6 +27,7 @@ import InputControl from './InputControl';
 import TitleControl from './TitleControl';
 import { ArrowDownward, ArrowUpward } from '@mui/icons-material';
 import { StyledCardContent } from './styles';
+import StatusControl from './StatusControl';
 
 export interface Day {
   day: {
@@ -312,6 +313,7 @@ function DayCard({
                               justifyContent={'space-between'}
                               alignItems={'center'}
                               color={'GrayText'}
+                              px={0.5}
                             >
                               <Typography color="inherit">
                                 {task.text}
@@ -344,11 +346,13 @@ function DayCard({
                                   justifyContent={'space-between'}
                                 >
                                   <DateSection task={task} />
+                                  
                                   <TagControl
                                     mode={mode}
                                     day={day}
                                     task={task}
                                   />
+                                  <StatusControl mode={mode} day={day} task={task}/>
                                 </Stack>
 
                                 <TitleControl
@@ -368,7 +372,9 @@ function DayCard({
                                 />
                                 <DurationControl task={task} />
                                 <ProgressControl mode={mode} task={task} />
-                                <CheckList mode={mode} day={day} task={task} />
+                                {task.status !== "Planned" && 
+                                  <CheckList mode={mode} day={day} task={task} /> }
+                                
                               </Stack>
                             )}
                           </Box>
