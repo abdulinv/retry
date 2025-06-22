@@ -161,7 +161,16 @@ function RoadMapCard({ item, id}: RoadMapProps) {
             {item.topics
               .toSorted((a, b) => b.order - a.order)
               .map((topic) => (
-                <ListItem divider key={topic.title} sx={{ m: 0, p: 0 }}>
+                <ListItem divider key={topic.title}   sx={{
+                  m: 0,
+                  p: 0.3,
+                  borderRadius:1,
+                  
+                  '&:hover': {
+                    bgcolor: 'rgba(25, 25, 112, 0.1)', // slightly lighter midnight blue
+                    cursor: 'pointer', // optional: shows pointer on hover
+                  },
+                }}>
                   {/* title */}
                   <TitleControl
                     handleEnableEdit={handleEnableEdit}

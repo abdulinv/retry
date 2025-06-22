@@ -19,6 +19,7 @@ function LinkIcon({ handleClick, link }: LinkIconProps) {
       <ListItemIcon onClick={handleClick}>
         <InsertLinkIcon sx={{ m: 0, p: 0 }} />
       </ListItemIcon>
+     
       <a href={link} target="blank">
         <ArrowOutwardIcon
           sx={{
@@ -26,8 +27,9 @@ function LinkIcon({ handleClick, link }: LinkIconProps) {
             p: 0,
             ml: -10,
             mt: 0.5,
+            fontWeight:"900"
           }}
-          color="primary"
+          color={link?"success":"disabled"}
           fontSize="inherit"
         />
       </a>
