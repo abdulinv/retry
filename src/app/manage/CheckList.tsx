@@ -75,7 +75,7 @@ function CheckList({ mode, day, task }: CheckListProps) {
       </Typography> }
      
       <CheckListContainer>
-        {task.subTasks?.map((item, index) => (
+        {task.subTasks?.sort((a, b) => a.text.localeCompare(b.text))?.map((item, index) => (
           <Box
             key={index}
             display="flex"
