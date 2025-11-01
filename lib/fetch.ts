@@ -97,7 +97,8 @@ export async function getRoadMaps() {
     "rm-DSA",
     "rm-AWS",
     "rm-MongoDB",
-    "rm-Docker"
+    "rm-Docker",
+    "rm-python"
   ];
   const data: { id: string; doc: RoadMaps }[] = [];
 
@@ -194,4 +195,10 @@ export async function getProjects(collectionName: string) {
   });
 
   return data;
+}
+
+export async function backup() {
+  const querySnapshot = await getDocs(collection(db, "users"));
+  const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  console.log(JSON.stringify(data));
 }
