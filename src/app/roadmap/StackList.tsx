@@ -26,7 +26,7 @@ function StackList({ RoadMaps, setSelectedStack }: RoadMapProps) {
   console.log("road maps data",RoadMaps);
   const stacklist = [...new Set(RoadMaps.map((item) => item.doc.stack))];
   return (
-    <Grid2 sx={{ border: "1px solid grey", borderRadius: "12px" }} size={1}>
+    <Grid2 sx={{ border: "1px solid grey", borderRadius: "12px" }} size={1.2}>
       <Button onClick={() => setShowInput("add new")}>
         {showInput !== "add new" && (
           <Typography align="left" variant="body2">add new</Typography>

@@ -13,8 +13,8 @@ function RoadMapProvider({ RoadMaps }: RoadMapProps) {
     <>
       <StackList RoadMaps={RoadMaps} setSelectedStack={setSelectedStack} />
       <Grid2
-        sx={{ border: '1px solid grey', p: 2, borderRadius: '12px' }}
-        size={11}
+        sx={{ border: '1px solid grey', p: 1, borderRadius: '12px' }}
+        size={10.8}
       >
         <Button
           sx={{ height: '40px', marginBottom: 4 }}
