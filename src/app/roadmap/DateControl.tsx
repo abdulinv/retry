@@ -68,7 +68,7 @@ interface DateControlProps {
     }
 
     // Interval 4: Maintenance
-    if (diffDays > 21) {
+    if (diffDays > 21 && diffDays <= 45) {
       return {
         title: 'Maintenance Revision Required (3+ weeks old)',
         icon: '🟠',
