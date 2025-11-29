@@ -88,6 +88,7 @@ interface DateControlProps {
     return {
       title: 'Not Applicable',
       icon: '',
+      status:'p6'
     };
   };
 function DateControl({ item, topic, id }: DateControlProps) {
