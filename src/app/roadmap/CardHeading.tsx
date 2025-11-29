@@ -35,12 +35,14 @@ function CardHeading({
       thirdWeekCheck:string[];// Topics due within the first week (diffDays 2-7)
       longTermMaintenance: string[]; // Topics due 1-3 weeks out (diffDays 7-21)
       others: string[];
+      end:string[]
     } = {
       criticalDay1Review: [], // Topics learned yesterday (diffDays === 1)
       firstWeekCheck: [], 
       thirdWeekCheck:[],// Topics due within the first week (diffDays 2-7)
       longTermMaintenance: [], // Topics due 1-3 weeks out (diffDays 7-21)
-      others: [], // Topics that are not urgent or are learned today
+      others: [],
+      end:[] // Topics that are not urgent or are learned today
     };
 
     // 2. Iterate through all topics
@@ -65,6 +67,8 @@ function CardHeading({
         pending.longTermMaintenance.push(topic.title);
       }else  if (status.includes('p5')){
         pending.others.push(topic.title);
+      }else  if (status.includes('p6')){
+        pending.end.push(topic.title);
       }
     });
 
@@ -122,7 +126,7 @@ function CardHeading({
                     borderRadius: 12,
                     p: 0.5,
                     background: '#ffff',
-                    color: 'orange',
+                    color: 'blue',
                   }}
                 >
                   ⚠️ {pending.firstWeekCheck.length}
@@ -170,7 +174,22 @@ function CardHeading({
                     color: 'blue',
                   }}
                 >
-                  🔵{pending.others.length}
+                  🔵 {pending.others.length}
+                  {'  '}
+                </Typography>
+              )}
+
+               {pending.end.length !== 0 && (
+                <Typography
+                  sx={{
+                    border: '1px solid white',
+                    borderRadius: 12,
+                    p: 0.5,
+                    background: '#ffff',
+                    color: 'blue',
+                  }}
+                >
+                  🔄 {pending.end.length}
                   {'  '}
                 </Typography>
               )}
