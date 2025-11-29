@@ -31,12 +31,14 @@ function CardHeading({
     const pending: {
       [index: string]: string[];
       criticalDay1Review: string[]; // Topics learned yesterday (diffDays === 1)
-      firstWeekCheck: string[]; // Topics due within the first week (diffDays 2-7)
+      firstWeekCheck: string[]; 
+      thirdWeekCheck:string[];// Topics due within the first week (diffDays 2-7)
       longTermMaintenance: string[]; // Topics due 1-3 weeks out (diffDays 7-21)
       others: string[];
     } = {
       criticalDay1Review: [], // Topics learned yesterday (diffDays === 1)
-      firstWeekCheck: [], // Topics due within the first week (diffDays 2-7)
+      firstWeekCheck: [], 
+      thirdWeekCheck:[],// Topics due within the first week (diffDays 2-7)
       longTermMaintenance: [], // Topics due 1-3 weeks out (diffDays 7-21)
       others: [], // Topics that are not urgent or are learned today
     };
@@ -57,8 +59,11 @@ function CardHeading({
       } else if (status.includes('p2')) {
         pending.firstWeekCheck.push(topic.title);
       } else if (status.includes('p3')) {
+        pending.thirdWeekCheck.push(topic.title);
+      } 
+      else if (status.includes('p4')) {
         pending.longTermMaintenance.push(topic.title);
-      } else {
+      }else  if (status.includes('p5')){
         pending.others.push(topic.title);
       }
     });
@@ -125,6 +130,21 @@ function CardHeading({
                 </Typography>
               )}
 
+               {pending.thirdWeekCheck.length !== 0 && (
+                <Typography
+                  sx={{
+                    border: '1px solid white',
+                    borderRadius: 12,
+                    p: 0.5,
+                    background: '#ffff',
+                    color: 'blue',
+                  }}
+                >
+                  🟡 {pending.thirdWeekCheck.length}
+                  {'  '}
+                </Typography>
+              )}
+
               {pending.longTermMaintenance.length !== 0 && (
                 <Typography
                   sx={{
@@ -135,10 +155,26 @@ function CardHeading({
                     color: 'blue',
                   }}
                 >
-                  🟢 {pending.longTermMaintenance.length}
+                  🟠 {pending.longTermMaintenance.length}
                   {'  '}
                 </Typography>
               )}
+
+              {pending.others.length !== 0 && (
+                <Typography
+                  sx={{
+                    border: '1px solid white',
+                    borderRadius: 12,
+                    p: 0.5,
+                    background: '#ffff',
+                    color: 'blue',
+                  }}
+                >
+                  🔵{pending.others.length}
+                  {'  '}
+                </Typography>
+              )}
+
 
               <Typography> {item.topics.length}</Typography>
             </Stack>

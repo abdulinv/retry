@@ -62,7 +62,7 @@ interface DateControlProps {
     if (diffDays > 7 && diffDays <= 21) {
       return {
         title: 'Due: Long-Term Revision Required (1-3 weeks old)',
-        icon: '✅',
+        icon: '🟡',
         status:'p3'
       };
     }
@@ -71,8 +71,16 @@ interface DateControlProps {
     if (diffDays > 21) {
       return {
         title: 'Maintenance Revision Required (3+ weeks old)',
-        icon: '🟢',
+        icon: '🟠',
         status:'p4'
+      };
+    }
+
+     if (diffDays > 45) {
+      return {
+        title: 'Maintenance Revision Required (1.5 months old)',
+        icon: '🔵',
+        status:'p5'
       };
     }
 
