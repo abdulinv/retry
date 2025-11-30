@@ -40,10 +40,18 @@ export const revisionDateCalc = (topicDate: string | null) => {
 
   // 5. Apply Spaced Repetition Logic (using common intervals)
 
-  if (diffTime >= 1000*60*60*6 && diffTime<1000 * 60 * 60 * 24) {
+   if (diffTime >= 1000*60*60*6 && diffTime<1000 * 60 * 60 * 12) {
     return {
       title: 'Urgent Revision reuiqred',
       icon: '🚨',
+      status: 'p1',
+    };
+  }
+
+  if (diffTime >= 1000*60*60*12 && diffTime<1000 * 60 * 60 * 24) {
+    return {
+      title: 'Urgent Revision reuiqred',
+      icon: '🚨🚨🚨',
       status: 'p1',
     };
   }
