@@ -143,7 +143,6 @@ function DateControl({ item, topic, id }: DateControlProps) {
       </Tooltip>
 
       <Button
-        disabled={topic.date !== undefined && revisionDateCalc(topic.date).status !== 'p6'}
         variant="text"
         sx={{
           mr: 4,
