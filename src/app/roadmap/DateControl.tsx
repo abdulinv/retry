@@ -75,7 +75,7 @@ export const revisionDateCalc = (topicDate: string | null) => {
   // Interval 2: Short-Term Check (1 week)
   if (diffDays >= 2 && diffDays <= 7) {
     return {
-      title: '⚠️ Due: First week revision required (1 week old)',
+      title: `⚠️ Due: First week revision required (${7-diffDays} remaining)`,
       icon: '⚠️',
       status: 'p2',
     };
@@ -84,7 +84,7 @@ export const revisionDateCalc = (topicDate: string | null) => {
   // Interval 3: Long-Term Check (1-3 weeks)
   if (diffDays > 7 && diffDays <= 21) {
     return {
-      title: '🟡 Due: Mid-Term Revision Required (1-3 weeks old)',
+      title: `🟡 Due: Third week Revision Required (${21-diffDays} remaining)`,
       icon: '🟡', // Using yellow for the fading alert
       status: 'p3',
     };
@@ -93,7 +93,7 @@ export const revisionDateCalc = (topicDate: string | null) => {
   // Interval 4: Maintenance (3-6 weeks)
   if (diffDays > 21 && diffDays <= 45) {
     return {
-      title: '🟠 Maintenance Review Required (3-6 weeks old)',
+      title: `🟠 1 month Review Required (${45-diffDays} remaining)`,
       icon: '🟠',
       status: 'p4',
     };
@@ -102,16 +102,16 @@ export const revisionDateCalc = (topicDate: string | null) => {
   // Interval 5: Deep Maintenance (1.5-3 months)
   if (diffDays > 45 && diffDays < 90) {
     return {
-      title: '🔵 Deep Maintenance Required (1.5-3 months old)',
+      title: `🔵 2 months Revision Required (${90-diffDays} remaining)`,
       icon: '🔵',
       status: 'p5',
     };
   }
 
   // Interval 6: Long-Term Archive (3+ months)
-  if (diffDays >= 90) {
+  if (diffDays >= 90 &&  diffDays < 180 ) {
     return {
-      title: '🔄 Maintenance Review Required (3+ months old)',
+      title: `🔄 Last Maintenance Review Required (${180-diffDays} remaining)`,
       icon: '🔄',
       status: 'p6',
     };
