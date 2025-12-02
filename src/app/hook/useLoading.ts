@@ -10,7 +10,7 @@ export const useLoading = () => {
   const unload = () => {
     setTimeout(() => {
       setLoading(false);
-    }, 4500);
+    }, 5000);
   };
 
   return {

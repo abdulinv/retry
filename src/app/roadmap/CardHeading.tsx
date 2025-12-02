@@ -56,18 +56,18 @@ function CardHeading({
       const status = revisionDateCalc(topic.date)?.status ?? 'p4';
 
       // 3. Categorize the topic based on the status string
-      if (status.includes('p1')) {
+      if (status.includes('p1') && !topic.revised?.['p1']) {
         pending.criticalDay1Review.push(topic.title);
-      } else if (status.includes('p2')) {
+      } else if (status.includes('p2') && !topic.revised?.['p2']) {
         pending.firstWeekCheck.push(topic.title);
-      } else if (status.includes('p3')) {
+      } else if (status.includes('p3') && !topic.revised?.['p2']) {
         pending.thirdWeekCheck.push(topic.title);
       } 
-      else if (status.includes('p4')) {
+      else if (status.includes('p4') && !topic.revised?.['p2']) {
         pending.longTermMaintenance.push(topic.title);
-      }else  if (status.includes('p5')){
+      }else  if (status.includes('p5') && !topic.revised?.['p2']){
         pending.others.push(topic.title);
-      }else  if (status.includes('p6')){
+      }else  if (status.includes('p6') && !topic.revised?.['p2']){
         pending.end.push(topic.title);
       }
     });
