@@ -31,6 +31,14 @@ function RoadMapProvider({ RoadMaps }: RoadMapProps) {
                   order: 1,
                   link: '',
                   date: null,
+                  revised:{
+                    p1:false,
+                    p2:false,
+                    p3:false,
+                    p4:false,
+                    p5:false,
+                    p6:false
+                  }
                 },
               ],
               stack: selectedStack,

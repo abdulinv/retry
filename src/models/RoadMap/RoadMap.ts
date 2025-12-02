@@ -102,34 +102,37 @@ export async function UpdateRoadMap(
   index: number | null,
   action: {
     prop: string;
-    value: string;
+    value: string | boolean;
   }
 ) {
-  let itemTobeUpdated: Topic= {
+  let itemTobeUpdated: Topic = {
     title: `add - ${new Date().getMilliseconds().toString().slice(-4)}`,
     note: 'add note here',
     order: 1,
     link: '',
     date: null,
+    revised: { p1: false, p2: false, p3: false,p4:false,p5:false,p6:false },
   };
-  console.log("index check",index)
+  console.log('index check', index);
   if (index || index === 0) itemTobeUpdated = item.topics[index];
   else index = item.topics.length;
-  
+
   const updatedData = {
     ...itemTobeUpdated,
   };
-  
+  if (updatedData.revised === undefined) {
+    updatedData.revised = { p1: false, p2: false, p3: false, p4: false, p5: false, p6: false };
+  }
 
   switch (action.prop) {
     case 'link':
-      updatedData.link = action.value;
+      updatedData.link = action.value as string;
       break;
     case 'note':
-      updatedData.note = action.value;
+      updatedData.note = action.value as string;
       break;
     case 'title':
-      updatedData.title = action.value;
+      updatedData.title = action.value as string;
       break;
     case 'sortAsc':
       updatedData.order = (updatedData?.order || 0) + Number(action.value);
@@ -138,16 +141,26 @@ export async function UpdateRoadMap(
       updatedData.order = (updatedData?.order || 0) - Number(action.value);
       break;
     case 'date':
-      updatedData.date = action.value;
+      updatedData.date = action.value as string;
       break;
+    case 'revisionp1':
+      updatedData.revised['p1'] = action.value as boolean;
+      break;
+    case 'revisionp2':
+      updatedData.revised['p2'] = action.value as boolean;
+      break;
+    case 'revisionp3':
+      updatedData.revised['p3'] = action.value as boolean;
+      break;
+    
   }
-  console.log("updation",id,updatedData,index)
+  console.log('updation', id, updatedData, index);
   await updateTask(`rm-${item.stack}`, id, {
     ...item,
     topics: [
       ...item.topics.slice(0, index),
-      {...updatedData},
-      ...item.topics.slice(index + 1,),
+      { ...updatedData },
+      ...item.topics.slice(index + 1),
     ],
   });
 }
@@ -198,12 +211,13 @@ export function findIndex(item: RoadMapType, topic: Topic) {
   return item.topics.findIndex((item) => item.title === topic.title);
 }
 
-export async function deleteTopic(item:RoadMapType,id:string,index:number){
+export async function deleteTopic(
+  item: RoadMapType,
+  id: string,
+  index: number
+) {
   await updateTask(`rm-${item.stack}`, id, {
     ...item,
-    topics: [
-      ...item.topics.slice(0, index),
-      ...item.topics.slice(index + 1,),
-    ],
+    topics: [...item.topics.slice(0, index), ...item.topics.slice(index + 1)],
   });
 }

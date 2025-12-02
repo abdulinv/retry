@@ -5,6 +5,7 @@ import {
   Stack,
   Tooltip,
   Typography,
+  Box,
 } from '@mui/material';
 import { findIndex, UpdateRoadMap } from '@/models/RoadMap/RoadMap';
 import { RoadMaps, Topic } from './types';
@@ -67,7 +68,7 @@ export const revisionDateCalc = (topicDate: string | null) => {
 
   // 3. Convert milliseconds to days (using the midnight difference)
   const diffDays = Math.floor(diffTimeMidnight / (1000 * 60 * 60 * 24));
-  
+
   // NOTE: diffDays will now be 1 for the day AFTER learning. The next check should be diffDays >= 1 or diffDays >= 2.
   // Since we already handled the first 24 hours with actualTimeDiff, we start the day count from 2 here.
 
@@ -79,7 +80,7 @@ export const revisionDateCalc = (topicDate: string | null) => {
       status: 'p2',
     };
   }
-  
+
   // Interval 3: Long-Term Check (1-3 weeks)
   if (diffDays > 7 && diffDays <= 21) {
     return {
@@ -133,14 +134,42 @@ function DateControl({ item, topic, id }: DateControlProps) {
     await UpdateRoadMap(item, id, index, action);
     unload();
   };
-
+  const revInfo = revisionDateCalc(topic.date);
   return (
     <Stack flexDirection={'row'} alignItems={'center'} gap={1}>
-      <Tooltip title={revisionDateCalc(topic.date).title}>
-        <Typography fontSize={20} fontWeight={800}>
-          {revisionDateCalc(topic.date).icon}
-        </Typography>
-      </Tooltip>
+      {!topic.revised?.[revInfo.status] && (
+        <Tooltip title={revInfo.title}>
+          <Box
+            component={'div'}
+            onClick={async () => {
+              console.log('revi', topic.revised);
+              const index = findIndex(item, topic);
+              let action = CONSTANTS.REIVSION_P1_ACTION;
+              if (revInfo.status === 'p1') {
+                action = CONSTANTS.REIVSION_P1_ACTION;
+              } else if (revInfo.status === 'p2') {
+                action = CONSTANTS.REVISION_P2_ACTION;
+              } else if (revInfo.status === 'p3') {
+                action = CONSTANTS.REVISION_P3_ACTION;
+              } else if (revInfo.status === 'p4') {
+                action = CONSTANTS.REVISION_P4_ACTION;
+              } else if (revInfo.status === 'p4') {
+                action = CONSTANTS.REVISION_P5_ACTION;
+              } else if (revInfo.status === 'p6') {
+                action = CONSTANTS.REVISION_P6_ACTION;
+              }
+              load();
+              await UpdateRoadMap(item, id, index, action);
+              unload();
+            }}
+          >
+            <Typography fontSize={20} fontWeight={800}>
+              {loading && <CircularProgress size={'16px'} />}
+              {!loading && revInfo.icon}
+            </Typography>
+          </Box>
+        </Tooltip>
+      )}
 
       <Button
         variant="text"
