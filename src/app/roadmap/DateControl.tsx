@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   CircularProgress,
@@ -6,6 +6,7 @@ import {
   Tooltip,
   Typography,
   Box,
+  Dialog,
 } from '@mui/material';
 import { findIndex, UpdateRoadMap } from '@/models/RoadMap/RoadMap';
 import { RoadMaps, Topic } from './types';
@@ -44,7 +45,9 @@ export const revisionDateCalc = (topicDate: string | null) => {
   // 4-12 hours review window (ideal time)
   if (actualTimeDiff >= SIX_HOURS && actualTimeDiff < TWELVE_HOURS) {
     return {
-      title: `🚨 Urgent: Day 1 Review Due (${(TWELVE_HOURS-actualTimeDiff)/(1000*60*60)} hours remaining)`,
+      title: `🚨 Urgent: Day 1 Review Due (${
+        (TWELVE_HOURS - actualTimeDiff) / (1000 * 60 * 60)
+      } hours remaining)`,
       icon: '🚨',
       status: 'p1',
     };
@@ -53,7 +56,9 @@ export const revisionDateCalc = (topicDate: string | null) => {
   // 12-24 hours review window (maximum effective time)
   if (actualTimeDiff >= TWELVE_HOURS && actualTimeDiff < TWENTY_FOUR_HOURS) {
     return {
-      title: `🚨🚨 Max Deadline: Day 1 Review Due (${(TWENTY_FOUR_HOURS-actualTimeDiff)/(1000*60*60)} hours remaining)`,
+      title: `🚨🚨 Max Deadline: Day 1 Review Due (${
+        (TWENTY_FOUR_HOURS - actualTimeDiff) / (1000 * 60 * 60)
+      } hours remaining)`,
       icon: '🚨🚨', // Using 2 alarms to show higher urgency/risk of fading
       status: 'p1',
     };
@@ -75,7 +80,9 @@ export const revisionDateCalc = (topicDate: string | null) => {
   // Interval 2: Short-Term Check (1 week)
   if (diffDays >= 2 && diffDays <= 7) {
     return {
-      title: `⚠️ Due: First week revision required (${7-diffDays} days remaining)`,
+      title: `⚠️ Due: First week revision required (${
+        7 - diffDays
+      } days remaining)`,
       icon: '⚠️',
       status: 'p2',
     };
@@ -84,7 +91,9 @@ export const revisionDateCalc = (topicDate: string | null) => {
   // Interval 3: Long-Term Check (1-3 weeks)
   if (diffDays > 7 && diffDays <= 21) {
     return {
-      title: `🟡 Due: Third week Revision Required (${21-diffDays} days  remaining)`,
+      title: `🟡 Due: Third week Revision Required (${
+        21 - diffDays
+      } days  remaining)`,
       icon: '🟡', // Using yellow for the fading alert
       status: 'p3',
     };
@@ -93,7 +102,7 @@ export const revisionDateCalc = (topicDate: string | null) => {
   // Interval 4: Maintenance (3-6 weeks)
   if (diffDays > 21 && diffDays <= 45) {
     return {
-      title: `🟠 1 month Review Required (${45-diffDays} days  remaining)`,
+      title: `🟠 1 month Review Required (${45 - diffDays} days  remaining)`,
       icon: '🟠',
       status: 'p4',
     };
@@ -102,16 +111,18 @@ export const revisionDateCalc = (topicDate: string | null) => {
   // Interval 5: Deep Maintenance (1.5-3 months)
   if (diffDays > 45 && diffDays < 90) {
     return {
-      title: `🔵 2 months Revision Required (${90-diffDays} days  remaining)`,
+      title: `🔵 2 months Revision Required (${90 - diffDays} days  remaining)`,
       icon: '🔵',
       status: 'p5',
     };
   }
 
   // Interval 6: Long-Term Archive (3+ months)
-  if (diffDays >= 90 &&  diffDays < 180 ) {
+  if (diffDays >= 90 && diffDays < 180) {
     return {
-      title: `🔄 Last Maintenance Review Required (${180-diffDays} days  remaining)`,
+      title: `🔄 Last Maintenance Review Required (${
+        180 - diffDays
+      } days  remaining)`,
       icon: '🔄',
       status: 'p6',
     };
@@ -126,10 +137,12 @@ export const revisionDateCalc = (topicDate: string | null) => {
 };
 function DateControl({ item, topic, id }: DateControlProps) {
   const { loading, load, unload } = useLoading();
+  const [show, setShow] = useState(false);
   const handleDateChange = async () => {
     const index = findIndex(item, topic);
     const action = CONSTANTS.ADD_DATE_ACTION;
     action.value = new Date().toISOString();
+     setShow(true);
     load();
     await UpdateRoadMap(item, id, index, action);
     unload();
@@ -137,6 +150,25 @@ function DateControl({ item, topic, id }: DateControlProps) {
   const revInfo = revisionDateCalc(topic.date);
   return (
     <Stack flexDirection={'row'} alignItems={'center'} gap={1}>
+      <Dialog
+        open={show}
+        onClose={() => {
+          setShow(false);
+        }}
+      >
+        <Stack p={3} gap={2}>
+          <Typography color='error' fontWeight={600} fontSize={18}>Critical Action Required - Consolidation</Typography>
+           <Typography color='error' fontWeight={400} fontSize={15}>
+            Recall  the topics from start to end qucikly to consolidate and reinforce  </Typography>
+        </Stack>
+        <Stack direction={"row"} justifyContent={"center"} my={1}>
+          <Button sx={{
+            textTransform:'none'
+          }} color='success' variant='contained' onClick={()=>{
+           setShow(false);
+          }}>Ok i will do that next</Button>
+        </Stack>
+      </Dialog>
       {!topic.revised?.[revInfo.status] && (
         <Tooltip title={revInfo.title}>
           <Box
