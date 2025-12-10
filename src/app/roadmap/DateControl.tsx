@@ -45,9 +45,7 @@ export const revisionDateCalc = (topicDate: string | null) => {
   // 4-12 hours review window (ideal time)
   if (actualTimeDiff >= SIX_HOURS && actualTimeDiff < TWELVE_HOURS) {
     return {
-      title: `🚨 Urgent: Day 1 Review Due (${
-        (TWELVE_HOURS - actualTimeDiff) / (1000 * 60 * 60)
-      } hours remaining)`,
+      title: `🚨 Urgent: Day 1 Review Due (${((TWELVE_HOURS - actualTimeDiff) / (1000 * 60 * 60)).toFixed(2)} hours remaining)`,
       icon: '🚨',
       status: 'p1',
     };
@@ -56,9 +54,9 @@ export const revisionDateCalc = (topicDate: string | null) => {
   // 12-24 hours review window (maximum effective time)
   if (actualTimeDiff >= TWELVE_HOURS && actualTimeDiff < TWENTY_FOUR_HOURS) {
     return {
-      title: `🚨🚨 Max Deadline: Day 1 Review Due (${
-        (TWENTY_FOUR_HOURS - actualTimeDiff) / (1000 * 60 * 60)
-      } hours remaining)`,
+      title: `🚨🚨 Max Deadline: Day 1 Review Due (${((TWENTY_FOUR_HOURS - actualTimeDiff) / (1000 * 60 * 60)).toFixed(
+        2
+      )} hours remaining)`,
       icon: '🚨🚨', // Using 2 alarms to show higher urgency/risk of fading
       status: 'p1',
     };
