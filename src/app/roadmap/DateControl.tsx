@@ -31,7 +31,7 @@ export const revisionDateCalc = (topicDate: string | null) => {
   // 1. Calculate the TRUE elapsed time in milliseconds (BEFORE resetting hours)
   const actualTimeDiff = today.getTime() - lastLearned.getTime();
 
-  // Handle errors/future dates immediately
+  
   if (actualTimeDiff < 0) {
     return { title: 'Not Yet Due', icon: '', status: 'p0' };
   }
