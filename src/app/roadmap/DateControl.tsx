@@ -43,24 +43,14 @@ export const revisionDateCalc = (topicDate: string | null) => {
   const TWENTY_FOUR_HOURS = 1000 * 60 * 60 * 24;
 
   // 4-12 hours review window (ideal time)
-  if (actualTimeDiff >= SIX_HOURS && actualTimeDiff < TWELVE_HOURS) {
+  if (actualTimeDiff >= SIX_HOURS && actualTimeDiff < TWENTY_FOUR_HOURS && TWENTY_FOUR_HOURS - actualTimeDiff <=TWELVE_HOURS) {
     return {
-      title: `🚨 Urgent: Day 1 Review Due (${((TWELVE_HOURS - actualTimeDiff) / (1000 * 60 * 60)).toFixed(2)} hours remaining)`,
+      title: `🚨 Urgent: Day 1 Review Due (${((TWENTY_FOUR_HOURS - actualTimeDiff) / (1000 * 60 * 60)).toFixed(2)} hours remaining)`,
       icon: '🚨',
       status: 'p1',
     };
   }
 
-  // 12-24 hours review window (maximum effective time)
-  if (actualTimeDiff >= TWELVE_HOURS && actualTimeDiff < TWENTY_FOUR_HOURS) {
-    return {
-      title: `🚨🚨 Max Deadline: Day 1 Review Due (${((TWENTY_FOUR_HOURS - actualTimeDiff) / (1000 * 60 * 60)).toFixed(
-        2
-      )} hours remaining)`,
-      icon: '🚨🚨', // Using 2 alarms to show higher urgency/risk of fading
-      status: 'p1',
-    };
-  }
 
   // --- Date-Based Checks (Only proceed if older than 24 hours) ---
 
@@ -76,7 +66,7 @@ export const revisionDateCalc = (topicDate: string | null) => {
   // Since we already handled the first 24 hours with actualTimeDiff, we start the day count from 2 here.
 
   // Interval 2: Short-Term Check (1 week)
-  if (diffDays >= 2 && diffDays <= 7) {
+  if (diffDays >= 2 && diffDays <= 7 &&   (7 - diffDays)<=1) {
     return {
       title: `⚠️ Due: First week revision required (${
         7 - diffDays
@@ -87,7 +77,7 @@ export const revisionDateCalc = (topicDate: string | null) => {
   }
 
   // Interval 3: Long-Term Check (1-3 weeks)
-  if (diffDays > 7 && diffDays <= 21) {
+  if (diffDays > 7 && diffDays <= 21 && (21 - diffDays) <=4 ) {
     return {
       title: `🟡 Due: Third week Revision Required (${
         21 - diffDays
@@ -98,7 +88,7 @@ export const revisionDateCalc = (topicDate: string | null) => {
   }
 
   // Interval 4: Maintenance (3-6 weeks)
-  if (diffDays > 21 && diffDays <= 45) {
+  if (diffDays > 21 && diffDays <= 45 && (45 - diffDays)<=7) {
     return {
       title: `🟠 1 month Review Required (${45 - diffDays} days  remaining)`,
       icon: '🟠',
@@ -107,7 +97,7 @@ export const revisionDateCalc = (topicDate: string | null) => {
   }
 
   // Interval 5: Deep Maintenance (1.5-3 months)
-  if (diffDays > 45 && diffDays < 90) {
+  if (diffDays > 45 && diffDays < 90 && (90 - diffDays) <=10) {
     return {
       title: `🔵 2 months Revision Required (${90 - diffDays} days  remaining)`,
       icon: '🔵',
