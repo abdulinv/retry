@@ -20,7 +20,7 @@ function LinkIcon({ handleClick, link }: LinkIconProps) {
         <InsertLinkIcon sx={{ m: 0, p: 0 }} />
       </ListItemIcon>
      
-      <a href={link} >
+      <a href={link} target='_blank' >
         <ArrowOutwardIcon
           sx={{
             m: 0,
