@@ -65,7 +65,7 @@ function Header() {
                 <MenuItem
                   key={path}
                   onClick={() => {
-                    router.push(path);
+                    window.open(path, '_blank', 'noopener,noreferrer');
                     handleMenuClose();
                   }}
                 >

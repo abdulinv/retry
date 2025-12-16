@@ -20,7 +20,7 @@ function ExternalLinksMenu() {
       href: "https://docs.google.com/document/d/1UrI00lJnmUJCeIjH8ZIDLomoNfUc0lBJDk2ibD9pI8U/edit?usp=drive_link",
     },
     {
-      label: "Interview Experinces",
+      label: "Interview preprations",
       href: "https://docs.google.com/document/d/1rtLkj6tK6mGJGMek1OFw6j4OBItYflFBuA4hzjr3btA/edit?usp=drive_link",
     },
     {
