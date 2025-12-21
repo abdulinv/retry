@@ -38,7 +38,7 @@ export const revisionDateCalc = (topicDate: string | null) => {
 
   // P1: CRITICAL IMMEDIATE REVISION (within the first 24 hours)
   // This logic MUST use actualTimeDiff
-  const TWO_HOURS = 1000 * 60 * 60 * 62;
+  const TWO_HOURS = 1000 * 60 * 60 * 2;
   const TWENTY_FOUR_HOURS = 1000 * 60 * 60 * 32;
 
   // 4-12 hours review window (ideal time)
