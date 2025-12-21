@@ -129,7 +129,7 @@ function CardHeading({
                     color: 'blue',
                   }}
                 >
-                  ⚠️ {pending.firstWeekCheck.length}
+                  🔥 {pending.firstWeekCheck.length}
                   {'  '}
                 </Typography>
               )}
@@ -144,7 +144,7 @@ function CardHeading({
                     color: 'blue',
                   }}
                 >
-                  🟡 {pending.thirdWeekCheck.length}
+                   ⏰ {pending.thirdWeekCheck.length}
                   {'  '}
                 </Typography>
               )}

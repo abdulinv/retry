@@ -67,10 +67,10 @@ export const revisionDateCalc = (topicDate: string | null) => {
   // Interval 2: Short-Term Check (1 week)
   if (diffDays >= 2 && diffDays <= 7 &&   (7 - diffDays)<=1) {
     return {
-      title: `⚠️ Due: First week revision required (${
+      title: `🔥 Due: First week revision required (${
         7 - diffDays
       } days remaining)`,
-      icon: '⚠️',
+      icon: '🔥',
       status: 'p2',
     };
   }
@@ -78,10 +78,10 @@ export const revisionDateCalc = (topicDate: string | null) => {
   // Interval 3: Long-Term Check (1-3 weeks)
   if (diffDays > 7 && diffDays <= 21 && (21 - diffDays) <=4 ) {
     return {
-      title: `🟡 Due: Third week Revision Required (${
+      title: `⏰ Due: Third week Revision Required (${
         21 - diffDays
       } days  remaining)`,
-      icon: '🟡', // Using yellow for the fading alert
+      icon: '⏰ ', // Using yellow for the fading alert
       status: 'p3',
     };
   }
