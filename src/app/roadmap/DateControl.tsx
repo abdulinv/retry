@@ -65,7 +65,7 @@ export const revisionDateCalc = (topicDate: string | null) => {
   // Since we already handled the first 24 hours with actualTimeDiff, we start the day count from 2 here.
 
   // Interval 2: Short-Term Check (1 week)
-  if (diffDays >= 2 && diffDays <= 7 &&   (7 - diffDays)<=1) {
+  if (diffDays >= 2 && diffDays <= 14 &&   (7 - diffDays)<=3) {
     return {
       title: `🔥 Due: First week revision required (${
         7 - diffDays
@@ -76,7 +76,7 @@ export const revisionDateCalc = (topicDate: string | null) => {
   }
 
   // Interval 3: Long-Term Check (1-3 weeks)
-  if (diffDays > 7 && diffDays <= 21 && (21 - diffDays) <=4 ) {
+  if (diffDays > 14 && diffDays <= 28 && (21 - diffDays) <=7 ) {
     return {
       title: `⏰ Due: Third week Revision Required (${
         21 - diffDays
