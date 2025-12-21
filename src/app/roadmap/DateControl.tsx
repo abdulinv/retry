@@ -38,12 +38,11 @@ export const revisionDateCalc = (topicDate: string | null) => {
 
   // P1: CRITICAL IMMEDIATE REVISION (within the first 24 hours)
   // This logic MUST use actualTimeDiff
-  const SIX_HOURS = 1000 * 60 * 60 * 6;
-  const TWELVE_HOURS = 1000 * 60 * 60 * 12;
-  const TWENTY_FOUR_HOURS = 1000 * 60 * 60 * 24;
+  const TWO_HOURS = 1000 * 60 * 60 * 62;
+  const TWENTY_FOUR_HOURS = 1000 * 60 * 60 * 32;
 
   // 4-12 hours review window (ideal time)
-  if (actualTimeDiff >= SIX_HOURS && actualTimeDiff < TWENTY_FOUR_HOURS && TWENTY_FOUR_HOURS - actualTimeDiff <=TWELVE_HOURS) {
+  if (actualTimeDiff >= TWO_HOURS && actualTimeDiff < TWENTY_FOUR_HOURS) {
     return {
       title: `🚨 Urgent: Day 1 Review Due (${((TWENTY_FOUR_HOURS - actualTimeDiff) / (1000 * 60 * 60)).toFixed(2)} hours remaining)`,
       icon: '🚨',
@@ -88,33 +87,33 @@ export const revisionDateCalc = (topicDate: string | null) => {
   }
 
   // Interval 4: Maintenance (3-6 weeks)
-  if (diffDays > 21 && diffDays <= 45 && (45 - diffDays)<=7) {
-    return {
-      title: `🟠 1 month Review Required (${45 - diffDays} days  remaining)`,
-      icon: '🟠',
-      status: 'p4',
-    };
-  }
+  // if (diffDays > 21 && diffDays <= 45 && (45 - diffDays)<=7) {
+  //   return {
+  //     title: `🟠 1 month Review Required (${45 - diffDays} days  remaining)`,
+  //     icon: '🟠',
+  //     status: 'p4',
+  //   };
+  // }
 
   // Interval 5: Deep Maintenance (1.5-3 months)
-  if (diffDays > 45 && diffDays < 90 && (90 - diffDays) <=10) {
-    return {
-      title: `🔵 2 months Revision Required (${90 - diffDays} days  remaining)`,
-      icon: '🔵',
-      status: 'p5',
-    };
-  }
+  // if (diffDays > 45 && diffDays < 90 && (90 - diffDays) <=10) {
+  //   return {
+  //     title: `🔵 2 months Revision Required (${90 - diffDays} days  remaining)`,
+  //     icon: '🔵',
+  //     status: 'p5',
+  //   };
+  // }
 
   // Interval 6: Long-Term Archive (3+ months)
-  if (diffDays >= 90 && diffDays < 180) {
-    return {
-      title: `🔄 Last Maintenance Review Required (${
-        180 - diffDays
-      } days  remaining)`,
-      icon: '🔄',
-      status: 'p6',
-    };
-  }
+  // if (diffDays >= 90 && diffDays < 180) {
+  //   return {
+  //     title: `🔄 Last Maintenance Review Required (${
+  //       180 - diffDays
+  //     } days  remaining)`,
+  //     icon: '🔄',
+  //     status: 'p6',
+  //   };
+  // }
 
   // Final Catch-all (should be rare)
   return {
