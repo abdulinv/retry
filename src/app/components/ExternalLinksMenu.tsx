@@ -28,7 +28,7 @@ function ExternalLinksMenu() {
       href: 'https://docs.google.com/document/d/1nFi3gudRKTpFG9tTiVr7MgeQYdFq6qfck8PstrS3ll0/edit?usp=drive_link',
     },
     {
-      labl: 'Tasks',
+      label: 'Tasks',
       href: 'https://docs.google.com/document/d/1zQlkDzIon_QolxpKAROJBlb6gbVHZ6tNtexAyOwUrxw/edit?tab=t.0',
     },
   ];
