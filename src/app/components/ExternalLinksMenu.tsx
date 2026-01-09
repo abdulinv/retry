@@ -1,5 +1,5 @@
-import { Menu, MenuItem, Button } from "@mui/material";
-import { useState } from "react";
+import { Menu, MenuItem, Button } from '@mui/material';
+import { useState } from 'react';
 
 function ExternalLinksMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -16,22 +16,26 @@ function ExternalLinksMenu() {
 
   const externalLinks = [
     {
-      label: "Tech Diary",
-      href: "https://docs.google.com/document/d/1UrI00lJnmUJCeIjH8ZIDLomoNfUc0lBJDk2ibD9pI8U/edit?usp=drive_link",
+      label: 'Tech Diary',
+      href: 'https://docs.google.com/document/d/1UrI00lJnmUJCeIjH8ZIDLomoNfUc0lBJDk2ibD9pI8U/edit?usp=drive_link',
     },
     {
-      label: "Interview preprations",
-      href: "https://docs.google.com/document/d/1rtLkj6tK6mGJGMek1OFw6j4OBItYflFBuA4hzjr3btA/edit?usp=drive_link",
+      label: 'Interview preprations',
+      href: 'https://docs.google.com/document/d/1rtLkj6tK6mGJGMek1OFw6j4OBItYflFBuA4hzjr3btA/edit?usp=drive_link',
     },
     {
-        label:"Resume-2025",
-        href: "https://docs.google.com/document/d/1nFi3gudRKTpFG9tTiVr7MgeQYdFq6qfck8PstrS3ll0/edit?usp=drive_link"
-    }
+      label: 'Resume-2025',
+      href: 'https://docs.google.com/document/d/1nFi3gudRKTpFG9tTiVr7MgeQYdFq6qfck8PstrS3ll0/edit?usp=drive_link',
+    },
+    {
+      labl: 'Tasks',
+      href: 'https://docs.google.com/document/d/1zQlkDzIon_QolxpKAROJBlb6gbVHZ6tNtexAyOwUrxw/edit?tab=t.0',
+    },
   ];
 
   return (
     <>
-      <Button onClick={handleMenuClick} sx={{ color: "white" }}>
+      <Button onClick={handleMenuClick} sx={{ color: 'white' }}>
         External
       </Button>
       <Menu
